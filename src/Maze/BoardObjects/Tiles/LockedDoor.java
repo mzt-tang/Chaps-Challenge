@@ -17,7 +17,6 @@ public class LockedDoor extends AbstractTile {
         locked = true;
     }
 
-
     public boolean isLocked() {
         return locked;
     }

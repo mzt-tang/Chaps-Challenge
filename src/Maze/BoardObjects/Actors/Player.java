@@ -1,6 +1,7 @@
 package Maze.BoardObjects.Actors;
 
 import Maze.BoardObjects.Tiles.Key;
+import Maze.BoardObjects.Tiles.Treasure;
 import Maze.Position;
 
 import java.util.HashSet;
@@ -11,14 +12,23 @@ import java.util.Set;
  */
 public class Player extends AbstractActor{
 
-    private Set<Key> keySet = new HashSet<>();
+    private Set<Key> keySet = new HashSet<>(); //Keys that the player has picked up.
+    private Set<Treasure> treasureSet; //The treasures that the player needs to collect.
 
     /**
      * .
      * @param position .
      */
-    public Player(Position position) {
+    public Player(Position position, Set<Treasure> treasures) {
         super(position);
+        treasureSet = treasures;
+    }
+
+    public boolean treasuresAllCollected(){
+        for(Treasure t : treasureSet) {
+            if(!t.isCollected()) return false;
+        }
+        return true;
     }
 
 
