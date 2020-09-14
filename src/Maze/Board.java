@@ -7,8 +7,6 @@ public class Board {
     AbstractTile[] board;
 
     public Board() {
-        //Testing
-        //More testing
-        //
+
     }
 }
