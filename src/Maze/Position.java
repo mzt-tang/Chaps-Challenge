@@ -1,4 +1,4 @@
-package Maze.Tiles;
+package Maze;
 
 public class Position {
     public final int x, y;
