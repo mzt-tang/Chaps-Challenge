@@ -8,5 +8,6 @@ public class Board {
 
     public Board() {
         //adfpidafinaofdsaifoanfoifniofdf
+        Position test = new Position(14, 14);
     }
 }
