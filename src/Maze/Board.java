@@ -4,10 +4,15 @@ import Maze.BoardObjects.Tiles.AbstractTile;
 
 public class Board {
 
-    AbstractTile[] board;
+    private AbstractTile[][] board;
 
-    public Board() {
-        //adfpidafinaofdsaifoanfoifniofdf
-        Position test = new Position(14, 14);
+    public Board(AbstractTile[][] board) {
+        this.board = board;
     }
+
+    public AbstractTile[][] getUnmodBoard(){
+        //NEED TO CHANGE
+        return board;
+    }
+
 }

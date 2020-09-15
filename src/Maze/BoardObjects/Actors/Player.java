@@ -13,24 +13,15 @@ import java.util.Set;
 public class Player extends AbstractActor{
 
     private Set<Key> keySet = new HashSet<>(); //Keys that the player has picked up.
-    private Set<Treasure> treasureSet; //The treasures that the player needs to collect.
+    private Set<Treasure> treasureSet = new HashSet<>(); //Treasures that the player has picked up.
 
     /**
      * .
      * @param position .
      */
-    public Player(Position position, Set<Treasure> treasures) {
+    public Player(Position position) {
         super(position);
-        treasureSet = treasures;
     }
-
-    public boolean treasuresAllCollected(){
-        for(Treasure t : treasureSet) {
-            if(!t.isCollected()) return false;
-        }
-        return true;
-    }
-
 
     public boolean hasKey(Key key) {
         for (Key k : keySet) {
@@ -52,5 +43,9 @@ public class Player extends AbstractActor{
 
     public Set<Key> getKeys() {
         return keySet;
+    }
+
+    public Set<Treasure> getTreasures() {
+        return treasureSet;
     }
 }

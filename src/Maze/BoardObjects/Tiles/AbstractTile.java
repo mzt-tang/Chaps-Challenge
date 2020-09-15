@@ -20,4 +20,7 @@ public abstract class AbstractTile implements BoardObject {
         this.position = position;
     }
 
+    public void interact(){
+    }
+
 }
