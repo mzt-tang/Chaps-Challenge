@@ -23,15 +23,7 @@ public abstract class AbstractActor implements BoardObject {
      * Returns the position of the actor.
      * @return .
      */
-    public Position getPosition() {
+    public Position getPos() {
         return position;
-    }
-
-    /**
-     * Sets the position of the actor.
-     * @param position .
-     */
-    public void setPosition(Position position) {
-        this.position = position;
     }
 }

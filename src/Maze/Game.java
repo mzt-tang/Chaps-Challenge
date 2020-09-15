@@ -9,6 +9,10 @@ import java.util.Set;
 
 public class Game {
 
+    public enum DIRECTION {
+        UP, DOWN, LEFT, RIGHT;
+    }
+
     private Board board;
     private Player player;
     private Set<AbstractActor> computerPlayers;
@@ -26,9 +30,28 @@ public class Game {
                 testMaze[i][j] = new FreeTile(new Position(i, j), null);
             }
         }
-
-
-
-
     }
+
+    public void movePlayer(DIRECTION direction){
+        switch (direction) {
+            case UP -> {
+                Position newPos = new Position(player.getPos(), DIRECTION.UP);
+                assert (newPos.getX() >= 0 &&
+                        newPos.getX() <= board.getMap().length-1 &&
+                        newPos.getY() >= 0 &&
+                        newPos.getY() <= board.getMap()[0].length-1)
+                        : "New position is out of bounds.";
+            }
+            case DOWN -> {
+
+            }
+            case LEFT -> {
+
+            }
+            case RIGHT -> {
+
+            }
+        }
+    }
+
 }
