@@ -2,6 +2,8 @@ package Maze.BoardObjects.Tiles;
 
 import Maze.Position;
 
+import java.awt.*;
+
 public class Treasure extends AbstractTile {
 
 
@@ -11,8 +13,8 @@ public class Treasure extends AbstractTile {
      * .
      * @param position .
      */
-    public Treasure(Position position) {
-        super(position);
+    public Treasure(Position position, Image image) {
+        super(position, image);
     }
 
     public boolean isCollected() {

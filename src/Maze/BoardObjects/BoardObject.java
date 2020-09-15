@@ -6,5 +6,4 @@ package Maze.BoardObjects;
  */
 public interface BoardObject {
 
-
 }

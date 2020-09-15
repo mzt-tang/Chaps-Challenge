@@ -3,6 +3,8 @@ package Maze.BoardObjects.Tiles;
 import Maze.BoardObjects.Actors.Player;
 import Maze.Position;
 
+import java.awt.*;
+
 public class LockedDoor extends AbstractTile {
 
     private boolean locked;
@@ -12,8 +14,8 @@ public class LockedDoor extends AbstractTile {
      * .
      * @param position .
      */
-    public LockedDoor(Position position) {
-        super(position);
+    public LockedDoor(Position position, Image image) {
+        super(position, image);
         locked = true;
     }
 

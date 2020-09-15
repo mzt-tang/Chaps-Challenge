@@ -3,6 +3,8 @@ package Maze.BoardObjects.Tiles;
 import Maze.BoardObjects.Actors.Player;
 import Maze.Position;
 
+import java.awt.*;
+
 /**
  * The lock to the room containing the exit portal,
  * unlocked when the player collects all of the treasures.
@@ -15,8 +17,8 @@ public class ExitLock extends AbstractTile {
      * .
      * @param position .
      */
-    public ExitLock(Position position) {
-        super(position);
+    public ExitLock(Position position, Image image) {
+        super(position, image);
     }
 
     public boolean isLocked() {
@@ -28,6 +30,6 @@ public class ExitLock extends AbstractTile {
      * @param player The player attempting to unlock the door.
      */
     public void unlock(Player player) {
-        if(player.treasuresAllCollected()) locked = false;
+        //NEED TO CHANGE
     }
 }
