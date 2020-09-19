@@ -37,12 +37,19 @@ public class ChapsChallenge extends JFrame {
         setDefaultCloseOperation(EXIT_ON_CLOSE);
     }
 
+    /**
+     * Gameplay of the game is held here.
+     * @return Gameplay panel
+     */
     public JPanel createGameScreen(){
         JPanel boardView = new JPanel();
 
         return boardView;
     }
 
+    /**
+     * Menu bar with options to change the game state
+     */
     public void createMenuBar(){
         JMenuBar menuBar = new JMenuBar();
         JMenu gameMenu = new JMenu("Game");
