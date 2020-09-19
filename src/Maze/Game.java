@@ -4,6 +4,7 @@ import Maze.BoardObjects.Actors.AbstractActor;
 import Maze.BoardObjects.Actors.Player;
 import Maze.BoardObjects.Tiles.AbstractTile;
 import Maze.BoardObjects.Tiles.FreeTile;
+import Maze.BoardObjects.Tiles.Treasure;
 
 import java.util.Set;
 
@@ -25,39 +26,58 @@ public class Game {
 
         //Temporary board for testing
         AbstractTile[][] testMaze = board.getMap();
-        for(int i = 0; i < testMaze.length; i++) {
-            for(int j = 0; j < testMaze[0].length; j++){
+        for (int i = 0; i < testMaze.length; i++) {
+            for (int j = 0; j < testMaze[0].length; j++) {
                 testMaze[i][j] = new FreeTile(new Position(i, j), null);
             }
         }
     }
 
-    public void movePlayer(DIRECTION direction){
+    /**
+     * The player interacts with the block of the direction of their position.
+     * The player moves in that direction if possible.
+     * @param direction The direction of the position that the player's
+     *                 current position is interacting with/moving towards.
+     */
+    public void movePlayer(DIRECTION direction) {
         Position newPos;
-
         switch (direction) {
-            case UP -> {
+            case UP:
                 newPos = new Position(player.getPos(), DIRECTION.UP);
-            }
-            case DOWN -> {
+                break;
+            case DOWN:
                 newPos = new Position(player.getPos(), DIRECTION.DOWN);
-            }
-            case LEFT -> {
+                break;
+            case LEFT:
                 newPos = new Position(player.getPos(), DIRECTION.LEFT);
-            }
-            case RIGHT -> {
+                break;
+            case RIGHT:
                 newPos = new Position(player.getPos(), DIRECTION.RIGHT);
-            }
-            default -> throw new IllegalStateException("Unexpected direction: " + direction);
+                break;
+            default:
+                throw new IllegalStateException("Unexpected direction: " + direction);
         }
         assert (newPos.getX() >= 0 &&
-                newPos.getX() <= board.getMap().length-1 &&
+                newPos.getX() <= board.getMap().length - 1 &&
                 newPos.getY() >= 0 &&
-                newPos.getY() <= board.getMap()[0].length-1)
+                newPos.getY() <= board.getMap()[0].length - 1)
                 : "New position is out of bounds.";
         assert (board.getMap()[newPos.getX()][newPos.getY()] != null)
                 : "Position at array is null. If you're here then something really bad happened...";
+        //Interact with the square and move there if possible.
+        AbstractTile moveToTile = board.getMap()[newPos.getX()][newPos.getY()];
+        //if(moveToTile instanceof )
 
+
+    }
+
+    private boolean allTreasuresCollected() {
+        for (int i = 0; i < board.getMap().length; i++) {
+            for (int j = 0; j < board.getMap()[0].length; j++) {
+                if(board.getMap()[i][j] instanceof Treasure) return false;
+            }
+        }
+        return true;
     }
 
 }

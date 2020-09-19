@@ -1,5 +1,7 @@
 package Maze.BoardObjects.Tiles;
 
+import Maze.BoardObjects.Actors.AbstractActor;
+import Maze.BoardObjects.Actors.Player;
 import Maze.Position;
 
 import java.awt.*;
@@ -15,5 +17,16 @@ public class FreeTile extends AbstractTile {
      */
     public FreeTile(Position position, Image image) {
         super(position, image);
+    }
+
+
+    /**
+     * The free tile, which allows the players to be on top of it.
+     * @param player The player that interacts with the tile.
+     * @return Returns true.
+     */
+    @Override
+    public boolean interact(Player player) {
+        return super.interact(player);
     }
 }
