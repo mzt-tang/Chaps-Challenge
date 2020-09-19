@@ -1,6 +1,9 @@
 package Renderer;
 
 import java.awt.*;
+import java.io.File;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * This is responsible for displaying the Maze on the screen
@@ -8,8 +11,16 @@ import java.awt.*;
  * @author Chris
  */
 public class Renderer extends Canvas {
-    public Renderer(){
+    private Map<String, Image> images;
 
+    public Renderer(){
+        images = new HashMap<>();
+
+        //Really compact way of loading all the images into memory
+        File[] files = new File(System.getProperty("user.dir") + "/images").listFiles();
+        for (File image : files){
+            images.put(image.getName(), Toolkit.getDefaultToolkit().getImage(image.getPath()));
+        }
     }
 
     @Override
@@ -20,5 +31,9 @@ public class Renderer extends Canvas {
         //Set background
         g2.setColor(Color.WHITE);
         g2.fillRect(0, 0, getWidth(), getHeight());
+    }
+
+    public static void main(String[] args) {
+        new Renderer(); //Just for testing (and so I don't interfere with other modules
     }
 }
