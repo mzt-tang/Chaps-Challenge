@@ -1,5 +1,8 @@
 package RecordAndReplay;
 
+/**
+ * NOTE TO SELF, you might not even need this... Delete soon
+ */
 public enum ActionType {
-    PUP, PDOWN, PLEFT, PRIGHT,
+    PLAYERMOVE, CREATUREMOVE;
 }
