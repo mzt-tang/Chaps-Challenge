@@ -1,5 +1,9 @@
 package Renderer;
 
+import Maze.Board;
+import Maze.BoardObjects.Tiles.*;
+import Maze.Position;
+
 import java.awt.*;
 import java.io.File;
 import java.util.HashMap;
@@ -11,15 +15,17 @@ import java.util.Map;
  * @author Chris
  */
 public class Renderer extends Canvas {
-    private Map<String, Image> images;
+    private static final int focusSize = 9;
+    private final Map<String, Image> images;
 
     public Renderer(){
         images = new HashMap<>();
 
         //Really compact way of loading all the images into memory
+        //It iterates through all the files in /images and maps the file names to the loaded images
         File[] files = new File(System.getProperty("user.dir") + "/images").listFiles();
-        for (File image : files){
-            images.put(image.getName(), Toolkit.getDefaultToolkit().getImage(image.getPath()));
+        for (File file : files){
+            images.put(file.getName(), Toolkit.getDefaultToolkit().getImage(file.getPath()));
         }
     }
 
@@ -33,7 +39,24 @@ public class Renderer extends Canvas {
         g2.fillRect(0, 0, getWidth(), getHeight());
     }
 
+    private AbstractTile[][] aRandomBoard(){
+        AbstractTile[][] board = new AbstractTile[9][9];
+        for (int y = 0; y < focusSize; y++){
+            for (int x = 0; x < focusSize; x++){
+                board[x][y] = new FreeTile(new Position(x,y));
+            }
+        }
+        board[0][0] = new ExitLock(new Position(0,0));
+        board[1][0] = new ExitPortal(new Position(1,0));
+        board[2][0] = new InfoField(new Position(2,0), "Hello");
+        board[3][0] = new Key(new Position(3,0), "Red");
+        board[4][0] = new LockedDoor(new Position(4,0), new Key(new Position(3,0), "Red"));
+        board[5][0] = new Treasure(new Position(5,0));
+        board[6][0] = new Wall(new Position(6,0));
+        return board;
+    }
+
     public static void main(String[] args) {
-        new Renderer(); //Just for testing (and so I don't interfere with other modules
+        new Renderer(); //Just for testing (and so I don't interfere with other modules)
     }
 }
