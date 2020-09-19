@@ -14,8 +14,8 @@ public class LockedDoor extends AbstractTile {
      * .
      * @param position .
      */
-    public LockedDoor(Position position, Image image) {
-        super(position, image);
+    public LockedDoor(Position position) {
+        super(position);
         locked = true;
     }
 

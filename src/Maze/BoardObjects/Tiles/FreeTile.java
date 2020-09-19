@@ -15,8 +15,8 @@ public class FreeTile extends AbstractTile {
      * .
      * @param position .
      */
-    public FreeTile(Position position, Image image) {
-        super(position, image);
+    public FreeTile(Position position) {
+        super(position);
     }
 
 

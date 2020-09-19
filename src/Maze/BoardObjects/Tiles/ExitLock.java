@@ -17,8 +17,8 @@ public class ExitLock extends AbstractTile {
      * .
      * @param position .
      */
-    public ExitLock(Position position, Image image) {
-        super(position, image);
+    public ExitLock(Position position) {
+        super(position);
     }
 
     public boolean isLocked() {

@@ -9,8 +9,8 @@ public class Key extends AbstractTile {
      * .
      * @param position .
      */
-    public Key(Position position, Image image) {
-        super(position, image);
+    public Key(Position position) {
+        super(position);
     }
 
     @Override

@@ -16,15 +16,14 @@ import java.awt.*;
 public abstract class AbstractTile implements BoardObject {
 
     public final Position position; //Final cause tiles don't move to different places (although they can be picked up)
-    public final Image image;
+    public static final Image image = null;
 
     /**
      * .
      * @param position .
      */
-    public AbstractTile(Position position, Image image) {
+    public AbstractTile(Position position) {
         this.position = position;
-        this.image = image;
     }
 
     /**

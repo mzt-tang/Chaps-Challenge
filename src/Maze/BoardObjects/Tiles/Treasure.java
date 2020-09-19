@@ -15,8 +15,8 @@ public class Treasure extends AbstractTile {
      * .
      * @param position .
      */
-    public Treasure(Position position, Image image) {
-        super(position, image);
+    public Treasure(Position position) {
+        super(position);
     }
 
     public boolean isCollected() {

@@ -2,9 +2,7 @@ package Maze;
 
 import Maze.BoardObjects.Actors.AbstractActor;
 import Maze.BoardObjects.Actors.Player;
-import Maze.BoardObjects.Tiles.AbstractTile;
-import Maze.BoardObjects.Tiles.FreeTile;
-import Maze.BoardObjects.Tiles.Treasure;
+import Maze.BoardObjects.Tiles.*;
 
 import java.util.Set;
 
@@ -28,7 +26,7 @@ public class Game {
         AbstractTile[][] testMaze = board.getMap();
         for (int i = 0; i < testMaze.length; i++) {
             for (int j = 0; j < testMaze[0].length; j++) {
-                testMaze[i][j] = new FreeTile(new Position(i, j), null);
+                testMaze[i][j] = new FreeTile(new Position(i, j));
             }
         }
     }
@@ -66,7 +64,17 @@ public class Game {
                 : "Position at array is null. If you're here then something really bad happened...";
         //Interact with the square and move there if possible.
         AbstractTile moveToTile = board.getMap()[newPos.getX()][newPos.getY()];
-        //if(moveToTile instanceof )
+        if(moveToTile.interact(player)) {
+            if (moveToTile instanceof Treasure) {
+                player.getTreasures().add((Treasure) moveToTile);
+            } else if (moveToTile instanceof Key) {
+                player.getKeys().add((Key) moveToTile);
+            }
+
+            if(!(moveToTile instanceof InfoField)) {
+                board.getMap()[newPos.getX()][newPos.getY()] = new FreeTile(newPos);
+            }
+        }
 
 
     }
