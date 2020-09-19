@@ -1,5 +1,5 @@
 package Application;
 
-public class MainMenu {
+public class StartMenu {
 
 }

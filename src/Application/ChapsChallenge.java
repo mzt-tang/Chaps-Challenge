@@ -2,6 +2,9 @@ package Application;
 
 import java.awt.EventQueue;
 import javax.swing.JFrame;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 
 /**
@@ -21,9 +24,15 @@ public class ChapsChallenge extends JFrame {
     private final int WINDOW_WIDTH = 800;
     private final int WINDOW_HEIGHT = 750;
 
+    /**
+     * Game instance
+     */
     public ChapsChallenge(){
         setTitle("Chap's Challenge: Among Us Edition");
         setSize(WINDOW_WIDTH, WINDOW_HEIGHT);
+
+        createMenuBar();
+
         setLocationRelativeTo(null);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
     }
@@ -33,4 +42,25 @@ public class ChapsChallenge extends JFrame {
 
         return boardView;
     }
+
+    public void createMenuBar(){
+        JMenuBar menuBar = new JMenuBar();
+        JMenu gameMenu = new JMenu("Game");
+
+        //selections
+        JMenuItem restartItem = new JMenuItem("Restart");
+        //restartItem.addActionListener((e) -> System.exit(0)); //TODO: add functionality
+
+        JMenuItem exitItem = new JMenuItem("Exit");
+        exitItem.addActionListener((e) -> System.exit(0));
+
+
+        //adding it to the menus
+        gameMenu.add(restartItem);
+        gameMenu.add(exitItem);
+        menuBar.add(gameMenu);
+
+        setJMenuBar(menuBar);
+    }
+
 }
