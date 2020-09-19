@@ -11,8 +11,6 @@ import java.awt.*;
  */
 public class ExitLock extends AbstractTile {
 
-    private boolean locked;
-
     /**
      * .
      * @param position .
@@ -21,15 +19,13 @@ public class ExitLock extends AbstractTile {
         super(position);
     }
 
-    public boolean isLocked() {
-        return locked;
-    }
-
     /**
      * Unlocks the door if the player holds the key to this door.
      * @param player The player attempting to unlock the door.
+     * @return Returns false because it is locked.
      */
-    public void unlock(Player player) {
-        //NEED TO CHANGE
+    @Override
+    public boolean interact(Player player) {
+        return false;
     }
 }

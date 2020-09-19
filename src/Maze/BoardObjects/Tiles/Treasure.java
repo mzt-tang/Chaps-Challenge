@@ -8,19 +8,12 @@ import java.awt.*;
 
 public class Treasure extends AbstractTile {
 
-
-    private boolean collected;
-
     /**
      * .
      * @param position .
      */
     public Treasure(Position position) {
         super(position);
-    }
-
-    public boolean isCollected() {
-        return collected;
     }
 
     /**
@@ -31,8 +24,6 @@ public class Treasure extends AbstractTile {
      */
     @Override
     public boolean interact(Player player) {
-
-
         return super.interact(player);
     }
 }

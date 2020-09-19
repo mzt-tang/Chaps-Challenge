@@ -7,27 +7,26 @@ import java.awt.*;
 
 public class LockedDoor extends AbstractTile {
 
-    private boolean locked;
     private Key key;
 
     /**
      * .
      * @param position .
      */
-    public LockedDoor(Position position) {
+    public LockedDoor(Position position, Key key) {
         super(position);
-        locked = true;
-    }
-
-    public boolean isLocked() {
-        return locked;
+        this.key = key;
     }
 
     /**
-     * Unlocks the door if the player holds the key to this door.
-     * @param player The player attempting to unlock the door.
+     * Returns true if the player holds the key to this door, otherwise it acts like a wall tile.
+     * @param player The player that interacts with the tile.
+     * @return Returns true if the player holds the key to this door, otherwise it acts like a wall tile.
      */
-    public void unlock(Player player) {
-        if(player.hasKey(key)) locked = false;
+    @Override
+    public boolean interact(Player player) {
+        if(!player.hasKey(key)) return false;
+        return super.interact(player);
     }
+
 }

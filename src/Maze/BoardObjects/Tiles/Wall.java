@@ -15,8 +15,6 @@ public class Wall extends AbstractTile {
      */
     @Override
     public boolean interact(Player player) {
-
-
         return false;
     }
 }
