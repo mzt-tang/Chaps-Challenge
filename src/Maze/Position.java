@@ -26,20 +26,22 @@ public class Position {
         }
     }
 
-    public void right(){
-        x++;
-    }
-
-    public void left(){
-        x--;
-    }
-
-    public void up(){
-        y--;
-    }
-
-    public void down(){
-        y++;
+    public void move(Game.DIRECTION direction) {
+        switch (direction) {
+            case UP -> {
+                y--;
+            }
+            case DOWN -> {
+                y++;
+            }
+            case LEFT -> {
+                x--;
+            }
+            case RIGHT -> {
+                x++;
+            }
+            default -> throw new IllegalStateException("Unexpected direction: " + direction);
+        }
     }
 
     public int getX() {
