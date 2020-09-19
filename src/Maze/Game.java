@@ -62,21 +62,33 @@ public class Game {
                 : "New position is out of bounds.";
         assert (board.getMap()[newPos.getX()][newPos.getY()] != null)
                 : "Position at array is null. If you're here then something really bad happened...";
+
         //Interact with the square and move there if possible.
         AbstractTile moveToTile = board.getMap()[newPos.getX()][newPos.getY()];
         if(moveToTile.interact(player)) {
+            //Lets the player pickup the any Treasure or Key
             if (moveToTile instanceof Treasure) {
                 player.getTreasures().add((Treasure) moveToTile);
+                if (allTreasuresCollected()) unlockExitLock();
             } else if (moveToTile instanceof Key) {
                 player.getKeys().add((Key) moveToTile);
             }
-
-            if(!(moveToTile instanceof InfoField)) {
+            //The tile doesn't need to be replaced if it's an info tile or already a free tile
+            if(!(moveToTile instanceof InfoField) && !(moveToTile instanceof FreeTile)) {
                 board.getMap()[newPos.getX()][newPos.getY()] = new FreeTile(newPos);
             }
+            player.getPos().move(direction);    //Move the player
         }
+    }
 
-
+    private void unlockExitLock() {
+        for (int i = 0; i < board.getMap().length; i++) {
+            for (int j = 0; j < board.getMap()[0].length; j++) {
+                if(board.getMap()[i][j] instanceof ExitLock){
+                    board.getMap()[i][j] = new FreeTile(board.getMap()[i][j].position);
+                }
+            }
+        }
     }
 
     private boolean allTreasuresCollected() {

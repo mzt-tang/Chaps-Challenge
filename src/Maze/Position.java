@@ -10,37 +10,44 @@ public class Position {
 
     public Position(Position position, Game.DIRECTION direction) {
         switch (direction) {
-            case UP -> {
+            case UP:
                 this.x = position.getX();
                 this.y = position.getY()-1;
-            } case DOWN -> {
+                break;
+            case DOWN:
                 this.x = position.getX();
                 this.y = position.getY()+1;
-            } case LEFT -> {
+                break;
+            case LEFT:
                 this.x = position.getX()-1;
                 this.y = position.getY();
-            } case RIGHT -> {
+                break;
+            case RIGHT:
                 this.x = position.getX()+1;
                 this.y = position.getY();
-            }
+                break;
+            default:
+                throw new IllegalStateException("Unexpected direction: " + direction);
+
         }
     }
 
     public void move(Game.DIRECTION direction) {
         switch (direction) {
-            case UP -> {
+            case UP:
                 y--;
-            }
-            case DOWN -> {
+                break;
+            case DOWN:
                 y++;
-            }
-            case LEFT -> {
+                break;
+            case LEFT:
                 x--;
-            }
-            case RIGHT -> {
+                break;
+            case RIGHT:
                 x++;
-            }
-            default -> throw new IllegalStateException("Unexpected direction: " + direction);
+                break;
+            default:
+                throw new IllegalStateException("Unexpected direction: " + direction);
         }
     }
 

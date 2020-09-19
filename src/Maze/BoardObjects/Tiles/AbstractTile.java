@@ -16,7 +16,7 @@ import java.awt.*;
 public abstract class AbstractTile implements BoardObject {
 
     public final Position position; //Final cause tiles don't move to different places (although they can be picked up)
-    public static final Image image = null;
+    private boolean rotated = false;
 
     /**
      * .
@@ -35,6 +35,10 @@ public abstract class AbstractTile implements BoardObject {
      */
     public boolean interact(Player player){
         return true;
+    }
+
+    public void setVertical() {
+        rotated = true;
     }
 
 }
