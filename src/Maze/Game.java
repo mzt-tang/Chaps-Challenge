@@ -33,25 +33,31 @@ public class Game {
     }
 
     public void movePlayer(DIRECTION direction){
+        Position newPos;
+
         switch (direction) {
             case UP -> {
-                Position newPos = new Position(player.getPos(), DIRECTION.UP);
-                assert (newPos.getX() >= 0 &&
-                        newPos.getX() <= board.getMap().length-1 &&
-                        newPos.getY() >= 0 &&
-                        newPos.getY() <= board.getMap()[0].length-1)
-                        : "New position is out of bounds.";
+                newPos = new Position(player.getPos(), DIRECTION.UP);
             }
             case DOWN -> {
-
+                newPos = new Position(player.getPos(), DIRECTION.DOWN);
             }
             case LEFT -> {
-
+                newPos = new Position(player.getPos(), DIRECTION.LEFT);
             }
             case RIGHT -> {
-
+                newPos = new Position(player.getPos(), DIRECTION.RIGHT);
             }
+            default -> throw new IllegalStateException("Unexpected direction: " + direction);
         }
+        assert (newPos.getX() >= 0 &&
+                newPos.getX() <= board.getMap().length-1 &&
+                newPos.getY() >= 0 &&
+                newPos.getY() <= board.getMap()[0].length-1)
+                : "New position is out of bounds.";
+        assert (board.getMap()[newPos.getX()][newPos.getY()] != null)
+                : "Position at array is null. If you're here then something really bad happened...";
+
     }
 
 }
