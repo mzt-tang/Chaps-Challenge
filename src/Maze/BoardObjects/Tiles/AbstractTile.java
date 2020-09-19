@@ -1,5 +1,7 @@
 package Maze.BoardObjects.Tiles;
 
+import Maze.BoardObjects.Actors.AbstractActor;
+import Maze.BoardObjects.Actors.Player;
 import Maze.BoardObjects.BoardObject;
 import Maze.Position;
 
@@ -25,7 +27,14 @@ public abstract class AbstractTile implements BoardObject {
         this.image = image;
     }
 
-    public boolean interact(){
+    /**
+     * The tile interacts with the player,
+     * returning true if the player can move on to the tile
+     * and false if they can't.
+     * @param player The player that interacts with the tile.
+     * @return Returns true if the actor can move on to this tile, false if not.
+     */
+    public boolean interact(Player player){
         return true;
     }
 

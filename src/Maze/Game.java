@@ -4,6 +4,7 @@ import Maze.BoardObjects.Actors.AbstractActor;
 import Maze.BoardObjects.Actors.Player;
 import Maze.BoardObjects.Tiles.AbstractTile;
 import Maze.BoardObjects.Tiles.FreeTile;
+import Maze.BoardObjects.Tiles.Treasure;
 
 import java.util.Set;
 
@@ -41,19 +42,20 @@ public class Game {
     public void movePlayer(DIRECTION direction) {
         Position newPos;
         switch (direction) {
-            case UP -> {
+            case UP:
                 newPos = new Position(player.getPos(), DIRECTION.UP);
-            }
-            case DOWN -> {
+                break;
+            case DOWN:
                 newPos = new Position(player.getPos(), DIRECTION.DOWN);
-            }
-            case LEFT -> {
+                break;
+            case LEFT:
                 newPos = new Position(player.getPos(), DIRECTION.LEFT);
-            }
-            case RIGHT -> {
+                break;
+            case RIGHT:
                 newPos = new Position(player.getPos(), DIRECTION.RIGHT);
-            }
-            default -> throw new IllegalStateException("Unexpected direction: " + direction);
+                break;
+            default:
+                throw new IllegalStateException("Unexpected direction: " + direction);
         }
         assert (newPos.getX() >= 0 &&
                 newPos.getX() <= board.getMap().length - 1 &&
@@ -63,9 +65,19 @@ public class Game {
         assert (board.getMap()[newPos.getX()][newPos.getY()] != null)
                 : "Position at array is null. If you're here then something really bad happened...";
         //Interact with the square and move there if possible.
-        if(board.getMap()[newPos.getX()][newPos.getY()].interact()){
-            player.getPos().move(direction);
+        AbstractTile moveToTile = board.getMap()[newPos.getX()][newPos.getY()];
+        //if(moveToTile instanceof )
+
+
+    }
+
+    private boolean allTreasuresCollected() {
+        for (int i = 0; i < board.getMap().length; i++) {
+            for (int j = 0; j < board.getMap()[0].length; j++) {
+                if(board.getMap()[i][j] instanceof Treasure) return false;
+            }
         }
+        return true;
     }
 
 }
