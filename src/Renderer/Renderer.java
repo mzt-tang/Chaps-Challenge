@@ -4,6 +4,7 @@ import Maze.Board;
 import Maze.BoardObjects.Tiles.*;
 import Maze.Position;
 
+import javax.swing.*;
 import java.awt.*;
 import java.io.File;
 import java.util.HashMap;
@@ -15,7 +16,10 @@ import java.util.Map;
  * @author Chris (ID: 300498017)
  */
 public class Renderer extends Canvas {
-    private static final int focusSize = 9;
+    private static final int FOCUS_SIZE = 9; //The grid size of the board shown, which is 9x9 tiles
+    private static final int IMAGE_SIZE = 60;
+    private static final int CANVAS_SIZE = 540; //Size in pixels, 9 x 60px images
+
     private final Map<String, Image> images;
 
     /**
@@ -23,7 +27,6 @@ public class Renderer extends Canvas {
      */
     public Renderer(){
         images = new HashMap<>();
-
         //Really compact way of loading all the images into memory
         //It iterates through all the files in /images and maps the file names to the loaded images
         File[] files = new File(System.getProperty("user.dir") + "/images").listFiles();
@@ -41,23 +44,16 @@ public class Renderer extends Canvas {
         //Set background
         g2.setColor(Color.WHITE);
         g2.fillRect(0, 0, getWidth(), getHeight());
-    }
 
-    private AbstractTile[][] aRandomBoard(){
-        AbstractTile[][] board = new AbstractTile[9][9];
-        for (int y = 0; y < focusSize; y++){
-            for (int x = 0; x < focusSize; x++){
-                board[x][y] = new FreeTile(new Position(x,y));
+        //Will get the real board once a level has been created
+        AbstractTile[][] board = aRandomBoard();
+
+        //TODO: put the focus area around the player once that is possible
+        for (int y = 0; y < FOCUS_SIZE; y++) {
+            for (int x = 0; x < FOCUS_SIZE; x++) {
+                g2.drawImage(getTileImage(board[x][y]), x*IMAGE_SIZE, y*IMAGE_SIZE, this);
             }
         }
-        board[0][0] = new ExitLock(new Position(0,0));
-        board[1][0] = new ExitPortal(new Position(1,0));
-        board[2][0] = new InfoField(new Position(2,0), "Hello");
-        board[3][0] = new Key(new Position(3,0), "Red");
-        board[4][0] = new LockedDoor(new Position(4,0), new Key(new Position(3,0), "Red"));
-        board[5][0] = new Treasure(new Position(5,0));
-        board[6][0] = new Wall(new Position(6,0));
-        return board;
     }
 
     private Image getTileImage(AbstractTile tile){
@@ -72,23 +68,14 @@ public class Renderer extends Canvas {
             return images.get("Vent");
         }
         if (tile instanceof FreeTile){
-            return images.get("FreeTile");
+            return images.get("FloorTile");
         }
         if (tile instanceof InfoField){
             return images.get("InfoField");
         }
         if (tile instanceof Key){
             Key key = (Key)tile;
-            switch (key.getColour()){
-                case "Blue":
-                    return images.get("SwipeCardBlue");
-                case "Green":
-                    return images.get("SwipeCardGreen");
-                case "Red":
-                    return images.get("SwipeCardRed");
-                case "Yellow":
-                    return images.get("SwipeCardYellow");
-            }
+            return images.get("SwipeCard" + key.getColour());
         }
         if (tile instanceof LockedDoor){
             LockedDoor lockedDoor = (LockedDoor)tile;
@@ -106,6 +93,23 @@ public class Renderer extends Canvas {
             return images.get("WallTile");
         }
         return null;
+    }
+
+    private AbstractTile[][] aRandomBoard(){
+        AbstractTile[][] board = new AbstractTile[9][9];
+        for (int y = 0; y < 9; y++){
+            for (int x = 0; x < 9; x++){
+                board[x][y] = new FreeTile(new Position(x,y));
+            }
+        }
+        board[0][0] = new ExitLock(new Position(0,0));
+        board[1][0] = new ExitPortal(new Position(1,0));
+        board[2][0] = new InfoField(new Position(2,0), "Hello");
+        board[3][0] = new Key(new Position(3,0), "Red");
+        board[4][0] = new LockedDoor(new Position(4,0), new Key(new Position(3,0), "Red"));
+        board[5][0] = new Treasure(new Position(5,0));
+        board[6][0] = new Wall(new Position(6,0));
+        return board;
     }
 
     public static void main(String[] args) {
