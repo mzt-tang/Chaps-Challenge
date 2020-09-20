@@ -34,6 +34,8 @@ public class Renderer extends Canvas {
             images.put(file.getName().substring(0,file.getName().length()-5), //removes .jpeg extension
                     Toolkit.getDefaultToolkit().getImage(file.getPath()));
         }
+
+        setPreferredSize(new Dimension(CANVAS_SIZE, CANVAS_SIZE));
     }
 
     @Override
@@ -48,7 +50,7 @@ public class Renderer extends Canvas {
         //Will get the real board once a level has been created
         AbstractTile[][] board = aRandomBoard();
 
-        //TODO: put the focus area around the player once that is possible
+        //Will put the focus area around the player once that is possible
         for (int y = 0; y < FOCUS_SIZE; y++) {
             for (int x = 0; x < FOCUS_SIZE; x++) {
                 g2.drawImage(getTileImage(board[x][y]), x*IMAGE_SIZE, y*IMAGE_SIZE, this);
@@ -103,16 +105,43 @@ public class Renderer extends Canvas {
             }
         }
         board[0][0] = new ExitLock(new Position(0,0));
+        ExitLock elV = new ExitLock(new Position(0,1));
+        elV.setVertical(); //Maybe rotation should be in the AbstractTile constructor
+        board[0][1] = elV;
         board[1][0] = new ExitPortal(new Position(1,0));
         board[2][0] = new InfoField(new Position(2,0), "Hello");
-        board[3][0] = new Key(new Position(3,0), "Red");
-        board[4][0] = new LockedDoor(new Position(4,0), new Key(new Position(3,0), "Red"));
+        board[3][0] = new Key(new Position(3,0), "Blue");
+        board[3][1] = new Key(new Position(3,1), "Green");
+        board[3][2] = new Key(new Position(3,2), "Red");
+        board[3][3] = new Key(new Position(3,3), "Yellow");
+        board[4][0] = new LockedDoor(new Position(4,0), new Key(new Position(3,0), "Blue"));
+        board[4][1] = new LockedDoor(new Position(4,1), new Key(new Position(3,0), "Green"));
+        board[4][2] = new LockedDoor(new Position(4,2), new Key(new Position(3,2), "Red"));
+        board[4][3] = new LockedDoor(new Position(4,3), new Key(new Position(3,0), "Yellow"));
+        LockedDoor ldV1 = new LockedDoor(new Position(4,4), new Key(new Position(3,0), "Blue"));
+        ldV1.setVertical();
+        board[4][4] = ldV1;
+        LockedDoor ldV2 = new LockedDoor(new Position(4,5), new Key(new Position(3,0), "Green"));
+        ldV2.setVertical();
+        board[4][5] = ldV2;
+        LockedDoor ldV3 = new LockedDoor(new Position(4,6), new Key(new Position(3,0), "Red"));
+        ldV3.setVertical();
+        board[4][6] = ldV3;
+        LockedDoor ldV4 = new LockedDoor(new Position(4,7), new Key(new Position(3,0), "Yellow"));
+        ldV4.setVertical();
+        board[4][7] = ldV4;
         board[5][0] = new Treasure(new Position(5,0));
         board[6][0] = new Wall(new Position(6,0));
         return board;
     }
 
     public static void main(String[] args) {
-        new Renderer(); //Just for testing (and so I don't interfere with other modules)
+        Canvas canvas = new Renderer(); //Just for testing (and so I don't interfere with other modules)
+        JFrame frame = new JFrame("Test");
+        JPanel main = new JPanel();
+        main.add(canvas);
+        frame.add(main);
+        frame.pack();
+        frame.setVisible(true);
     }
 }
