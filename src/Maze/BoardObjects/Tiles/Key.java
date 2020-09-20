@@ -25,6 +25,10 @@ public class Key extends AbstractTile {
         return super.interact(player);
     }
 
+    public String getColour() {
+        return colour;
+    }
+
     /**
      * Checks if the colours of the keys compared are the same.
      * @param o The other object being compared to.

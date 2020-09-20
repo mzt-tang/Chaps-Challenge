@@ -41,4 +41,7 @@ public abstract class AbstractTile implements BoardObject {
         rotated = true;
     }
 
+    public boolean isRotated() {
+        return rotated;
+    }
 }

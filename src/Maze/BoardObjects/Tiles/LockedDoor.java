@@ -29,4 +29,7 @@ public class LockedDoor extends AbstractTile {
         return super.interact(player);
     }
 
+    public Key getKey() {
+        return key;
+    }
 }

@@ -12,12 +12,15 @@ import java.util.Map;
 /**
  * This is responsible for displaying the Maze on the screen
  * including all it's tiles, animations and sound effects
- * @author Chris
+ * @author Chris (ID: 300498017)
  */
 public class Renderer extends Canvas {
     private static final int focusSize = 9;
     private final Map<String, Image> images;
 
+    /**
+     * Creates a new renderer canvas
+     */
     public Renderer(){
         images = new HashMap<>();
 
@@ -25,7 +28,8 @@ public class Renderer extends Canvas {
         //It iterates through all the files in /images and maps the file names to the loaded images
         File[] files = new File(System.getProperty("user.dir") + "/images").listFiles();
         for (File file : files){
-            images.put(file.getName(), Toolkit.getDefaultToolkit().getImage(file.getPath()));
+            images.put(file.getName().substring(0,file.getName().length()-5), //removes .jpeg extension
+                    Toolkit.getDefaultToolkit().getImage(file.getPath()));
         }
     }
 
@@ -54,6 +58,54 @@ public class Renderer extends Canvas {
         board[5][0] = new Treasure(new Position(5,0));
         board[6][0] = new Wall(new Position(6,0));
         return board;
+    }
+
+    private Image getTileImage(AbstractTile tile){
+        if (tile instanceof ExitLock){
+            if (tile.isRotated()){
+                return images.get("ExitLockVertical");
+            } else {
+                return images.get("ExitLockHorizontal");
+            }
+        }
+        if (tile instanceof ExitPortal){
+            return images.get("Vent");
+        }
+        if (tile instanceof FreeTile){
+            return images.get("FreeTile");
+        }
+        if (tile instanceof InfoField){
+            return images.get("InfoField");
+        }
+        if (tile instanceof Key){
+            Key key = (Key)tile;
+            switch (key.getColour()){
+                case "Blue":
+                    return images.get("SwipeCardBlue");
+                case "Green":
+                    return images.get("SwipeCardGreen");
+                case "Red":
+                    return images.get("SwipeCardRed");
+                case "Yellow":
+                    return images.get("SwipeCardYellow");
+            }
+        }
+        if (tile instanceof LockedDoor){
+            LockedDoor lockedDoor = (LockedDoor)tile;
+            String colour = lockedDoor.getKey().getColour();
+            if (lockedDoor.isRotated()){
+                return images.get("DoorVertical" + colour);
+            } else {
+                return images.get("DoorHorizontal" + colour);
+            }
+        }
+        if (tile instanceof Treasure){
+            return images.get("Files");
+        }
+        if (tile instanceof Wall){
+            return images.get("WallTile");
+        }
+        return null;
     }
 
     public static void main(String[] args) {
