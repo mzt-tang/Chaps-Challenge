@@ -13,8 +13,8 @@ public class LockedDoor extends AbstractTile {
      * .
      * @param position .
      */
-    public LockedDoor(Position position, Key key) {
-        super(position);
+    public LockedDoor(Position position, boolean setVertical, Key key) {
+        super(position, setVertical);
         this.key = key;
     }
 

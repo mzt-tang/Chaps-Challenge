@@ -10,7 +10,7 @@ public class InfoField extends AbstractTile {
     private final String infoText; //Maybe it won't be final
 
     public InfoField(Position position, String infoText) {
-        super(position);
+        super(position, false);
         this.infoText = infoText;
     }
 

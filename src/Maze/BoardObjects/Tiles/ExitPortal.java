@@ -6,6 +6,6 @@ import java.awt.*;
 
 public class ExitPortal extends AbstractTile {
     public ExitPortal(Position position) {
-        super(position);
+        super(position, false);
     }
 }

@@ -5,7 +5,7 @@ import Maze.Position;
 
 public class Wall extends AbstractTile {
     public Wall(Position position) {
-        super(position);
+        super(position, false);
     }
 
     /**

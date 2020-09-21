@@ -79,6 +79,8 @@ public class Game {
             }
             player.getPos().move(direction);    //Move the player
         }
+
+
     }
 
     private void unlockExitLock() {

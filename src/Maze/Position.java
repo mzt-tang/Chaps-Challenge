@@ -28,7 +28,6 @@ public class Position {
                 break;
             default:
                 throw new IllegalStateException("Unexpected direction: " + direction);
-
         }
     }
 

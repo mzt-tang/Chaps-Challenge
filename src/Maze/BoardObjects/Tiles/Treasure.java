@@ -13,7 +13,7 @@ public class Treasure extends AbstractTile {
      * @param position .
      */
     public Treasure(Position position) {
-        super(position);
+        super(position, false);
     }
 
     /**

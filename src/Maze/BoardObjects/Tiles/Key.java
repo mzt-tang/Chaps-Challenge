@@ -15,7 +15,7 @@ public class Key extends AbstractTile {
      * @param position .
      */
     public Key(Position position, String colour) {
-        super(position);
+        super(position, false);
         this.colour = colour;
     }
 

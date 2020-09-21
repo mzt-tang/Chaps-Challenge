@@ -22,7 +22,7 @@ public abstract class AbstractTile implements BoardObject {
      * .
      * @param position .
      */
-    public AbstractTile(Position position) {
+    public AbstractTile(Position position, boolean setVertical) {
         this.position = position;
     }
 
