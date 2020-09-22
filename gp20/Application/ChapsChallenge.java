@@ -1,5 +1,7 @@
 package Application;
 
+import Renderer.Renderer;
+import java.awt.BorderLayout;
 import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
@@ -8,44 +10,44 @@ import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 
 /**
- * Actual game
+ * Window of the actual game, Chap's Challenge
  *
  * @author Iqbal
  */
 public class ChapsChallenge extends JFrame {
 
-    public static void main(String[] args) {
-        EventQueue.invokeLater(() -> {
-            ChapsChallenge frame = new ChapsChallenge();
-            frame.setVisible(true);
-        });
-    }
-
-    private final int WINDOW_WIDTH = 800;
+    //window dimensions
+    private final int WINDOW_WIDTH = 950;
     private final int WINDOW_HEIGHT = 750;
+
+    //info panel
+    private final int INFO_WIDTH = 105;
+    private final int INFO_HEIGHT = 540;
 
     /**
      * Game instance
      */
     public ChapsChallenge(){
+        initUI();
+
+        createMenuBar();
+        Renderer renderer = new Renderer();
+        JPanel gameplay = createGameScreen(renderer);
+        add(gameplay, BorderLayout.CENTER); //TODO: Position this properly. Currently not positioned as desired.
+    }
+
+    /**
+     * Initializes window properties
+     */
+    public void initUI(){
         setTitle("Chap's Challenge: Among Us Edition");
         setSize(WINDOW_WIDTH, WINDOW_HEIGHT);
 
-        createMenuBar();
 
         setLocationRelativeTo(null);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
     }
 
-    /**
-     * Gameplay of the game is held here.
-     * @return Gameplay panel
-     */
-    public JPanel createGameScreen(){
-        JPanel boardView = new JPanel();
-
-        return boardView;
-    }
 
     /**
      * Menu bar with options to change the game state
@@ -61,13 +63,35 @@ public class ChapsChallenge extends JFrame {
         JMenuItem exitItem = new JMenuItem("Exit");
         exitItem.addActionListener((e) -> System.exit(0));
 
-
-        //adding it to the menus
+        //adding menu selections to the menu
         gameMenu.add(restartItem);
         gameMenu.add(exitItem);
         menuBar.add(gameMenu);
 
         setJMenuBar(menuBar);
+    }
+
+    // ===========================================
+    // JPanels
+    // ===========================================
+
+    /**
+     * Gameplay of the game is displayed here.
+     * @return Gameplay panel
+     */
+    public JPanel createGameScreen(Renderer renderer){
+        JPanel gameScreen = new JPanel();
+        gameScreen.add(renderer);
+
+        return gameScreen;
+    }
+
+    /**
+     * Game information such as timer, chips remaining and player inventory is displayed here.
+     * @return Info panel
+     */
+    public JPanel createInfoScreen(){
+        return null;
     }
 
 }

@@ -1,5 +1,7 @@
 package Application;
 
-public class StartMenu {
+import javax.swing.JFrame;
+
+public class StartMenu extends JFrame {
 
 }
