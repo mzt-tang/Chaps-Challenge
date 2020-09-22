@@ -30,7 +30,6 @@ public class ChapsChallenge extends JFrame {
     public ChapsChallenge(){
         initUI();
 
-        createMenuBar();
         Renderer renderer = new Renderer();
         JPanel gameplay = createGameScreen(renderer);
         add(gameplay, BorderLayout.CENTER); //TODO: Position this properly. Currently not positioned as desired.
@@ -42,7 +41,7 @@ public class ChapsChallenge extends JFrame {
     public void initUI(){
         setTitle("Chap's Challenge: Among Us Edition");
         setSize(WINDOW_WIDTH, WINDOW_HEIGHT);
-
+        createMenuBar();
 
         setLocationRelativeTo(null);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
