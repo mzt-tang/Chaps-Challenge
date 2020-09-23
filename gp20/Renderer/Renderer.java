@@ -24,6 +24,7 @@ public class Renderer extends Canvas {
     private final Map<String, Image> images;
 
     private boolean playerFlipped = false;
+    private Position playerPrevPos;
 
     /**
      * Creates a new renderer canvas
@@ -52,7 +53,7 @@ public class Renderer extends Canvas {
         super.paint(g);
         Graphics2D g2 = (Graphics2D) g; //Graphics 2D gives you more drawing options
 
-        //Set background (Doesn't have to be white, could be space because Among Us)
+        //Set background (Doesn't have to be white, could be space because Among Us, could even be animated)
         g2.setColor(Color.WHITE);
         g2.fillRect(0, 0, getWidth(), getHeight());
 
@@ -75,12 +76,22 @@ public class Renderer extends Canvas {
             }
         }
 
-        //Draw player
+        /* Can't use this until the application creates a game
+        if (playerX < playerPrevPos.getX()){
+            playerFlipped = true;
+        }
+        if (playerX > playerPrevPos.getX()){
+            playerFlipped = false;
+        } */
+
+        //Draw player on the centre of the screen
         if (playerFlipped) {
             g2.drawImage(images.get("AstronautFlipped"), 4 * IMAGE_SIZE, 4 * IMAGE_SIZE, this);
         } else {
             g2.drawImage(images.get("Astronaut"), 4 * IMAGE_SIZE, 4 * IMAGE_SIZE, this);
         }
+
+        playerPrevPos = player.getPos();
     }
 
     private Image getTileImage(AbstractTile tile){
