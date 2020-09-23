@@ -31,6 +31,10 @@ public class Game {
         }
     }
 
+    public void moveEnemyCheckWin() {
+
+    }
+
     /**
      * The player interacts with the block of the direction of their position.
      * The player moves in that direction if possible.
@@ -63,6 +67,8 @@ public class Game {
         assert (board.getMap()[newPos.getX()][newPos.getY()] != null)
                 : "Position at array is null. If you're here then something really bad happened...";
 
+        //CHECK IF MOVING INTO ENEMY
+
         //Interact with the square and move there if possible.
         AbstractTile moveToTile = board.getMap()[newPos.getX()][newPos.getY()];
         if(moveToTile.interact(player)) {
@@ -79,7 +85,6 @@ public class Game {
             }
             player.getPos().move(direction);    //Move the player
         }
-
 
     }
 
