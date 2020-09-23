@@ -17,6 +17,7 @@ public class ExitLock extends AbstractTile {
      */
     public ExitLock(Position position) {
         super(position, false);
+        //images.add(Toolkit.getDefaultToolkit().getImage("images/exitlock/");
     }
 
     /**

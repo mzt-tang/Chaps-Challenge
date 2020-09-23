@@ -22,7 +22,6 @@ public abstract class AbstractActor implements BoardObject {
 
     }
 
-
     /**
      * Returns the position of the actor.
      * @return .

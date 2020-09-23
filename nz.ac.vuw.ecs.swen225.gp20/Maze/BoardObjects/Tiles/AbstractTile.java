@@ -7,6 +7,8 @@ import Maze.Position;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * An implementation of the Tile interface,
@@ -17,6 +19,8 @@ public abstract class AbstractTile implements BoardObject {
 
     public final Position position; //Final cause tiles don't move to different places (although they can be picked up)
     private boolean rotated = false;
+    private Set<Image> images = new HashSet<>();
+    private Image currentImage;
 
     /**
      * .
