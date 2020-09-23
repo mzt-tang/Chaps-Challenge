@@ -2,12 +2,15 @@ package Application;
 
 import Renderer.Renderer;
 import java.awt.BorderLayout;
-import java.awt.EventQueue;
+import java.awt.Color;
+import java.awt.Insets;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
+import javax.swing.border.EmptyBorder;
 
 /**
  * Window of the actual game, Chap's Challenge
@@ -30,9 +33,13 @@ public class ChapsChallenge extends JFrame {
     public ChapsChallenge(){
         initUI();
 
-        Renderer renderer = new Renderer();
-        JPanel gameplay = createGameScreen(renderer);
-        add(gameplay, BorderLayout.CENTER); //TODO: Position this properly. Currently not positioned as desired.
+        JPanel gameplay = createGamePanel(new Renderer());
+        add(gameplay, BorderLayout.WEST);
+
+        JPanel info = createInfoPanel();
+        add(info, BorderLayout.EAST);
+
+        this.setVisible(true);
     }
 
     /**
@@ -78,19 +85,53 @@ public class ChapsChallenge extends JFrame {
      * Gameplay of the game is displayed here.
      * @return Gameplay panel
      */
-    public JPanel createGameScreen(Renderer renderer){
-        JPanel gameScreen = new JPanel();
-        gameScreen.add(renderer);
+    public JPanel createGamePanel(Renderer renderer){
+        JPanel gamePanel = new JPanel(new BorderLayout());
+        gamePanel.setBackground(Color.BLACK);
+        gamePanel.add(renderer);
 
-        return gameScreen;
+        int verticalGap = 85;
+        int horizontalGap = 65;
+        gamePanel.setBorder(new EmptyBorder(new Insets(verticalGap, horizontalGap, verticalGap, 50)));
+
+        return gamePanel;
     }
 
     /**
      * Game information such as timer, chips remaining and player inventory is displayed here.
      * @return Info panel
      */
-    public JPanel createInfoScreen(){
-        return null;
+    public JPanel createInfoPanel(){
+
+
+        JPanel infoPanel = new JPanel(new BorderLayout());
+        infoPanel.setBackground(Color.BLACK);
+
+        int verticalGap = 50;
+        int horizontalGap = 10;
+        infoPanel.setBorder(new EmptyBorder(new Insets(verticalGap, 0, verticalGap, 65)));
+
+        //level
+        JLabel levelLabel = new JLabel("Level X: placeholder");
+        levelLabel.setForeground(Color.RED);
+
+        //time remaining
+        JLabel timeLabel = new JLabel("Time Remaining: ");
+        timeLabel.setForeground(Color.RED);
+
+        //chips remaining
+        JLabel chipsLabel = new JLabel("Chips Remaining: ");
+        chipsLabel.setForeground(Color.RED);
+
+
+        //inventory view
+
+
+        infoPanel.add(levelLabel);
+        infoPanel.add(timeLabel);
+        infoPanel.add(chipsLabel);
+
+        return infoPanel;
     }
 
 }
