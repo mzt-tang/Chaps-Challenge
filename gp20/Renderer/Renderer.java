@@ -1,6 +1,7 @@
 package Renderer;
 
 import Maze.Board;
+import Maze.BoardObjects.Actors.Player;
 import Maze.BoardObjects.Tiles.*;
 import Maze.Position;
 
@@ -22,16 +23,24 @@ public class Renderer extends Canvas {
 
     private final Map<String, Image> images;
 
+    private boolean playerFlipped = false;
+
     /**
      * Creates a new renderer canvas
      */
     public Renderer(){
         images = new HashMap<>();
         //Really compact way of loading all the images into memory
-        //It iterates through all the files in /images and maps the file names to the loaded images
-        File[] files = new File(System.getProperty("user.dir") + "/images").listFiles();
+        //It iterates through all the files in a folder and maps the file names to the loaded images
+        File[] files = new File(System.getProperty("user.dir") + "/tiles").listFiles();
         for (File file : files){
             images.put(file.getName().substring(0,file.getName().length()-5), //removes .jpeg extension
+                    Toolkit.getDefaultToolkit().getImage(file.getPath()));
+        }
+
+        files = new File(System.getProperty("user.dir") + "/actors").listFiles();
+        for (File file : files){
+            images.put(file.getName().substring(0,file.getName().length()-4), //removes .png extension
                     Toolkit.getDefaultToolkit().getImage(file.getPath()));
         }
 
@@ -43,18 +52,34 @@ public class Renderer extends Canvas {
         super.paint(g);
         Graphics2D g2 = (Graphics2D) g; //Graphics 2D gives you more drawing options
 
-        //Set background
+        //Set background (Doesn't have to be white, could be space because Among Us)
         g2.setColor(Color.WHITE);
         g2.fillRect(0, 0, getWidth(), getHeight());
 
         //Will get the real board once a level has been created
         AbstractTile[][] board = aRandomBoard();
 
-        //Will put the focus area around the player once that is possible
-        for (int y = 0; y < FOCUS_SIZE; y++) {
-            for (int x = 0; x < FOCUS_SIZE; x++) {
-                g2.drawImage(getTileImage(board[x][y]), x*IMAGE_SIZE, y*IMAGE_SIZE, this);
+        //Will get the actual player's position once the application creates the game with I can get the player from
+        Player player = new Player(new Position(8,8));
+        int playerX = player.getPos().getX();
+        int playerY = player.getPos().getY();
+
+        //Draw all tiles in the focus area
+        for (int y = -4; y <= 4; y++) {
+            for (int x = -4; x <= 4; x++) {
+                //If in board bounds
+                if (playerX + x >= 0 && playerY + y >= 0 && playerX + x < board.length && playerY + y < board[0].length){
+                    g2.drawImage(getTileImage(board[playerX + x][playerY + y]),
+                            (x+4) * IMAGE_SIZE, (y+4) * IMAGE_SIZE, this);
+                }
             }
+        }
+
+        //Draw player
+        if (playerFlipped) {
+            g2.drawImage(images.get("AstronautFlipped"), 4 * IMAGE_SIZE, 4 * IMAGE_SIZE, this);
+        } else {
+            g2.drawImage(images.get("Astronaut"), 4 * IMAGE_SIZE, 4 * IMAGE_SIZE, this);
         }
     }
 
@@ -105,9 +130,7 @@ public class Renderer extends Canvas {
             }
         }
         board[0][0] = new ExitLock(new Position(0,0));
-        ExitLock elV = new ExitLock(new Position(0,1));
-        elV.setVertical(); //Maybe rotation should be in the AbstractTile constructor
-        board[0][1] = elV;
+        board[0][1] = new ExitLock(new Position(0,1));
         board[1][0] = new ExitPortal(new Position(1,0));
         board[2][0] = new InfoField(new Position(2,0), "Hello");
         board[3][0] = new Key(new Position(3,0), "Blue");
@@ -118,24 +141,18 @@ public class Renderer extends Canvas {
         board[4][1] = new LockedDoor(new Position(4,1), false, new Key(new Position(3,0), "Green"));
         board[4][2] = new LockedDoor(new Position(4,2), false, new Key(new Position(3,2), "Red"));
         board[4][3] = new LockedDoor(new Position(4,3), false, new Key(new Position(3,0), "Yellow"));
-        LockedDoor ldV1 = new LockedDoor(new Position(4,4), true, new Key(new Position(3,0), "Blue"));
-        board[4][4] = ldV1;
-        LockedDoor ldV2 = new LockedDoor(new Position(4,5), true, new Key(new Position(3,0), "Green"));
-        ldV2.setVertical();
-        board[4][5] = ldV2;
-        LockedDoor ldV3 = new LockedDoor(new Position(4,6), true, new Key(new Position(3,0), "Red"));
-        ldV3.setVertical();
-        board[4][6] = ldV3;
-        LockedDoor ldV4 = new LockedDoor(new Position(4,7), true, new Key(new Position(3,0), "Yellow"));
-        ldV4.setVertical();
-        board[4][7] = ldV4;
+        board[4][4] = new LockedDoor(new Position(4,4), true, new Key(new Position(3,0), "Blue"));
+        board[4][5] = new LockedDoor(new Position(4,5), true, new Key(new Position(3,0), "Green"));
+        board[4][6] = new LockedDoor(new Position(4,6), true, new Key(new Position(3,0), "Red"));
+        board[4][7] = new LockedDoor(new Position(4,7), true, new Key(new Position(3,0), "Yellow"));
         board[5][0] = new Treasure(new Position(5,0));
         board[6][0] = new Wall(new Position(6,0));
         return board;
     }
 
+    //Just for testing
     public static void main(String[] args) {
-        Canvas canvas = new Renderer(); //Just for testing (and so I don't interfere with other modules)
+        Canvas canvas = new Renderer();
         JFrame frame = new JFrame("Test");
         JPanel main = new JPanel();
         main.add(canvas);
