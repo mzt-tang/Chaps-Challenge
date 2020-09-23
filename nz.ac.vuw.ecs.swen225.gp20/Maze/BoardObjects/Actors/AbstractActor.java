@@ -18,6 +18,10 @@ public abstract class AbstractActor implements BoardObject {
         this.position = position;
     }
 
+    public void move() {
+
+    }
+
 
     /**
      * Returns the position of the actor.
