@@ -142,7 +142,7 @@ public class ChapsChallenge extends JFrame {
                         break;
                 }
                 gamePanel.revalidate();
-                gamePanel.repaint();
+                renderer.repaint();
             }
         });
 
