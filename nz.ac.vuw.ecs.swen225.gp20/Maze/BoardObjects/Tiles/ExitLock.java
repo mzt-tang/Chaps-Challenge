@@ -15,9 +15,11 @@ public class ExitLock extends AbstractTile {
      * .
      * @param position .
      */
-    public ExitLock(Position position) {
-        super(position, false);
-        //images.add(Toolkit.getDefaultToolkit().getImage("images/exitlock/");
+    public ExitLock(Position position, boolean setVertical) {
+        super(position, setVertical);
+        images.put("ExitLockHorizontal", Toolkit.getDefaultToolkit().getImage("Resources/tiles/ExitLockHorizontal.jpeg"));
+        images.put("ExitLockVertical", Toolkit.getDefaultToolkit().getImage("Resources/tiles/ExitLockVertical.jpeg"));
+        images.put("FloorTile", Toolkit.getDefaultToolkit().getImage("Resources/tiles/FloorTile.jpeg"));
     }
 
     /**
