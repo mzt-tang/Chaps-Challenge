@@ -23,9 +23,9 @@ public class Player extends AbstractActor{
         super(position);
     }
 
-    public boolean hasKey(Key key) {
+    public boolean hasKey(String key) {
         for (Key k : keySet) {
-            if(key.equals(k)) return true;
+            if(key.equals(k.getColour())) return true;
         }
         return false;
     }

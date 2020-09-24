@@ -8,6 +8,7 @@ import java.awt.*;
 public class LockedDoor extends AbstractTile {
 
     private String colour;
+    private boolean locked;
 
     /**
      * .
@@ -38,11 +39,11 @@ public class LockedDoor extends AbstractTile {
      */
     @Override
     public boolean interact(Player player) {
-        if(!player.hasKey(key)) return false;
+        if(!player.hasKey(colour)) return false;
         return super.interact(player);
     }
 
-    public Key getKey() {
-        return key;
+    public String getDoorColour() {
+        return colour;
     }
 }
