@@ -58,6 +58,7 @@ public class Renderer extends Canvas {
     public void paint(Graphics g) {
         super.paint(g);
         Graphics2D g2 = (Graphics2D) g; //Graphics 2D gives you more drawing options
+        System.out.println("Paint called");
 
         //Set background (Doesn't have to be white, could be space because Among Us, could even be animated)
         g2.setColor(Color.WHITE);
