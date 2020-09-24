@@ -45,7 +45,7 @@ public class ChapsChallenge extends JFrame {
         JPanel basePanel = new JPanel();
         basePanel.setLayout(new BoxLayout(basePanel, BoxLayout.X_AXIS));
 
-        JPanel gameplay = createGamePanel(new Renderer());
+        JPanel gameplay = createGamePanel(new Renderer(this));
         basePanel.add(gameplay);
 
         JPanel info = createInfoPanel();
@@ -53,8 +53,9 @@ public class ChapsChallenge extends JFrame {
 
         add(basePanel);
 
-        game = new Game(new Board(Renderer.aRandomBoard()), new Player(new Position(4, 4)), null); //FIXME: later
+        game = new Game(new Board(Renderer.aRandomBoard()), new Player(new Position(4, 4)), null); //FIXME: placeholder replace later
 
+        this.setResizable(false);
         this.setVisible(true);
     }
 
@@ -121,7 +122,7 @@ public class ChapsChallenge extends JFrame {
      */
     public JPanel createInfoPanel(){
         JPanel infoPanel = new JPanel();
-        infoPanel.setLayout(new BoxLayout(infoPanel, BoxLayout.Y_AXIS));
+       // infoPanel.setLayout(new BoxLayout(infoPanel, BoxLayout.Y_AXIS));
         infoPanel.setBackground(Color.BLACK);
 
         //level
