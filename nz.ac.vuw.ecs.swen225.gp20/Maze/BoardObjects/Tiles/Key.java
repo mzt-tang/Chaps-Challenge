@@ -8,7 +8,7 @@ import java.util.Objects;
 
 public class Key extends AbstractTile {
 
-    private String colour;
+    private final String colour;
     private boolean pickedUp = false;
 
     /**
@@ -18,14 +18,21 @@ public class Key extends AbstractTile {
     public Key(Position position, String colour) {
         super(position, false);
         this.colour = colour;
-        images.put("Files", Toolkit.getDefaultToolkit().getImage("Resources/tiles/Files.jpeg"));
-        currentImage = images.get("Files");
+        images.put("SwipeCardBlue", Toolkit.getDefaultToolkit().getImage("Resources/tiles/SwipeCardBlue.jpeg"));
+        images.put("SwipeCardGreen", Toolkit.getDefaultToolkit().getImage("Resources/tiles/SwipeCardGreen.jpeg"));
+        images.put("SwipeCardRed", Toolkit.getDefaultToolkit().getImage("Resources/tiles/SwipeCardRed.jpeg"));
+        images.put("SwipeCardYellow", Toolkit.getDefaultToolkit().getImage("Resources/tiles/SwipeCardYellow.jpeg"));
+        images.put("FloorTile", Toolkit.getDefaultToolkit().getImage("Resources/tiles/FloorTile.jpeg"));
+        currentImage = images.get("SwipeCard" + colour);
     }
 
     @Override
     public boolean interact(Player player) {
-        player.getKeys().add(this);
-        pickedUp = true;
+        if(!pickedUp) {
+            player.getKeys().add(this);
+            pickedUp = true;
+            currentImage = images.get("FloorTile");
+        }
         return true;
     }
 

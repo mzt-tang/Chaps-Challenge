@@ -8,6 +8,8 @@ import java.awt.*;
 
 public class Treasure extends AbstractTile {
 
+    private boolean pickedUp = false;
+
     /**
      * .
      * @param position .
