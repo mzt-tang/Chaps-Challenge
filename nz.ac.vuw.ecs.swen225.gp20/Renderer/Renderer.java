@@ -76,7 +76,7 @@ public class Renderer extends Canvas {
             }
         }
 
-        /* Can't use this until the application creates a game
+        /*Can't use this until the application creates a game
         if (playerX < playerPrevPos.getX()){
             playerFlipped = true;
         }
@@ -117,7 +117,7 @@ public class Renderer extends Canvas {
         }
         if (tile instanceof LockedDoor){
             LockedDoor lockedDoor = (LockedDoor)tile;
-            String colour = lockedDoor.getKey().getColour();
+            String colour = lockedDoor.getDoorColour();
             if (lockedDoor.isRotated()){
                 return images.get("DoorVertical" + colour);
             } else {
@@ -140,22 +140,22 @@ public class Renderer extends Canvas {
                 board[x][y] = new FreeTile(new Position(x,y));
             }
         }
-        board[0][0] = new ExitLock(new Position(0,0));
-        board[0][1] = new ExitLock(new Position(0,1));
+        board[0][0] = new ExitLock(new Position(0,0), false);
+        board[0][1] = new ExitLock(new Position(0,1), true);
         board[1][0] = new ExitPortal(new Position(1,0));
         board[2][0] = new InfoField(new Position(2,0), "Hello");
         board[3][0] = new Key(new Position(3,0), "Blue");
         board[3][1] = new Key(new Position(3,1), "Green");
         board[3][2] = new Key(new Position(3,2), "Red");
         board[3][3] = new Key(new Position(3,3), "Yellow");
-        board[4][0] = new LockedDoor(new Position(4,0), false, new Key(new Position(3,0),  "Blue"));
-        board[4][1] = new LockedDoor(new Position(4,1), false, new Key(new Position(3,0), "Green"));
-        board[4][2] = new LockedDoor(new Position(4,2), false, new Key(new Position(3,2), "Red"));
-        board[4][3] = new LockedDoor(new Position(4,3), false, new Key(new Position(3,0), "Yellow"));
-        board[4][4] = new LockedDoor(new Position(4,4), true, new Key(new Position(3,0), "Blue"));
-        board[4][5] = new LockedDoor(new Position(4,5), true, new Key(new Position(3,0), "Green"));
-        board[4][6] = new LockedDoor(new Position(4,6), true, new Key(new Position(3,0), "Red"));
-        board[4][7] = new LockedDoor(new Position(4,7), true, new Key(new Position(3,0), "Yellow"));
+        board[4][0] = new LockedDoor(new Position(4,0), false, "Blue");
+        board[4][1] = new LockedDoor(new Position(4,1), false, "Green");
+        board[4][2] = new LockedDoor(new Position(4,2), false, "Red");
+        board[4][3] = new LockedDoor(new Position(4,3), false, "Yellow");
+        board[4][4] = new LockedDoor(new Position(4,4), true, "Blue");
+        board[4][5] = new LockedDoor(new Position(4,5), true, "Green");
+        board[4][6] = new LockedDoor(new Position(4,6), true, "Red");
+        board[4][7] = new LockedDoor(new Position(4,7), true, "Yellow");
         board[5][0] = new Treasure(new Position(5,0));
         board[6][0] = new Wall(new Position(6,0));
         return board;
