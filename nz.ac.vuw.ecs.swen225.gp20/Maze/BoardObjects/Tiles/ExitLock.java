@@ -11,6 +11,8 @@ import java.awt.*;
  */
 public class ExitLock extends AbstractTile {
 
+    private boolean locked = true;
+
     /**
      * .
      * @param position .

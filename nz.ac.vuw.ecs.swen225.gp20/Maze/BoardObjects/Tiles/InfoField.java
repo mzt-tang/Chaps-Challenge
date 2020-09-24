@@ -20,7 +20,7 @@ public class InfoField extends AbstractTile {
     public boolean interact(Player player) {
         //Display text - NEED TO CHANGE
         System.out.println(infoText);
-        return super.interact(player);
+        return true;
     }
 
     public String getInfoText() {
