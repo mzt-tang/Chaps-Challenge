@@ -125,15 +125,19 @@ public class ChapsChallenge extends JFrame {
             public void keyPressed(KeyEvent e) {
                 switch (e.getKeyCode()){
                     case KeyEvent.VK_W:
+                        System.out.println("Up");
                         game.movePlayer(Game.DIRECTION.UP);
                         break;
                     case KeyEvent.VK_A:
+                        System.out.println("Left");
                         game.movePlayer(Game.DIRECTION.LEFT);
                         break;
                     case KeyEvent.VK_S:
+                        System.out.println("Down");
                         game.movePlayer(Game.DIRECTION.DOWN);
                         break;
                     case KeyEvent.VK_D:
+                        System.out.println("Right");
                         game.movePlayer(Game.DIRECTION.RIGHT);
                         break;
                 }
