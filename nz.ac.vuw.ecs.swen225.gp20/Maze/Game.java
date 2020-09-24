@@ -21,14 +21,6 @@ public class Game {
         this.board = board;
         this.player = player;
         this.computerPlayers = computerPlayers;
-
-        //Temporary board for testing
-        AbstractTile[][] testMaze = board.getMap();
-        for (int i = 0; i < testMaze.length; i++) {
-            for (int j = 0; j < testMaze[0].length; j++) {
-                testMaze[i][j] = new FreeTile(new Position(i, j));
-            }
-        }
     }
 
     public void moveEnemyCheckWin() {
@@ -74,17 +66,11 @@ public class Game {
         //Interact with the square and move there if possible.
         AbstractTile moveToTile = board.getMap()[newPos.getX()][newPos.getY()];
         if(moveToTile.interact(player)) {
-            //Lets the player pickup the any Treasure or Key
-            if (moveToTile instanceof Treasure) {
-                player.getTreasures().add((Treasure) moveToTile);
-                if (allTreasuresCollected()) unlockExitLock();
-            } else if (moveToTile instanceof Key) {
-                player.getKeys().add((Key) moveToTile);
+            //Unlock the exit lock if all treasures have been collected
+            if (allTreasuresCollected()){
+                unlockExitLock();
             }
-            //The tile doesn't need to be replaced if it's an info tile or already a free tile
-            if(!(moveToTile instanceof InfoField) && !(moveToTile instanceof FreeTile)) {
-                board.getMap()[newPos.getX()][newPos.getY()] = new FreeTile(newPos);
-            }
+
             player.getPos().move(direction);    //Move the player
         }
 
@@ -103,10 +89,22 @@ public class Game {
     private boolean allTreasuresCollected() {
         for (int i = 0; i < board.getMap().length; i++) {
             for (int j = 0; j < board.getMap()[0].length; j++) {
-                if(board.getMap()[i][j] instanceof Treasure) return false;
+                if(board.getMap()[i][j] instanceof Treasure) {
+                    Treasure treasure = (Treasure)board.getMap()[i][j];
+                    if (!treasure.isPickedUp()){
+                        return false;
+                    }
+                }
             }
         }
         return true;
     }
 
+    public Board getBoard() {
+        return board;
+    }
+
+    public Player getPlayer() {
+        return player;
+    }
 }
