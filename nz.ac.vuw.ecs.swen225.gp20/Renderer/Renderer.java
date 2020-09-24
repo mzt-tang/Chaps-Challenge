@@ -1,8 +1,9 @@
 package Renderer;
 
-import Maze.Board;
+import Application.ChapsChallenge;
 import Maze.BoardObjects.Actors.Player;
 import Maze.BoardObjects.Tiles.*;
+import Maze.Game;
 import Maze.Position;
 
 import javax.swing.*;
@@ -26,11 +27,14 @@ public class Renderer extends Canvas {
     private boolean playerFlipped = false;
     private Position playerPrevPos;
 
+    ChapsChallenge application;
+
     /**
      * Creates a new renderer canvas
      */
-    public Renderer(){
+    public Renderer(ChapsChallenge application){
         images = new HashMap<>();
+        this.application = application;
         //Really compact way of loading all the images into memory
         //It iterates through all the files in a folder and maps the file names to the loaded images
         File[] files = new File(System.getProperty("user.dir") + "/Resources/tiles").listFiles();
@@ -58,10 +62,10 @@ public class Renderer extends Canvas {
         g2.fillRect(0, 0, getWidth(), getHeight());
 
         //Will get the real board once a level has been created
-        AbstractTile[][] board = aRandomBoard();
+        AbstractTile[][] board = application.getGame().getBoard().getMap();
 
         //Will get the actual player's position once the application creates the game with I can get the player from
-        Player player = new Player(new Position(4,4));
+        Player player = application.getGame().getPlayer();
         int playerX = player.getPos().getX();
         int playerY = player.getPos().getY();
 
@@ -162,7 +166,7 @@ public class Renderer extends Canvas {
     }
 
     //Just for testing
-    public static void main(String[] args) {
+    /*public static void main(String[] args) {
         Canvas canvas = new Renderer();
         JFrame frame = new JFrame("Test");
         JPanel main = new JPanel();
@@ -170,5 +174,5 @@ public class Renderer extends Canvas {
         frame.add(main);
         frame.pack();
         frame.setVisible(true);
-    }
+    } */
 }
