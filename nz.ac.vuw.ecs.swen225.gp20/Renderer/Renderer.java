@@ -61,7 +61,7 @@ public class Renderer extends Canvas {
         AbstractTile[][] board = aRandomBoard();
 
         //Will get the actual player's position once the application creates the game with I can get the player from
-        Player player = new Player(new Position(8,8));
+        Player player = new Player(new Position(4,4));
         int playerX = player.getPos().getX();
         int playerY = player.getPos().getY();
 
@@ -70,7 +70,7 @@ public class Renderer extends Canvas {
             for (int x = -4; x <= 4; x++) {
                 //If in board bounds
                 if (playerX + x >= 0 && playerY + y >= 0 && playerX + x < board.length && playerY + y < board[0].length){
-                    g2.drawImage(getTileImage(board[playerX + x][playerY + y]),
+                    g2.drawImage(board[playerX + x][playerY + y].getCurrentImage(),
                             (x+4) * IMAGE_SIZE, (y+4) * IMAGE_SIZE, this);
                 }
             }
@@ -94,7 +94,7 @@ public class Renderer extends Canvas {
         playerPrevPos = player.getPos();
     }
 
-    private Image getTileImage(AbstractTile tile){
+   /* private Image getTileImage(AbstractTile tile){
         if (tile instanceof ExitLock){
             if (tile.isRotated()){
                 return images.get("ExitLockVertical");
@@ -131,9 +131,9 @@ public class Renderer extends Canvas {
             return images.get("WallTile");
         }
         return null;
-    }
+    } */
 
-    private AbstractTile[][] aRandomBoard(){
+    public static AbstractTile[][] aRandomBoard(){
         AbstractTile[][] board = new AbstractTile[9][9];
         for (int y = 0; y < 9; y++){
             for (int x = 0; x < 9; x++){
