@@ -35,6 +35,8 @@ public class Renderer extends Canvas {
     public Renderer(ChapsChallenge application){
         images = new HashMap<>();
         this.application = application;
+        playerPrevPos = application.getGame().getPlayer().getPos();
+
         //Really compact way of loading all the images into memory
         //It iterates through all the files in a folder and maps the file names to the loaded images
         File[] files = new File(System.getProperty("user.dir") + "/Resources/tiles").listFiles();
@@ -80,13 +82,13 @@ public class Renderer extends Canvas {
             }
         }
 
-        /*Can't use this until the application creates a game
+        //Can't test this until the player can move
         if (playerX < playerPrevPos.getX()){
             playerFlipped = true;
         }
         if (playerX > playerPrevPos.getX()){
             playerFlipped = false;
-        } */
+        }
 
         //Draw player on the centre of the screen
         if (playerFlipped) {
