@@ -20,6 +20,8 @@ public class ExitLock extends AbstractTile {
         images.put("ExitLockHorizontal", Toolkit.getDefaultToolkit().getImage("Resources/tiles/ExitLockHorizontal.jpeg"));
         images.put("ExitLockVertical", Toolkit.getDefaultToolkit().getImage("Resources/tiles/ExitLockVertical.jpeg"));
         images.put("FloorTile", Toolkit.getDefaultToolkit().getImage("Resources/tiles/FloorTile.jpeg"));
+        if(rotated) currentImage = images.get("ExitLockHorizontal");
+        else currentImage = images.get("ExitLockVertical");
     }
 
     /**

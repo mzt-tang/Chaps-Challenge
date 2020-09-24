@@ -30,6 +30,7 @@ public abstract class AbstractTile implements BoardObject {
      */
     public AbstractTile(Position position, boolean setVertical) {
         this.position = position;
+        this.rotated = setVertical;
     }
 
     /**
@@ -41,10 +42,6 @@ public abstract class AbstractTile implements BoardObject {
      */
     public boolean interact(Player player){
         return true;
-    }
-
-    public void setVertical() {
-        rotated = true;
     }
 
     public boolean isRotated() {

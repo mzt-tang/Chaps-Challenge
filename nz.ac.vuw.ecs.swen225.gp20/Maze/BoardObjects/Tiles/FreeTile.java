@@ -1,6 +1,5 @@
 package Maze.BoardObjects.Tiles;
 
-import Maze.BoardObjects.Actors.AbstractActor;
 import Maze.BoardObjects.Actors.Player;
 import Maze.Position;
 
@@ -17,6 +16,8 @@ public class FreeTile extends AbstractTile {
      */
     public FreeTile(Position position) {
         super(position, false);
+        images.put("FloorTile", Toolkit.getDefaultToolkit().getImage("Resources/tiles/FloorTile.jpeg"));
+        currentImage = images.get("FloorTile");
     }
 
 

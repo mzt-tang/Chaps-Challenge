@@ -17,6 +17,8 @@ public class Key extends AbstractTile {
     public Key(Position position, String colour) {
         super(position, false);
         this.colour = colour;
+        images.put("Files", Toolkit.getDefaultToolkit().getImage("Resources/tiles/Files.jpeg"));
+        currentImage = images.get("Files");
     }
 
     @Override
