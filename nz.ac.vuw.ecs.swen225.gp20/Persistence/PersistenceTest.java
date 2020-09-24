@@ -5,7 +5,7 @@ public class PersistenceTest {
 	    CSVReader csvRead = new CSVReader();
 	    JSONMaker makeJSON = new JSONMaker();
 	    JSONReader readJSON = new JSONReader();
-	    makeJSON.makeJSON(csvRead.readCSV("bin/Persistence/level.csv"), "bin/Persistence/level.json");
-	    readJSON.readJSON("bin/Persistence/level.json");
+	    makeJSON.makeJSON(csvRead.readCSV("Persistence/level.csv"), "Persistence/level.json");
+	    readJSON.readJSON("Persistence/level.json");
 	}
 }
