@@ -13,7 +13,7 @@ public class InfoField extends AbstractTile {
         super(position, false);
         this.infoText = infoText;
         images.put("InfoField", Toolkit.getDefaultToolkit().getImage("Resources/tiles/InfoField.jpeg"));
-        currentImage = images.get("Infofield");
+        currentImage = images.get("InfoField");
     }
 
     @Override
