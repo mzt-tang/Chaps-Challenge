@@ -43,8 +43,15 @@ public class ChapsChallenge extends JFrame {
         initUI();
 
         JPanel basePanel = new JPanel();
+
         basePanel.setLayout(new BoxLayout(basePanel, BoxLayout.X_AXIS));
 
+        int verticalGap = 85;
+        int horizontalGap = 65;
+        basePanel.setBorder(new EmptyBorder(new Insets(verticalGap, horizontalGap, verticalGap, horizontalGap)));
+
+        //PANELS
+        game = new Game(new Board(Renderer.aRandomBoard()), new Player(new Position(4, 4)), null); //FIXME: placeholder replace later
         JPanel gameplay = createGamePanel(new Renderer(this));
         basePanel.add(gameplay);
 
@@ -52,8 +59,6 @@ public class ChapsChallenge extends JFrame {
         basePanel.add(info);
 
         add(basePanel);
-
-        game = new Game(new Board(Renderer.aRandomBoard()), new Player(new Position(4, 4)), null); //FIXME: placeholder replace later
 
         this.setResizable(false);
         this.setVisible(true);
@@ -104,14 +109,8 @@ public class ChapsChallenge extends JFrame {
      */
     public JPanel createGamePanel(Renderer renderer){
         JPanel gamePanel = new JPanel();
-        gamePanel.setLayout(new BoxLayout(gamePanel, BoxLayout.X_AXIS));
-        gamePanel.setBackground(Color.BLACK);
+        //gamePanel.setBackground(Color.BLACK);
         gamePanel.add(renderer);
-
-
-        int verticalGap = 85;
-        int horizontalGap = 65;
-        gamePanel.setBorder(new EmptyBorder(new Insets(verticalGap, horizontalGap, verticalGap, 50)));
 
         return gamePanel;
     }
@@ -122,8 +121,8 @@ public class ChapsChallenge extends JFrame {
      */
     public JPanel createInfoPanel(){
         JPanel infoPanel = new JPanel();
-       // infoPanel.setLayout(new BoxLayout(infoPanel, BoxLayout.Y_AXIS));
-        infoPanel.setBackground(Color.BLACK);
+        infoPanel.setLayout(new BoxLayout(infoPanel, BoxLayout.Y_AXIS));
+        infoPanel.setBackground(Color.WHITE);
 
         //level
         JLabel levelLabel = new JLabel("Level X: placeholder");
