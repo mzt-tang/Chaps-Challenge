@@ -12,6 +12,8 @@ public class InfoField extends AbstractTile {
     public InfoField(Position position, String infoText) {
         super(position, false);
         this.infoText = infoText;
+        images.put("InfoField", Toolkit.getDefaultToolkit().getImage("Resources/tiles/Infofield.jpeg"));
+        currentImage = images.get("Infofield");
     }
 
     @Override
