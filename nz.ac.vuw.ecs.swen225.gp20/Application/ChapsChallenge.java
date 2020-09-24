@@ -9,6 +9,8 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Insets;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JFrame;
@@ -43,6 +45,7 @@ public class ChapsChallenge extends JFrame {
         initUI();
 
         JPanel basePanel = new JPanel();
+        basePanel.setBackground(Color.BLACK);
 
         basePanel.setLayout(new BoxLayout(basePanel, BoxLayout.X_AXIS));
 
@@ -54,12 +57,14 @@ public class ChapsChallenge extends JFrame {
         game = new Game(new Board(Renderer.aRandomBoard()), new Player(new Position(4, 4)), null); //FIXME: placeholder replace later
         JPanel gameplay = createGamePanel(new Renderer(this));
         basePanel.add(gameplay);
+        basePanel.add(Box.createRigidArea(new Dimension(50, 0)));
 
         JPanel info = createInfoPanel();
         basePanel.add(info);
 
         add(basePanel);
 
+        this.pack();
         this.setResizable(false);
         this.setVisible(true);
     }
@@ -111,6 +116,31 @@ public class ChapsChallenge extends JFrame {
         JPanel gamePanel = new JPanel();
         //gamePanel.setBackground(Color.BLACK);
         gamePanel.add(renderer);
+        gamePanel.setFocusable(true);
+        gamePanel.requestFocus();
+
+        //KeyListeners
+        gamePanel.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyPressed(KeyEvent e) {
+                switch (e.getKeyCode()){
+                    case KeyEvent.VK_W:
+                        game.movePlayer(Game.DIRECTION.UP);
+                        break;
+                    case KeyEvent.VK_A:
+                        game.movePlayer(Game.DIRECTION.LEFT);
+                        break;
+                    case KeyEvent.VK_S:
+                        game.movePlayer(Game.DIRECTION.DOWN);
+                        break;
+                    case KeyEvent.VK_D:
+                        game.movePlayer(Game.DIRECTION.RIGHT);
+                        break;
+                }
+                gamePanel.revalidate();
+                gamePanel.repaint();
+            }
+        });
 
         return gamePanel;
     }
