@@ -1,9 +1,11 @@
 package Application;
 
+import Maze.Game;
 import Renderer.Renderer;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Insets;
+import javax.swing.BoxLayout;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JMenu;
@@ -27,6 +29,8 @@ public class ChapsChallenge extends JFrame {
     private final int INFO_WIDTH = 105;
     private final int INFO_HEIGHT = 540;
 
+    private Game game;
+
     /**
      * Game instance
      */
@@ -34,10 +38,10 @@ public class ChapsChallenge extends JFrame {
         initUI();
 
         JPanel gameplay = createGamePanel(new Renderer());
-        add(gameplay, BorderLayout.WEST);
+        add(gameplay);
 
         JPanel info = createInfoPanel();
-        add(info, BorderLayout.EAST);
+        add(info);
 
         this.setVisible(true);
     }
@@ -86,7 +90,8 @@ public class ChapsChallenge extends JFrame {
      * @return Gameplay panel
      */
     public JPanel createGamePanel(Renderer renderer){
-        JPanel gamePanel = new JPanel(new BorderLayout());
+        JPanel gamePanel = new JPanel();
+        gamePanel.setLayout(new BoxLayout(gamePanel, BoxLayout.Y_AXIS));
         gamePanel.setBackground(Color.BLACK);
         gamePanel.add(renderer);
 
@@ -134,4 +139,11 @@ public class ChapsChallenge extends JFrame {
         return infoPanel;
     }
 
+    /**
+     * Getter for game.
+     * @return game
+     */
+    public Game getGame() {
+        return game;
+    }
 }
