@@ -1,6 +1,5 @@
 package MonkeyTest;
 
-import org.junit.*;
 import org.junit.runner.*;
 import org.junit.runner.notification.Failure;
 
