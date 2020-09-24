@@ -14,6 +14,8 @@ public class Treasure extends AbstractTile {
      */
     public Treasure(Position position) {
         super(position, false);
+        images.put("Files", Toolkit.getDefaultToolkit().getImage("Resources/tiles/Files.jpeg"));
+        currentImage = images.get("Files");
     }
 
     /**

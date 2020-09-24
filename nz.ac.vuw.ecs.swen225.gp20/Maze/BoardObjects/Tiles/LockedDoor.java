@@ -7,15 +7,28 @@ import java.awt.*;
 
 public class LockedDoor extends AbstractTile {
 
-    private Key key;
+    private String colour;
 
     /**
      * .
      * @param position .
      */
-    public LockedDoor(Position position, boolean setVertical, Key key) {
+    public LockedDoor(Position position, boolean setVertical, String colour) {
         super(position, setVertical);
-        this.key = key;
+        this.colour = colour;
+        images.put("DoorHorizontalBlue", Toolkit.getDefaultToolkit().getImage("Resources/tiles/DoorHorizontalBlue.jpeg"));
+        images.put("DoorHorizontalGreen", Toolkit.getDefaultToolkit().getImage("Resources/tiles/DoorHorizontalGreen.jpeg"));
+        images.put("DoorHorizontalRed", Toolkit.getDefaultToolkit().getImage("Resources/tiles/DoorHorizontalRed.jpeg"));
+        images.put("DoorHorizontalYellow", Toolkit.getDefaultToolkit().getImage("Resources/tiles/DoorHorizontalYellow.jpeg"));
+        images.put("DoorVerticalBlue", Toolkit.getDefaultToolkit().getImage("Resources/tiles/DoorVerticalBlue.jpeg"));
+        images.put("DoorVerticalGreen", Toolkit.getDefaultToolkit().getImage("Resources/tiles/DoorVerticalGreen.jpeg"));
+        images.put("DoorVerticalRed", Toolkit.getDefaultToolkit().getImage("Resources/tiles/DoorVerticalRed.jpeg"));
+        images.put("DoorVerticalYellow", Toolkit.getDefaultToolkit().getImage("Resources/tiles/DoorVerticalYellow.jpeg"));
+        if (rotated){
+            currentImage = images.get("DoorVertical" + colour);
+        } else {
+            currentImage = images.get("DoorHorizontal" + colour);
+        }
     }
 
     /**

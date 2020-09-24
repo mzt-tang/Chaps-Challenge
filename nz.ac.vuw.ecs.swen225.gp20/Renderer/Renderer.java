@@ -33,13 +33,13 @@ public class Renderer extends Canvas {
         images = new HashMap<>();
         //Really compact way of loading all the images into memory
         //It iterates through all the files in a folder and maps the file names to the loaded images
-        File[] files = new File(System.getProperty("user.dir") + "/tiles").listFiles();
+        File[] files = new File(System.getProperty("user.dir") + "/Resources/tiles").listFiles();
         for (File file : files){
             images.put(file.getName().substring(0,file.getName().length()-5), //removes .jpeg extension
                     Toolkit.getDefaultToolkit().getImage(file.getPath()));
         }
 
-        files = new File(System.getProperty("user.dir") + "/actors").listFiles();
+        files = new File(System.getProperty("user.dir") + "/Resources/actors").listFiles();
         for (File file : files){
             images.put(file.getName().substring(0,file.getName().length()-4), //removes .png extension
                     Toolkit.getDefaultToolkit().getImage(file.getPath()));

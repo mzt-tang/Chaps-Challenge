@@ -3,9 +3,13 @@ package Maze.BoardObjects.Tiles;
 import Maze.BoardObjects.Actors.Player;
 import Maze.Position;
 
+import java.awt.*;
+
 public class Wall extends AbstractTile {
     public Wall(Position position) {
         super(position, false);
+        images.put("WallTile", Toolkit.getDefaultToolkit().getImage("Resources/tiles/WallTile.jpeg"));
+        currentImage = images.get("WallTile");
     }
 
     /**
