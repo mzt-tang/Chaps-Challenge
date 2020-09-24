@@ -7,10 +7,13 @@ import Maze.Position;
 import Renderer.Renderer;
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Insets;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JFrame;
@@ -33,7 +36,7 @@ public class ChapsChallenge extends JFrame {
     private final int WINDOW_HEIGHT = 750;
 
     //info panel
-    private final int INFO_WIDTH = 105;
+    private final int INFO_WIDTH = 240;
     private final int INFO_HEIGHT = 540;
 
     private Game game;
@@ -56,6 +59,13 @@ public class ChapsChallenge extends JFrame {
         //PANELS
         game = new Game(new Board(Renderer.aRandomBoard()), new Player(new Position(4, 4)), null); //FIXME: placeholder replace later
         JPanel gameplay = createGamePanel(new Renderer(this));
+        addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowOpened(WindowEvent e) {
+                requestFocus();
+                gameplay.requestFocus();
+            }
+        });
         basePanel.add(gameplay);
         basePanel.add(Box.createRigidArea(new Dimension(50, 0)));
 
@@ -114,9 +124,10 @@ public class ChapsChallenge extends JFrame {
      */
     public JPanel createGamePanel(Renderer renderer){
         JPanel gamePanel = new JPanel();
-        //gamePanel.setBackground(Color.BLACK);
+        gamePanel.setBackground(Color.DARK_GRAY);
         gamePanel.add(renderer);
         gamePanel.setFocusable(true);
+        gamePanel.requestFocusInWindow();
         gamePanel.requestFocus();
 
         //KeyListeners
@@ -140,8 +151,12 @@ public class ChapsChallenge extends JFrame {
                         System.out.println("Right");
                         game.movePlayer(Game.DIRECTION.RIGHT);
                         break;
+                    default:
+                        //if player isn't moving add a println here
+//                        System.out.println("Key Pressed");
+                        break;
                 }
-                gamePanel.revalidate();
+                renderer.revalidate();
                 renderer.repaint();
             }
         });
@@ -161,22 +176,29 @@ public class ChapsChallenge extends JFrame {
         //level
         JLabel levelLabel = new JLabel("Level X: placeholder");
         levelLabel.setForeground(Color.RED);
+        levelLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         //time remaining
         JLabel timeLabel = new JLabel("Time Remaining: ");
         timeLabel.setForeground(Color.RED);
+        timeLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         //chips remaining
         JLabel chipsLabel = new JLabel("Chips Remaining: ");
         chipsLabel.setForeground(Color.RED);
+        chipsLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
 
         //inventory view
 
-
+        infoPanel.add(Box.createRigidArea(new Dimension(INFO_WIDTH, 150)));
         infoPanel.add(levelLabel);
+        infoPanel.add(Box.createRigidArea(new Dimension(INFO_WIDTH, 100)));
         infoPanel.add(timeLabel);
+        infoPanel.add(Box.createRigidArea(new Dimension(INFO_WIDTH, 100)));
         infoPanel.add(chipsLabel);
+        infoPanel.add(Box.createRigidArea(new Dimension(INFO_WIDTH, 150)));
+
 
         return infoPanel;
     }
