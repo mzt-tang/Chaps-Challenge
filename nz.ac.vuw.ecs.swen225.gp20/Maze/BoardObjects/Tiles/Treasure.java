@@ -8,6 +8,8 @@ import java.awt.*;
 
 public class Treasure extends AbstractTile {
 
+    private boolean pickedUp = false;
+
     /**
      * .
      * @param position .
@@ -27,5 +29,9 @@ public class Treasure extends AbstractTile {
     @Override
     public boolean interact(Player player) {
         return super.interact(player);
+    }
+
+    public boolean isPickedUp() {
+        return pickedUp;
     }
 }

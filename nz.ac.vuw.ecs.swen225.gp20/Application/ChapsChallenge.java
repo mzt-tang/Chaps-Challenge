@@ -1,9 +1,16 @@
 package Application;
 
+import Maze.Board;
+import Maze.BoardObjects.Actors.Player;
+import Maze.Game;
+import Maze.Position;
 import Renderer.Renderer;
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Insets;
+import javax.swing.Box;
+import javax.swing.BoxLayout;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JMenu;
@@ -27,18 +34,28 @@ public class ChapsChallenge extends JFrame {
     private final int INFO_WIDTH = 105;
     private final int INFO_HEIGHT = 540;
 
+    private Game game;
+
     /**
      * Game instance
      */
     public ChapsChallenge(){
         initUI();
 
-        JPanel gameplay = createGamePanel(new Renderer());
-        add(gameplay, BorderLayout.WEST);
+        JPanel basePanel = new JPanel();
+        basePanel.setLayout(new BoxLayout(basePanel, BoxLayout.X_AXIS));
+
+        JPanel gameplay = createGamePanel(new Renderer(this));
+        basePanel.add(gameplay);
 
         JPanel info = createInfoPanel();
-        add(info, BorderLayout.EAST);
+        basePanel.add(info);
 
+        add(basePanel);
+
+        game = new Game(new Board(Renderer.aRandomBoard()), new Player(new Position(4, 4)), null); //FIXME: placeholder replace later
+
+        this.setResizable(false);
         this.setVisible(true);
     }
 
@@ -86,9 +103,11 @@ public class ChapsChallenge extends JFrame {
      * @return Gameplay panel
      */
     public JPanel createGamePanel(Renderer renderer){
-        JPanel gamePanel = new JPanel(new BorderLayout());
+        JPanel gamePanel = new JPanel();
+        gamePanel.setLayout(new BoxLayout(gamePanel, BoxLayout.X_AXIS));
         gamePanel.setBackground(Color.BLACK);
         gamePanel.add(renderer);
+
 
         int verticalGap = 85;
         int horizontalGap = 65;
@@ -102,14 +121,9 @@ public class ChapsChallenge extends JFrame {
      * @return Info panel
      */
     public JPanel createInfoPanel(){
-
-
-        JPanel infoPanel = new JPanel(new BorderLayout());
+        JPanel infoPanel = new JPanel();
+       // infoPanel.setLayout(new BoxLayout(infoPanel, BoxLayout.Y_AXIS));
         infoPanel.setBackground(Color.BLACK);
-
-        int verticalGap = 50;
-        int horizontalGap = 10;
-        infoPanel.setBorder(new EmptyBorder(new Insets(verticalGap, 0, verticalGap, 65)));
 
         //level
         JLabel levelLabel = new JLabel("Level X: placeholder");
@@ -134,4 +148,11 @@ public class ChapsChallenge extends JFrame {
         return infoPanel;
     }
 
+    /**
+     * Getter for game.
+     * @return game
+     */
+    public Game getGame() {
+        return game;
+    }
 }

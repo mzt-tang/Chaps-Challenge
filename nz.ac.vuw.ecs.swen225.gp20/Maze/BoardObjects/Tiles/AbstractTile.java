@@ -47,4 +47,8 @@ public abstract class AbstractTile implements BoardObject {
     public boolean isRotated() {
         return rotated;
     }
+
+    public Image getCurrentImage() {
+        return currentImage;
+    }
 }

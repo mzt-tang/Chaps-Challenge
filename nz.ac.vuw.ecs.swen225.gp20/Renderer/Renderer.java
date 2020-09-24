@@ -1,8 +1,9 @@
 package Renderer;
 
-import Maze.Board;
+import Application.ChapsChallenge;
 import Maze.BoardObjects.Actors.Player;
 import Maze.BoardObjects.Tiles.*;
+import Maze.Game;
 import Maze.Position;
 
 import javax.swing.*;
@@ -26,11 +27,14 @@ public class Renderer extends Canvas {
     private boolean playerFlipped = false;
     private Position playerPrevPos;
 
+    ChapsChallenge application;
+
     /**
      * Creates a new renderer canvas
      */
-    public Renderer(){
+    public Renderer(ChapsChallenge application){
         images = new HashMap<>();
+        this.application = application;
         //Really compact way of loading all the images into memory
         //It iterates through all the files in a folder and maps the file names to the loaded images
         File[] files = new File(System.getProperty("user.dir") + "/Resources/tiles").listFiles();
@@ -58,10 +62,10 @@ public class Renderer extends Canvas {
         g2.fillRect(0, 0, getWidth(), getHeight());
 
         //Will get the real board once a level has been created
-        AbstractTile[][] board = aRandomBoard();
+        AbstractTile[][] board = application.getGame().getBoard().getMap();
 
         //Will get the actual player's position once the application creates the game with I can get the player from
-        Player player = new Player(new Position(8,8));
+        Player player = application.getGame().getPlayer();
         int playerX = player.getPos().getX();
         int playerY = player.getPos().getY();
 
@@ -70,13 +74,13 @@ public class Renderer extends Canvas {
             for (int x = -4; x <= 4; x++) {
                 //If in board bounds
                 if (playerX + x >= 0 && playerY + y >= 0 && playerX + x < board.length && playerY + y < board[0].length){
-                    g2.drawImage(getTileImage(board[playerX + x][playerY + y]),
+                    g2.drawImage(board[playerX + x][playerY + y].getCurrentImage(),
                             (x+4) * IMAGE_SIZE, (y+4) * IMAGE_SIZE, this);
                 }
             }
         }
 
-        /* Can't use this until the application creates a game
+        /*Can't use this until the application creates a game
         if (playerX < playerPrevPos.getX()){
             playerFlipped = true;
         }
@@ -94,7 +98,7 @@ public class Renderer extends Canvas {
         playerPrevPos = player.getPos();
     }
 
-    private Image getTileImage(AbstractTile tile){
+   /* private Image getTileImage(AbstractTile tile){
         if (tile instanceof ExitLock){
             if (tile.isRotated()){
                 return images.get("ExitLockVertical");
@@ -117,7 +121,7 @@ public class Renderer extends Canvas {
         }
         if (tile instanceof LockedDoor){
             LockedDoor lockedDoor = (LockedDoor)tile;
-            String colour = lockedDoor.getKey().getColour();
+            String colour = lockedDoor.getDoorColour();
             if (lockedDoor.isRotated()){
                 return images.get("DoorVertical" + colour);
             } else {
@@ -131,38 +135,38 @@ public class Renderer extends Canvas {
             return images.get("WallTile");
         }
         return null;
-    }
+    } */
 
-    private AbstractTile[][] aRandomBoard(){
+    public static AbstractTile[][] aRandomBoard(){
         AbstractTile[][] board = new AbstractTile[9][9];
         for (int y = 0; y < 9; y++){
             for (int x = 0; x < 9; x++){
                 board[x][y] = new FreeTile(new Position(x,y));
             }
         }
-        board[0][0] = new ExitLock(new Position(0,0));
-        board[0][1] = new ExitLock(new Position(0,1));
+        board[0][0] = new ExitLock(new Position(0,0), false);
+        board[0][1] = new ExitLock(new Position(0,1), true);
         board[1][0] = new ExitPortal(new Position(1,0));
         board[2][0] = new InfoField(new Position(2,0), "Hello");
         board[3][0] = new Key(new Position(3,0), "Blue");
         board[3][1] = new Key(new Position(3,1), "Green");
         board[3][2] = new Key(new Position(3,2), "Red");
         board[3][3] = new Key(new Position(3,3), "Yellow");
-        board[4][0] = new LockedDoor(new Position(4,0), false, new Key(new Position(3,0),  "Blue"));
-        board[4][1] = new LockedDoor(new Position(4,1), false, new Key(new Position(3,0), "Green"));
-        board[4][2] = new LockedDoor(new Position(4,2), false, new Key(new Position(3,2), "Red"));
-        board[4][3] = new LockedDoor(new Position(4,3), false, new Key(new Position(3,0), "Yellow"));
-        board[4][4] = new LockedDoor(new Position(4,4), true, new Key(new Position(3,0), "Blue"));
-        board[4][5] = new LockedDoor(new Position(4,5), true, new Key(new Position(3,0), "Green"));
-        board[4][6] = new LockedDoor(new Position(4,6), true, new Key(new Position(3,0), "Red"));
-        board[4][7] = new LockedDoor(new Position(4,7), true, new Key(new Position(3,0), "Yellow"));
+        board[4][0] = new LockedDoor(new Position(4,0), false, "Blue");
+        board[4][1] = new LockedDoor(new Position(4,1), false, "Green");
+        board[4][2] = new LockedDoor(new Position(4,2), false, "Red");
+        board[4][3] = new LockedDoor(new Position(4,3), false, "Yellow");
+        board[4][4] = new LockedDoor(new Position(4,4), true, "Blue");
+        board[4][5] = new LockedDoor(new Position(4,5), true, "Green");
+        board[4][6] = new LockedDoor(new Position(4,6), true, "Red");
+        board[4][7] = new LockedDoor(new Position(4,7), true, "Yellow");
         board[5][0] = new Treasure(new Position(5,0));
         board[6][0] = new Wall(new Position(6,0));
         return board;
     }
 
     //Just for testing
-    public static void main(String[] args) {
+    /*public static void main(String[] args) {
         Canvas canvas = new Renderer();
         JFrame frame = new JFrame("Test");
         JPanel main = new JPanel();
@@ -170,5 +174,5 @@ public class Renderer extends Canvas {
         frame.add(main);
         frame.pack();
         frame.setVisible(true);
-    }
+    } */
 }

@@ -28,6 +28,6 @@ public class FreeTile extends AbstractTile {
      */
     @Override
     public boolean interact(Player player) {
-        return super.interact(player);
+        return true;
     }
 }

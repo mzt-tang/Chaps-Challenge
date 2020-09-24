@@ -25,7 +25,8 @@ public class LockedDoor extends AbstractTile {
         images.put("DoorVerticalGreen", Toolkit.getDefaultToolkit().getImage("Resources/tiles/DoorVerticalGreen.jpeg"));
         images.put("DoorVerticalRed", Toolkit.getDefaultToolkit().getImage("Resources/tiles/DoorVerticalRed.jpeg"));
         images.put("DoorVerticalYellow", Toolkit.getDefaultToolkit().getImage("Resources/tiles/DoorVerticalYellow.jpeg"));
-        if (rotated){
+        images.put("FloorTile", Toolkit.getDefaultToolkit().getImage("Resources/tiles/FloorTile.jpeg"));
+        if (rotated) {
             currentImage = images.get("DoorVertical" + colour);
         } else {
             currentImage = images.get("DoorHorizontal" + colour);
@@ -39,8 +40,10 @@ public class LockedDoor extends AbstractTile {
      */
     @Override
     public boolean interact(Player player) {
-        if(!player.hasKey(colour)) return false;
-        return super.interact(player);
+        if(!player.hasKey(colour) && locked) return false;
+        locked = false;
+        currentImage = images.get("FloorTile");
+        return true;
     }
 
     public String getDoorColour() {

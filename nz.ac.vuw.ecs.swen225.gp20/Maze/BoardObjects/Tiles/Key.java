@@ -8,7 +8,8 @@ import java.util.Objects;
 
 public class Key extends AbstractTile {
 
-    private String colour;
+    private final String colour;
+    private boolean pickedUp = false;
 
     /**
      * .
@@ -17,35 +18,25 @@ public class Key extends AbstractTile {
     public Key(Position position, String colour) {
         super(position, false);
         this.colour = colour;
-        images.put("Files", Toolkit.getDefaultToolkit().getImage("Resources/tiles/Files.jpeg"));
-        currentImage = images.get("Files");
+        images.put("SwipeCardBlue", Toolkit.getDefaultToolkit().getImage("Resources/tiles/SwipeCardBlue.jpeg"));
+        images.put("SwipeCardGreen", Toolkit.getDefaultToolkit().getImage("Resources/tiles/SwipeCardGreen.jpeg"));
+        images.put("SwipeCardRed", Toolkit.getDefaultToolkit().getImage("Resources/tiles/SwipeCardRed.jpeg"));
+        images.put("SwipeCardYellow", Toolkit.getDefaultToolkit().getImage("Resources/tiles/SwipeCardYellow.jpeg"));
+        images.put("FloorTile", Toolkit.getDefaultToolkit().getImage("Resources/tiles/FloorTile.jpeg"));
+        currentImage = images.get("SwipeCard" + colour);
     }
 
     @Override
     public boolean interact(Player player) {
-        player.getKeys().add(this);
-        return super.interact(player);
+        if(!pickedUp) {
+            player.getKeys().add(this);
+            pickedUp = true;
+            currentImage = images.get("FloorTile");
+        }
+        return true;
     }
 
     public String getColour() {
         return colour;
-    }
-
-    /**
-     * Checks if the colours of the keys compared are the same.
-     * @param o The other object being compared to.
-     * @return True if the keys have the same colour.
-     */
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Key key = (Key) o;
-        return Objects.equals(colour, key.colour);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(colour);
     }
 }

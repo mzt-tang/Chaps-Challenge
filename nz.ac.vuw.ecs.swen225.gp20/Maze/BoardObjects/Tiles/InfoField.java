@@ -12,15 +12,15 @@ public class InfoField extends AbstractTile {
     public InfoField(Position position, String infoText) {
         super(position, false);
         this.infoText = infoText;
-        images.put("InfoField", Toolkit.getDefaultToolkit().getImage("Resources/tiles/Infofield.jpeg"));
-        currentImage = images.get("Infofield");
+        images.put("InfoField", Toolkit.getDefaultToolkit().getImage("Resources/tiles/InfoField.jpeg"));
+        currentImage = images.get("InfoField");
     }
 
     @Override
     public boolean interact(Player player) {
         //Display text - NEED TO CHANGE
         System.out.println(infoText);
-        return super.interact(player);
+        return true;
     }
 
     public String getInfoText() {
