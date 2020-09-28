@@ -9,7 +9,7 @@ import java.util.Set;
 public class Game {
 
     public enum DIRECTION {
-        UP, DOWN, LEFT, RIGHT;
+        UP, DOWN, LEFT, RIGHT
     }
 
     private Board board;

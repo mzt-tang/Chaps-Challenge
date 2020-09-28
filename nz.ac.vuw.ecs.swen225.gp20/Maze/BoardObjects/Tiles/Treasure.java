@@ -17,6 +17,7 @@ public class Treasure extends AbstractTile {
     public Treasure(Position position) {
         super(position, false);
         images.put("Files", Toolkit.getDefaultToolkit().getImage("Resources/tiles/Files.jpeg"));
+        images.put("FloorTile", Toolkit.getDefaultToolkit().getImage("Resources/tiles/FloorTile.jpeg"));
         currentImage = images.get("Files");
     }
 
@@ -28,7 +29,10 @@ public class Treasure extends AbstractTile {
      */
     @Override
     public boolean interact(Player player) {
-        return super.interact(player);
+        pickedUp = true;
+        player.getTreasures().add(this);
+        currentImage = images.get("FloorTile");
+        return true;
     }
 
     public boolean isPickedUp() {
