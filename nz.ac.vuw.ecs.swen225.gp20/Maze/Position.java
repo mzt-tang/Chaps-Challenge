@@ -65,4 +65,8 @@ public class Position {
     public void setY(int y) {
         this.y = y;
     }
+
+    public Position getPositionCopy(){
+        return new Position(x, y);
+    }
 }
