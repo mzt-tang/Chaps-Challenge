@@ -12,7 +12,6 @@ public class Board {
     }
 
     public AbstractTile[][] getUnmodMap(){
-        //NEED TO CHANGE
         return map;
     }
 

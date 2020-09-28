@@ -15,10 +15,11 @@ public class PatternEnemy extends AbstractActor{
     }
 
     @Override
-    public void move() {
+    public void move(Player player){
 
     }
 
     public void interact(Player player) {
     }
+
 }

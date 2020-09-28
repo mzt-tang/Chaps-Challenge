@@ -18,7 +18,7 @@ public abstract class AbstractActor implements BoardObject {
         this.position = position;
     }
 
-    public abstract void move();
+    public abstract void move(Player player);
 
     public abstract void interact(Player player);
 
