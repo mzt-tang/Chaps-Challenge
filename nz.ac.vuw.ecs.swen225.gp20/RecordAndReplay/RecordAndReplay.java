@@ -31,6 +31,9 @@ import java.util.List;
  * Multiple moves (aka changes) can happen at once.
  * Every change should be an array of changes.
  * The recording should be an array, of the array of changes.
+ *
+ * NOTE: each playermovement has a "direction" enum... might have to use.
+ *       I don't think a creature can move yet...
  * ////////////////////////////////////////////////////////////////
  *
  * INDEX:

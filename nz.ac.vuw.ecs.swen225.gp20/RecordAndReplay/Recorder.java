@@ -8,7 +8,8 @@ import java.util.List;
 /**
  * This handles all the recording that needs to take place in the game.
  * It's a "recorder" haha get it???
- * Also, it should have the ability to create and write new json.
+ * Also, it should be able to report "recordedChanges" to RecordAndReplay,
+ * So that RecordAndReplay can pass it to "writer".
  *
  * NOTE: ONLY RecordAndReplay.java should have access to this!!!
  *
