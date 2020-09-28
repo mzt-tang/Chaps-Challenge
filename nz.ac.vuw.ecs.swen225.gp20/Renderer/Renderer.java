@@ -84,6 +84,8 @@ public class Renderer extends Canvas {
         }
 
         //Can't test this until the player can move
+        System.out.println(playerX);
+        System.out.println(playerPrevPos.getX());
         if (playerX < playerPrevPos.getX()){
             playerFlipped = true;
         }
@@ -97,8 +99,7 @@ public class Renderer extends Canvas {
         } else {
             g2.drawImage(images.get("Astronaut"), 4 * IMAGE_SIZE, 4 * IMAGE_SIZE, this);
         }
-
-        playerPrevPos = player.getPos();
+        playerPrevPos = player.getPos().getPositionCopy();
     }
 
    /* private Image getTileImage(AbstractTile tile){
@@ -165,6 +166,21 @@ public class Renderer extends Canvas {
         board[4][7] = new LockedDoor(new Position(4,7), true, "Yellow");
         board[5][0] = new Treasure(new Position(5,0));
         board[6][0] = new Wall(new Position(6,0));
+        return board;
+    }
+
+    public static AbstractTile[][] level1(){
+        AbstractTile[][] board = new AbstractTile[21][21];
+        for (int y = 0; y < 21; y++){
+            for (int x = 0; x < 21; x++){
+                if (x == 0 || y == 0 || x == 20 || y == 20){
+                    board[x][y] = new Wall(new Position(x,y));
+                } else {
+                    board[x][y] = new FreeTile(new Position(x, y));
+                }
+            }
+        }
+        board[10][10] = new ExitPortal(new Position(10,10));
         return board;
     }
 
