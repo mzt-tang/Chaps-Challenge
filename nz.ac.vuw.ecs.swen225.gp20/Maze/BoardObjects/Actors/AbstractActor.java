@@ -20,7 +20,7 @@ public abstract class AbstractActor implements BoardObject {
 
     public abstract void move();
 
-    public abstract void interact(Player playera);
+    public abstract void interact(Player player);
 
     /**
      * Returns the position of the actor.

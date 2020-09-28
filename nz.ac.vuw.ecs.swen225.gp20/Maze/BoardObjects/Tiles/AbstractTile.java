@@ -19,17 +19,15 @@ import java.util.Set;
  */
 public abstract class AbstractTile implements BoardObject {
 
-    public final Position position; //Final cause tiles don't move to different places (although they can be picked up)
     protected boolean rotated = false;
     protected Map<String, Image> images = new HashMap<>();
     protected Image currentImage;
 
     /**
      * .
-     * @param position .
+     * @param setVertical tells if the tile is vertical or horizontal
      */
-    public AbstractTile(Position position, boolean setVertical) {
-        this.position = position;
+    public AbstractTile(boolean setVertical) {
         this.rotated = setVertical;
     }
 

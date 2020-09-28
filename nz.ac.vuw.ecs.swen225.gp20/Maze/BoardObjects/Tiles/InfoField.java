@@ -9,8 +9,8 @@ public class InfoField extends AbstractTile {
 
     private final String infoText; //Maybe it won't be final
 
-    public InfoField(Position position, String infoText) {
-        super(position, false);
+    public InfoField(String infoText) {
+        super(false);
         this.infoText = infoText;
         images.put("InfoField", Toolkit.getDefaultToolkit().getImage("Resources/tiles/InfoField.jpeg"));
         currentImage = images.get("InfoField");
