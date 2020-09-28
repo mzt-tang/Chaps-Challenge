@@ -8,7 +8,7 @@ public class Board {
 
     public Board(AbstractTile[][] tileMap) {
         //this.board = board;
-        this.map = new AbstractTile[9][9];
+        this.map = tileMap;
     }
 
     public AbstractTile[][] getUnmodMap(){

@@ -30,4 +30,8 @@ public class Treasure extends AbstractTile {
     public boolean interact(Player player) {
         return super.interact(player);
     }
+
+    public boolean isPickedUp() {
+        return pickedUp;
+    }
 }

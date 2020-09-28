@@ -1,8 +1,9 @@
 package Renderer;
 
-import Maze.Board;
+import Application.ChapsChallenge;
 import Maze.BoardObjects.Actors.Player;
 import Maze.BoardObjects.Tiles.*;
+import Maze.Game;
 import Maze.Position;
 
 import javax.swing.*;
@@ -26,11 +27,16 @@ public class Renderer extends Canvas {
     private boolean playerFlipped = false;
     private Position playerPrevPos;
 
+    ChapsChallenge application;
+
     /**
      * Creates a new renderer canvas
      */
-    public Renderer(){
+    public Renderer(ChapsChallenge application){
         images = new HashMap<>();
+        this.application = application;
+        playerPrevPos = application.getGame().getPlayer().getPos();
+
         //Really compact way of loading all the images into memory
         //It iterates through all the files in a folder and maps the file names to the loaded images
         File[] files = new File(System.getProperty("user.dir") + "/Resources/tiles").listFiles();
@@ -52,16 +58,17 @@ public class Renderer extends Canvas {
     public void paint(Graphics g) {
         super.paint(g);
         Graphics2D g2 = (Graphics2D) g; //Graphics 2D gives you more drawing options
+        System.out.println("Paint called");
 
         //Set background (Doesn't have to be white, could be space because Among Us, could even be animated)
         g2.setColor(Color.WHITE);
         g2.fillRect(0, 0, getWidth(), getHeight());
 
         //Will get the real board once a level has been created
-        AbstractTile[][] board = aRandomBoard();
+        AbstractTile[][] board = application.getGame().getBoard().getMap();
 
         //Will get the actual player's position once the application creates the game with I can get the player from
-        Player player = new Player(new Position(8,8));
+        Player player = application.getGame().getPlayer();
         int playerX = player.getPos().getX();
         int playerY = player.getPos().getY();
 
@@ -70,19 +77,19 @@ public class Renderer extends Canvas {
             for (int x = -4; x <= 4; x++) {
                 //If in board bounds
                 if (playerX + x >= 0 && playerY + y >= 0 && playerX + x < board.length && playerY + y < board[0].length){
-                    g2.drawImage(getTileImage(board[playerX + x][playerY + y]),
+                    g2.drawImage(board[playerX + x][playerY + y].getCurrentImage(),
                             (x+4) * IMAGE_SIZE, (y+4) * IMAGE_SIZE, this);
                 }
             }
         }
 
-        /*Can't use this until the application creates a game
+        //Can't test this until the player can move
         if (playerX < playerPrevPos.getX()){
             playerFlipped = true;
         }
         if (playerX > playerPrevPos.getX()){
             playerFlipped = false;
-        } */
+        }
 
         //Draw player on the centre of the screen
         if (playerFlipped) {
@@ -94,7 +101,7 @@ public class Renderer extends Canvas {
         playerPrevPos = player.getPos();
     }
 
-    private Image getTileImage(AbstractTile tile){
+   /* private Image getTileImage(AbstractTile tile){
         if (tile instanceof ExitLock){
             if (tile.isRotated()){
                 return images.get("ExitLockVertical");
@@ -131,9 +138,9 @@ public class Renderer extends Canvas {
             return images.get("WallTile");
         }
         return null;
-    }
+    } */
 
-    private AbstractTile[][] aRandomBoard(){
+    public static AbstractTile[][] aRandomBoard(){
         AbstractTile[][] board = new AbstractTile[9][9];
         for (int y = 0; y < 9; y++){
             for (int x = 0; x < 9; x++){
@@ -162,7 +169,7 @@ public class Renderer extends Canvas {
     }
 
     //Just for testing
-    public static void main(String[] args) {
+    /*public static void main(String[] args) {
         Canvas canvas = new Renderer();
         JFrame frame = new JFrame("Test");
         JPanel main = new JPanel();
@@ -170,5 +177,5 @@ public class Renderer extends Canvas {
         frame.add(main);
         frame.pack();
         frame.setVisible(true);
-    }
+    } */
 }
