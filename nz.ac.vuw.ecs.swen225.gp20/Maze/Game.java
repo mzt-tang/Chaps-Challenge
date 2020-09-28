@@ -61,7 +61,14 @@ public class Game {
         assert (board.getMap()[newPos.getX()][newPos.getY()] != null)
                 : "Position at array is null. If you're here then something really bad happened...";
 
+        /**
         //CHECK IF MOVING INTO ENEMY
+        for(AbstractActor enemy : computerPlayers) {
+            if(enemy.getPos().equals(newPos)){
+                enemy.interact(player);
+            }
+        }
+         **/
 
         //Interact with the square and move there if possible.
         AbstractTile moveToTile = board.getMap()[newPos.getX()][newPos.getY()];

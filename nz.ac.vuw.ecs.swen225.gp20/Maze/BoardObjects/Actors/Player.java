@@ -55,4 +55,12 @@ public class Player extends AbstractActor{
     public Set<Treasure> getTreasures() {
         return treasureSet;
     }
+
+    @Override
+    public void move() {
+
+    }
+
+    public void interact(Player player) {
+    }
 }

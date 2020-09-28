@@ -40,9 +40,7 @@ public abstract class AbstractTile implements BoardObject {
      * @param player The player that interacts with the tile.
      * @return Returns true if the actor can move on to this tile, false if not.
      */
-    public boolean interact(Player player){
-        return true;
-    }
+    public abstract boolean interact(Player player);
 
     public boolean isRotated() {
         return rotated;

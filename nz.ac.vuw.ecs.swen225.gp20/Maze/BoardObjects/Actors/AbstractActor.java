@@ -8,7 +8,7 @@ import Maze.Position;
  */
 public abstract class AbstractActor implements BoardObject {
 
-    private Position position;
+    private final Position position;
 
     /**
      * Basic constructor for any actors
@@ -18,9 +18,9 @@ public abstract class AbstractActor implements BoardObject {
         this.position = position;
     }
 
-    public void move() {
+    public abstract void move();
 
-    }
+    public abstract void interact(Player playera);
 
     /**
      * Returns the position of the actor.
@@ -29,4 +29,5 @@ public abstract class AbstractActor implements BoardObject {
     public Position getPos() {
         return position;
     }
+
 }
