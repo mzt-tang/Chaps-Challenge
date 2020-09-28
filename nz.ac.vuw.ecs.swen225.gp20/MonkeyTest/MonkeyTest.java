@@ -1,5 +1,7 @@
 package MonkeyTest;
 
+import javax.swing.JOptionPane;
+
 import org.junit.runner.*;
 import org.junit.runner.notification.Failure;
 
@@ -11,13 +13,22 @@ import org.junit.runner.notification.Failure;
  */
 
 public class MonkeyTest {
+	static int i;
+	static int k = 0;
+	
+	
 	public static void main(String[] args) {
 	
-		Result result = JUnitCore.runClasses(ApplicationTests.class, MazeTests.class);
+		TestSuite test = new TestSuite();
 		
-		for(Failure fail : result.getFailures()) { System.out.println(fail.toString());}
+		try {
+	 i = Integer.parseInt(JOptionPane.showInputDialog(null, "How many random commands to send?\n"));
+		} catch(Exception e) { JOptionPane.showMessageDialog(null, "You must input an integer");}
 		
-		System.out.println("Test Successful: " + result.wasSuccessful());
+		while(k < i) {test.randomMovement(); k++;}
+		
+		
+		System.out.println();
 	}
 	
 }
