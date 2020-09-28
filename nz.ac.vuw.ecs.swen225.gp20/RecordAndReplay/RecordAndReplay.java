@@ -20,6 +20,18 @@ import java.util.List;
  *   - set replay speed.  -(ASSUMPTION)Set tick speed depending on seconds.
  * + (ASSUMPTION) Player CANNOT undo or redo.
  *
+ * ////////////////////////////////////////////////////////////////
+ * Player can move using arrow keys only.
+ * Then it checks if the player used item.
+ * Then it checks if the player has interacted with any creatures or items.
+ *
+ * On a completely separate tick cycle, enemies will move on their own.
+ * Every move, it checks if they have interacted with player.
+ *
+ * Multiple moves (aka changes) can happen at once.
+ * Every change should be an array of changes.
+ * The recording should be an array, of the array of changes.
+ * ////////////////////////////////////////////////////////////////
  *
  * INDEX:
  * > RECORDING
@@ -30,88 +42,34 @@ import java.util.List;
  */
 public class RecordAndReplay<E> {
     private Board board; //The board (level) that this record is associated with.//Change later...
-    private List<ArrayList<Action>> recordedChanges; //ArrayList chosen instead of stack, so you can go back and fourth n shit. ORDER IS IMPORTANT!!!
+    private Recorder recorder;
 
     /**
      * Creates a RecordAndReplay object associated with a board.
      * Ideally created whenever a new level is loaded.
      *
-     * CURRENT ASSUMPTION: each level will have it's own RecordAndReplay object. Might need updates later.
-     *                     The RecordAndReplay will ideally be called in the Game class BUT it should remember the board and the enemies/players within instead.
-     * NOTE TO SELF: Change later if the object is associated with the GAME instead.
+     * CURRENT ASSUMPTION: RecordAndReplay object is associated with the game.
+     *                      Each will contain it's own board.
      *
      * @param board The Board object which this level is associated with
      */
     public RecordAndReplay(Board board) {
         this.board = board;
-        recordedChanges = new ArrayList<ArrayList<Action>>();
+        this.recorder = new Recorder();
     }
 
     /**
      * Parameterless constructor. (might not even need. delete later...)
      */
     public RecordAndReplay() {
-        recordedChanges = new ArrayList<ArrayList<Action>>();
+        this.recorder = new Recorder();
     }
 
-    //=====RUNNING=====//
-    //All functions that have to do with recording every move during the game.
+    //=====RECORDER=====//
+    //Effectively relays all the recorder's functions here. Doing this to save me from headache.
 
-    /**
-     * Record a singular change. Ideally done if it's only ONE actor moving. IE: player.
-     */
-    public <E> void recordChange(E action) {
-        //FIRST, find out what kinda move it is (REMINDER: you may need to create a method for every kinda move if the others refuse
-                                                           //to implement an interface into their design.
-        Action a = new Action();
-        //Eugh, brute force...
-        if(action instanceof Maze.Game.DIRECTION) {
-            //SECOND, create an Action object using the input
 
-            Maze.Game.DIRECTION direction = (DIRECTION) action;
 
-        }
-
-        //THIRD, add the singular action to it's own array
-        ArrayList<Action> addThis = new ArrayList<Action>();
-        addThis.add(a);
-        recordedChanges.add(addThis);
-    }
-
-    /**
-     * There may be multiple changes at one moment.
-     * This is one way of recording them all: (Delete if no one likes it)
-     * If multiple actors have to move at the same time, add the array of "actions" here.
-     *
-     * @Param changes ArrayList of Actions that change the enemy positions, player positions or the board.
-     */
-    public void recordChanges(ArrayList<Action> changes) {
-    }
-
-    /**
-     * There may be multiple changes at one moment.
-     * This is a second way of recording them all: (Delete if no one likes it)
-     * If multiple actors have to move at the same time, put this in the same loop that update's their positions.
-     * Just be sure to call "cacheBuffer" once the loop is completed.
-     */
-    public <E> void addChangeToBuffer(E action) {
-
-    }
-
-    /**
-     * Clear the buffer of changes, but also record them as a singular action array.
-     * DONT FORGET TO CALL THIS!!!!
-     */
-    public void cacheBuffer() {
-
-    }
-
-    /**
-     * Have no idea application or maze will implement the moves of the player or actors
-     * Just in case, heres a reminder for yourself
-     */
-    //public void recordPlayerMove() {}
-    //public void recordActorMove() {}
 
     //=====SAVING=====//
     //All functions to do with creating a save via JSON is here.
