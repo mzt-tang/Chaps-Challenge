@@ -183,7 +183,7 @@ public class Renderer extends Canvas {
         board[13][1] = new ExitPortal();
         board[12][1] = new ExitLock(false);
         board[13][2] = new ExitLock(true);
-        board[12][12] = new Wall();
+        board[12][2] = new Wall();
         board[6][6] = new Key("Blue");
         board[1][7] = new LockedDoor(false, "Blue");
         board[6][8] = new Key("Green");
