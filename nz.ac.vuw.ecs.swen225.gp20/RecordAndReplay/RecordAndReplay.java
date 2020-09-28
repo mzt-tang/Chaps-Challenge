@@ -32,8 +32,6 @@ public class RecordAndReplay<E> {
     private Board board; //The board (level) that this record is associated with.//Change later...
     private List<ArrayList<Action>> recordedChanges; //ArrayList chosen instead of stack, so you can go back and fourth n shit. ORDER IS IMPORTANT!!!
 
-
-
     /**
      * Creates a RecordAndReplay object associated with a board.
      * Ideally created whenever a new level is loaded.
