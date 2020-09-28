@@ -6,8 +6,8 @@ import Maze.Position;
 import java.awt.*;
 
 public class ExitPortal extends AbstractTile {
-    public ExitPortal(Position position) {
-        super(position, false);
+    public ExitPortal() {
+        super(false);
         images.put("Vent", Toolkit.getDefaultToolkit().getImage("Resources/tiles/Vent.jpeg"));
         currentImage = images.get("Vent");
     }

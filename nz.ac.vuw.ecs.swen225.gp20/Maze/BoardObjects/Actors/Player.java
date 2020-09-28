@@ -57,7 +57,7 @@ public class Player extends AbstractActor{
     }
 
     @Override
-    public void move() {
+    public void move(Player player) {
 
     }
 

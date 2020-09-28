@@ -10,12 +10,9 @@ import java.awt.*;
  */
 public class FreeTile extends AbstractTile {
 
-    /**
-     * .
-     * @param position .
-     */
-    public FreeTile(Position position) {
-        super(position, false);
+
+    public FreeTile() {
+        super(false);
         images.put("FloorTile", Toolkit.getDefaultToolkit().getImage("Resources/tiles/FloorTile.jpeg"));
         currentImage = images.get("FloorTile");
     }

@@ -6,8 +6,8 @@ import Maze.Position;
 import java.awt.*;
 
 public class Wall extends AbstractTile {
-    public Wall(Position position) {
-        super(position, false);
+    public Wall() {
+        super(false);
         images.put("WallTile", Toolkit.getDefaultToolkit().getImage("Resources/tiles/WallTile.jpeg"));
         currentImage = images.get("WallTile");
     }

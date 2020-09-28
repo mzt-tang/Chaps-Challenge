@@ -15,8 +15,8 @@ public class Key extends AbstractTile {
      * .
      * @param position .
      */
-    public Key(Position position, String colour) {
-        super(position, false);
+    public Key(String colour) {
+        super(false);
         this.colour = colour;
         images.put("SwipeCardBlue", Toolkit.getDefaultToolkit().getImage("Resources/tiles/SwipeCardBlue.jpeg"));
         images.put("SwipeCardGreen", Toolkit.getDefaultToolkit().getImage("Resources/tiles/SwipeCardGreen.jpeg"));

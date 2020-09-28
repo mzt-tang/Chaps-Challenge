@@ -25,7 +25,7 @@ public class Game {
 
     public void moveEnemyCheckWin() {
         for(AbstractActor c : computerPlayers) {
-            c.move();
+            c.move(player);
         }
     }
 
@@ -87,7 +87,7 @@ public class Game {
         for (int i = 0; i < board.getMap().length; i++) {
             for (int j = 0; j < board.getMap()[0].length; j++) {
                 if(board.getMap()[i][j] instanceof ExitLock){
-                    board.getMap()[i][j] = new FreeTile(board.getMap()[i][j].position);
+                    board.getMap()[i][j] = new FreeTile();
                 }
             }
         }

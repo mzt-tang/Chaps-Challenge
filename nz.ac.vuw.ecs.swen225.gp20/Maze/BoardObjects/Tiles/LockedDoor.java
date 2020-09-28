@@ -10,12 +10,9 @@ public class LockedDoor extends AbstractTile {
     private String colour;
     private boolean locked = true;
 
-    /**
-     * .
-     * @param position .
-     */
-    public LockedDoor(Position position, boolean setVertical, String colour) {
-        super(position, setVertical);
+
+    public LockedDoor(boolean setVertical, String colour) {
+        super(setVertical);
         this.colour = colour;
         images.put("DoorHorizontalBlue", Toolkit.getDefaultToolkit().getImage("Resources/tiles/DoorHorizontalBlue.jpeg"));
         images.put("DoorHorizontalGreen", Toolkit.getDefaultToolkit().getImage("Resources/tiles/DoorHorizontalGreen.jpeg"));

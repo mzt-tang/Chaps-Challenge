@@ -99,33 +99,33 @@ public class JSONReader {
 			if(tileName.equals("\"Key\"")) {
 				JsonValue colour = currentTile.get("Colour");
 				String tileColour = colour.toString();
-				tileObject = new Key(tilePos, tileColour);
+				tileObject = new Key(tileColour);
 			}
 			else if(tileName.equals("\"ExitPortal\"")) {
-				tileObject = new ExitPortal(tilePos);
+				tileObject = new ExitPortal();
 			}
 			else if(tileName.equals("\"ExitLock\"")) {
-				tileObject = new ExitLock(tilePos, isRotated);
+				tileObject = new ExitLock(isRotated);
 			}
 			else if(tileName.equals("\"InfoField\"")) {
 				JsonValue infoText = currentTile.get("InfoText");
 				String tileInfoText = infoText.toString();
-				tileObject = new InfoField(tilePos, tileInfoText);
+				tileObject = new InfoField(tileInfoText);
 			}
 			else if(tileName.equals("\"LockedDoor\"")) {
 				JsonValue colour = currentTile.get("Colour");
 				String tileColour = colour.toString();
-				tileObject = new LockedDoor(tilePos, isRotated, tileColour);
+				tileObject = new LockedDoor(isRotated, tileColour);
 			}
 			else if(tileName.equals("\"Treasure\"")) {
-				tileObject = new Treasure(tilePos);
+				tileObject = new Treasure();
 			}
 			else if(tileName.equals("\"Wall\"")) {
-				tileObject = new Wall(tilePos);
+				tileObject = new Wall();
 			}
 			//Free tile
 			else{
-				tileObject = new FreeTile(tilePos);
+				tileObject = new FreeTile();
 			}
 			tileArray[tileColumn][tileRow] = tileObject;
 		}
