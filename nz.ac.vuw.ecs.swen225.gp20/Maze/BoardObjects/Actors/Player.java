@@ -30,6 +30,13 @@ public class Player extends AbstractActor{
         return false;
     }
 
+    public Key getKey(String colour) {
+        for (Key k : keySet) {
+            if(colour.equals(k.getColour())) return k;
+        }
+        return null;
+    }
+
     public Set<Key> getUnmodKeys(){
 
         Set<Key> keyCopies = new HashSet<>();
