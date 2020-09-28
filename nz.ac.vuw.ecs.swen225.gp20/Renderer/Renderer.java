@@ -145,42 +145,55 @@ public class Renderer extends Canvas {
         AbstractTile[][] board = new AbstractTile[9][9];
         for (int y = 0; y < 9; y++){
             for (int x = 0; x < 9; x++){
-                board[x][y] = new FreeTile(new Position(x,y));
+                board[x][y] = new FreeTile();
             }
         }
-        board[0][0] = new ExitLock(new Position(0,0), false);
-        board[0][1] = new ExitLock(new Position(0,1), true);
-        board[1][0] = new ExitPortal(new Position(1,0));
-        board[2][0] = new InfoField(new Position(2,0), "Hello");
-        board[3][0] = new Key(new Position(3,0), "Blue");
-        board[3][1] = new Key(new Position(3,1), "Green");
-        board[3][2] = new Key(new Position(3,2), "Red");
-        board[3][3] = new Key(new Position(3,3), "Yellow");
-        board[4][0] = new LockedDoor(new Position(4,0), false, "Blue");
-        board[4][1] = new LockedDoor(new Position(4,1), false, "Green");
-        board[4][2] = new LockedDoor(new Position(4,2), false, "Red");
-        board[4][3] = new LockedDoor(new Position(4,3), false, "Yellow");
-        board[4][4] = new LockedDoor(new Position(4,4), true, "Blue");
-        board[4][5] = new LockedDoor(new Position(4,5), true, "Green");
-        board[4][6] = new LockedDoor(new Position(4,6), true, "Red");
-        board[4][7] = new LockedDoor(new Position(4,7), true, "Yellow");
-        board[5][0] = new Treasure(new Position(5,0));
-        board[6][0] = new Wall(new Position(6,0));
+        board[0][0] = new ExitLock(false);
+        board[0][1] = new ExitLock(true);
+        board[1][0] = new ExitPortal();
+        board[2][0] = new InfoField("Hello");
+        board[3][0] = new Key("Blue");
+        board[3][1] = new Key("Green");
+        board[3][2] = new Key("Red");
+        board[3][3] = new Key("Yellow");
+        board[4][0] = new LockedDoor(false, "Blue");
+        board[4][1] = new LockedDoor(false, "Green");
+        board[4][2] = new LockedDoor(false, "Red");
+        board[4][3] = new LockedDoor(false, "Yellow");
+        board[4][4] = new LockedDoor(true, "Blue");
+        board[4][5] = new LockedDoor(true, "Green");
+        board[4][6] = new LockedDoor(true, "Red");
+        board[4][7] = new LockedDoor(true, "Yellow");
+        board[5][0] = new Treasure();
+        board[6][0] = new Wall();
         return board;
     }
 
     public static AbstractTile[][] level1(){
-        AbstractTile[][] board = new AbstractTile[21][21];
-        for (int y = 0; y < 21; y++){
-            for (int x = 0; x < 21; x++){
-                if (x == 0 || y == 0 || x == 20 || y == 20){
-                    board[x][y] = new Wall(new Position(x,y));
+        AbstractTile[][] board = new AbstractTile[15][15];
+        for (int y = 0; y < 15; y++){
+            for (int x = 0; x < 15; x++){
+                if (x == 0 || y == 0 || x == 14 || y == 14 || x == 7 || y == 7){
+                    board[x][y] = new Wall();
                 } else {
-                    board[x][y] = new FreeTile(new Position(x, y));
+                    board[x][y] = new FreeTile();
                 }
             }
         }
-        board[10][10] = new ExitPortal(new Position(10,10));
+        board[13][1] = new ExitPortal();
+        board[12][1] = new ExitLock(false);
+        board[13][2] = new ExitLock(true);
+        board[12][12] = new Wall();
+        board[6][6] = new Key("Blue");
+        board[1][7] = new LockedDoor(false, "Blue");
+        board[6][8] = new Key("Green");
+        board[7][13] = new LockedDoor(true, "Green");
+        board[8][8] = new Key("Red");
+        board[13][7] = new LockedDoor(false, "Red");
+        board[1][1] = new Treasure();
+        board[1][13] = new Treasure();
+        board[13][13] = new Treasure();
+        board[8][1] = new Treasure();
         return board;
     }
 
