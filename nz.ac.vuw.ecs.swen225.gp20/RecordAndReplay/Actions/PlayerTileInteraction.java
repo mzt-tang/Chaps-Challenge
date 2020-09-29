@@ -26,7 +26,7 @@ public class PlayerTileInteraction extends Action {
         } else if(tile instanceof Treasure) {
             tileName = "Treasure";
         } else if(tile instanceof Wall) {
-            tileName = "Wall";
+            tileName = "Wall"; //
         }
     }
 

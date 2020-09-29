@@ -54,7 +54,6 @@ public class Writer {
                 else if(a instanceof PlayerTileInteraction) {
                     action.add("PlayerTileInteract", ((PlayerTileInteraction) a).getTileName());
                 }
-                System.out.println("gay frogs");
                 changes.add(a.getType().getString() + ": " + action.build().toString()); //might wanna to change this later...
             }
             gameplayInJson.add(changes);
