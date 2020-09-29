@@ -3,10 +3,8 @@ package Renderer;
 import Application.ChapsChallenge;
 import Maze.BoardObjects.Actors.Player;
 import Maze.BoardObjects.Tiles.*;
-import Maze.Game;
 import Maze.Position;
 
-import javax.swing.*;
 import java.awt.*;
 import java.io.File;
 import java.util.HashMap;
@@ -27,7 +25,7 @@ public class Renderer extends Canvas {
     private boolean playerFlipped = false;
     private Position playerPrevPos;
 
-    ChapsChallenge application;
+    private ChapsChallenge application;
 
     /**
      * Creates a new renderer canvas
@@ -58,16 +56,14 @@ public class Renderer extends Canvas {
     public void paint(Graphics g) {
         super.paint(g);
         Graphics2D g2 = (Graphics2D) g; //Graphics 2D gives you more drawing options
-        System.out.println("Paint called");
 
         //Set background (Doesn't have to be white, could be space because Among Us, could even be animated)
         g2.setColor(Color.WHITE);
         g2.fillRect(0, 0, getWidth(), getHeight());
 
-        //Will get the real board once a level has been created
+        //Gets the board and player from the maze module via the application module
         AbstractTile[][] board = application.getGame().getBoard().getMap();
 
-        //Will get the actual player's position once the application creates the game with I can get the player from
         Player player = application.getGame().getPlayer();
         int playerX = player.getPos().getX();
         int playerY = player.getPos().getY();
@@ -83,9 +79,7 @@ public class Renderer extends Canvas {
             }
         }
 
-        //Can't test this until the player can move
-        System.out.println(playerX);
-        System.out.println(playerPrevPos.getX());
+        //Orient the player
         if (playerX < playerPrevPos.getX()){
             playerFlipped = true;
         }
@@ -102,46 +96,11 @@ public class Renderer extends Canvas {
         playerPrevPos = player.getPos().getPositionCopy();
     }
 
-   /* private Image getTileImage(AbstractTile tile){
-        if (tile instanceof ExitLock){
-            if (tile.isRotated()){
-                return images.get("ExitLockVertical");
-            } else {
-                return images.get("ExitLockHorizontal");
-            }
-        }
-        if (tile instanceof ExitPortal){
-            return images.get("Vent");
-        }
-        if (tile instanceof FreeTile){
-            return images.get("FloorTile");
-        }
-        if (tile instanceof InfoField){
-            return images.get("InfoField");
-        }
-        if (tile instanceof Key){
-            Key key = (Key)tile;
-            return images.get("SwipeCard" + key.getColour());
-        }
-        if (tile instanceof LockedDoor){
-            LockedDoor lockedDoor = (LockedDoor)tile;
-            String colour = lockedDoor.getDoorColour();
-            if (lockedDoor.isRotated()){
-                return images.get("DoorVertical" + colour);
-            } else {
-                return images.get("DoorHorizontal" + colour);
-            }
-        }
-        if (tile instanceof Treasure){
-            return images.get("Files");
-        }
-        if (tile instanceof Wall){
-            return images.get("WallTile");
-        }
-        return null;
-    } */
-
-    public static AbstractTile[][] aRandomBoard(){
+    /**
+     * Returns a test board which is 9x9 and has every tile image that exists on it
+     * @return the board (AbstractTile 2D array)
+     */
+    public static AbstractTile[][] testBoard(){
         AbstractTile[][] board = new AbstractTile[9][9];
         for (int y = 0; y < 9; y++){
             for (int x = 0; x < 9; x++){
@@ -169,6 +128,10 @@ public class Renderer extends Canvas {
         return board;
     }
 
+    /**
+     * Level 1 in code form, may not be final
+     * @return the 15x15 board (AbstractTile 2D array)
+     */
     public static AbstractTile[][] level1(){
         AbstractTile[][] board = new AbstractTile[15][15];
         for (int y = 0; y < 15; y++){
@@ -196,15 +159,4 @@ public class Renderer extends Canvas {
         board[8][1] = new Treasure();
         return board;
     }
-
-    //Just for testing
-    /*public static void main(String[] args) {
-        Canvas canvas = new Renderer();
-        JFrame frame = new JFrame("Test");
-        JPanel main = new JPanel();
-        main.add(canvas);
-        frame.add(main);
-        frame.pack();
-        frame.setVisible(true);
-    } */
 }

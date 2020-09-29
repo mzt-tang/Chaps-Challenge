@@ -1,0 +1,23 @@
+Breakpoints (Team 15)
+
+Maze:
+
+Application:
+  ChapsChallenge.java
+    -> Maze
+        * line 45 (interacts with Maze.Game, Maze.Board, Maze.BoardObjects.Actors.Player, Maze.Position)
+
+    -> Renderer
+        * line 58 (interacts with Renderer.Renderer)
+
+Renderer:
+  Renderer.java
+    -> Maze
+        * line 65 (interacts with Maze.Board)
+        * line 67 (interacts with Maze.Game)
+
+Persistence and Levels:
+
+Record and Replay:
+
+Monkey Testing:
