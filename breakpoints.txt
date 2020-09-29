@@ -11,6 +11,10 @@ Application:
         * line 62 (interacts with Renderer.Renderer)
 
 Renderer:
+  Renderer.java
+    -> Maze
+        * line 65 (interacts with Maze.Board)
+        * line 67 (interacts with Maze.Game)
 
 Persistence and Levels:
 
