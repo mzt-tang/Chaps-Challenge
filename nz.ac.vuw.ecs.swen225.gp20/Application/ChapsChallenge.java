@@ -46,6 +46,7 @@ public class ChapsChallenge extends JFrame {
      */
     public ChapsChallenge(){
         initUI();
+        game = new Game(new Board(Renderer.level1()), new Player(new Position(4, 4)), null); //FIXME: placeholder replace later
 
         JPanel basePanel = new JPanel();
         basePanel.setBackground(Color.BLACK);
@@ -57,7 +58,7 @@ public class ChapsChallenge extends JFrame {
         basePanel.setBorder(new EmptyBorder(new Insets(verticalGap, horizontalGap, verticalGap, horizontalGap)));
 
         //PANELS
-        game = new Game(new Board(Renderer.aRandomBoard()), new Player(new Position(4, 4)), null); //FIXME: placeholder replace later
+        // Gameplay panel
         JPanel gameplay = createGamePanel(new Renderer(this));
         addWindowListener(new WindowAdapter() {
             @Override
@@ -67,13 +68,15 @@ public class ChapsChallenge extends JFrame {
             }
         });
         basePanel.add(gameplay);
-        basePanel.add(Box.createRigidArea(new Dimension(50, 0)));
+        basePanel.add(Box.createRigidArea(new Dimension(50, 0))); // Small gap between game and info panel
 
+        // Info panel
         JPanel info = createInfoPanel();
         basePanel.add(info);
 
         add(basePanel);
 
+        // More window properties
         this.pack();
         this.setResizable(false);
         this.setVisible(true);
@@ -189,7 +192,7 @@ public class ChapsChallenge extends JFrame {
         chipsLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
 
-        //inventory view
+        //TODO: inventory view
 
         infoPanel.add(Box.createRigidArea(new Dimension(INFO_WIDTH, 150)));
         infoPanel.add(levelLabel);
