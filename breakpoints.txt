@@ -4,11 +4,11 @@ Maze:
 
 Application:
 ChapsChallenge.java
-  -> Renderer
-      * line 62
-
   -> Maze
       * line 49
+
+  -> Renderer
+      * line 62
 
 Rendering:
 
