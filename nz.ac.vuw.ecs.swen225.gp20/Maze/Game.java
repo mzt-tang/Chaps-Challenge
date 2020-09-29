@@ -17,14 +17,11 @@ public class Game {
     private Player player;
     private Set<AbstractActor> computerPlayers;
 
-    private RecordAndReplay recordAndReplayer;
-
     public Game(Board board, Player player, Set<AbstractActor> computerPlayers) {
         //GUI calls the persistence and sends the Game object the necessary files
         this.board = board;
         this.player = player;
         this.computerPlayers = computerPlayers;
-        recordAndReplayer = new RecordAndReplay();
     }
 
     public void moveEnemyCheckWin() {
@@ -44,7 +41,6 @@ public class Game {
         switch (direction) {
             case UP:
                 newPos = new Position(player.getPos(), DIRECTION.UP);
-                recordAndReplayer.capturePlayerMove(Game.DIRECTION.UP); //records movement
                 break;
             case DOWN:
                 newPos = new Position(player.getPos(), DIRECTION.DOWN);
@@ -78,15 +74,12 @@ public class Game {
         //Interact with the square and move there if possible.
         AbstractTile moveToTile = board.getMap()[newPos.getX()][newPos.getY()];
         if(moveToTile.interact(player)) {
-            recordAndReplayer.captureTileInteraction(moveToTile);
-
             //Unlock the exit lock if all treasures have been collected
             if (allTreasuresCollected()){
                 unlockExitLock();
             }
 
             player.getPos().move(direction);    //Move the player
-            recordAndReplayer.capturePlayerMove(direction);  //And record it
         }
 
     }
@@ -122,6 +115,4 @@ public class Game {
     public Player getPlayer() {
         return player;
     }
-
-    public RecordAndReplay getRecordAndReplayer() { return recordAndReplayer; }
 }
