@@ -10,10 +10,7 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Insets;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
+import java.awt.event.*;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JFrame;
@@ -101,11 +98,15 @@ public class ChapsChallenge extends JFrame {
         JMenuItem restartItem = new JMenuItem("Restart");
         //restartItem.addActionListener((e) -> System.exit(0)); //TODO: add functionality
 
+        JMenuItem saveItem = new JMenuItem("Save");
+        saveItem.addActionListener((e) -> game.getRecordAndReplayer().saveGameplay());
+
         JMenuItem exitItem = new JMenuItem("Exit");
         exitItem.addActionListener((e) -> System.exit(0));
 
         //adding menu selections to the menu
         gameMenu.add(restartItem);
+        gameMenu.add(saveItem);
         gameMenu.add(exitItem);
         menuBar.add(gameMenu);
 
@@ -154,6 +155,7 @@ public class ChapsChallenge extends JFrame {
 //                        System.out.println("Key Pressed");
                         break;
                 }
+                game.getRecordAndReplayer().storeRecorderBuffer();
                 renderer.revalidate();
                 renderer.repaint();
             }
