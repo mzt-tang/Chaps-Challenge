@@ -10,7 +10,7 @@ Application:
     -> Renderer
         * line 62 (interacts with Renderer.Renderer)
 
-Rendering:
+Renderer:
 
 Persistence and Levels:
 
