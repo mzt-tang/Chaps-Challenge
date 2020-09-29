@@ -2,8 +2,10 @@ package Application;
 
 import Maze.Board;
 import Maze.BoardObjects.Actors.Player;
+import Maze.BoardObjects.Tiles.AbstractTile;
 import Maze.Game;
 import Maze.Position;
+import RecordAndReplay.RecordAndReplay;
 import Renderer.Renderer;
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -34,12 +36,15 @@ public class ChapsChallenge extends JFrame {
 
     private Game game;
 
+    private RecordAndReplay recordAndReplayer;
+
     /**
      * Game instance
      */
     public ChapsChallenge(){
         initUI();
         game = new Game(new Board(Renderer.level1()), new Player(new Position(4, 4)), null); //FIXME: placeholder replace later
+        recordAndReplayer = new RecordAndReplay();
 
         JPanel basePanel = new JPanel();
         basePanel.setBackground(Color.BLACK);
@@ -99,7 +104,7 @@ public class ChapsChallenge extends JFrame {
         //restartItem.addActionListener((e) -> System.exit(0)); //TODO: add functionality
 
         JMenuItem saveItem = new JMenuItem("Save");
-        saveItem.addActionListener((e) -> game.getRecordAndReplayer().saveGameplay());
+        saveItem.addActionListener((e) -> recordAndReplayer.saveGameplay());
 
         JMenuItem exitItem = new JMenuItem("Exit");
         exitItem.addActionListener((e) -> System.exit(0));
@@ -136,18 +141,22 @@ public class ChapsChallenge extends JFrame {
                 switch (e.getKeyCode()){
                     case KeyEvent.VK_W:
                         System.out.println("Up");
+                        movementRecordHelper(Game.DIRECTION.UP);
                         game.movePlayer(Game.DIRECTION.UP);
                         break;
                     case KeyEvent.VK_A:
                         System.out.println("Left");
+                        movementRecordHelper(Game.DIRECTION.LEFT);
                         game.movePlayer(Game.DIRECTION.LEFT);
                         break;
                     case KeyEvent.VK_S:
                         System.out.println("Down");
+                        movementRecordHelper(Game.DIRECTION.DOWN);
                         game.movePlayer(Game.DIRECTION.DOWN);
                         break;
                     case KeyEvent.VK_D:
                         System.out.println("Right");
+                        movementRecordHelper(Game.DIRECTION.RIGHT);
                         game.movePlayer(Game.DIRECTION.RIGHT);
                         break;
                     default:
@@ -155,7 +164,7 @@ public class ChapsChallenge extends JFrame {
 //                        System.out.println("Key Pressed");
                         break;
                 }
-                game.getRecordAndReplayer().storeRecorderBuffer();
+                recordAndReplayer.storeRecorderBuffer();
                 renderer.revalidate();
                 renderer.repaint();
             }
@@ -209,5 +218,17 @@ public class ChapsChallenge extends JFrame {
      */
     public Game getGame() {
         return game;
+    }
+
+    /**
+     * Activated whenever a player moves in a direction.
+     * Also helps check tiles they are about to move into incase of anything
+     * being on said tile.
+     */
+    public void movementRecordHelper(Game.DIRECTION direction) {
+        recordAndReplayer.capturePlayerMove(direction);
+        Position newPos = new Position(game.getPlayer().getPos(), direction);
+        recordAndReplayer.captureTileInteraction(game.getBoard().getMap()[newPos.getX()][newPos.getY()]);
+
     }
 }
