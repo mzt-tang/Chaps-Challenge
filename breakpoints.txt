@@ -5,7 +5,7 @@ Maze:
 Application:
   ChapsChallenge.java
     -> Maze
-        * line 45 (interacts with Maze.Game)
+        * line 45 (interacts with Maze.Game, Maze.Board, Maze.BoardObjects.Actors.Player, Maze.Position)
 
     -> Renderer
         * line 58 (interacts with Renderer.Renderer)
