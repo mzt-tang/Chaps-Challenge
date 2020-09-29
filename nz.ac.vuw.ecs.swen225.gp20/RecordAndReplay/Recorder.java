@@ -1,6 +1,9 @@
 package RecordAndReplay;
 
+import Maze.BoardObjects.Tiles.AbstractTile;
+import Maze.BoardObjects.Tiles.Key;
 import Maze.Game;
+import RecordAndReplay.Actions.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,34 +30,36 @@ public class Recorder {
     /**
      * Records a player movement and stores it in the buffer
      */
-    public void recordPlayerMove() {
-        //FIRST, create new action.
+    public void capturePlayerMove(Game.DIRECTION direction) {
+        Action addthis = new PlayerMove(direction);
+        changeBuffer.add(addthis);
     }
-    /**
-     * Records a creature movement and stores it in the buffer.
-     */
-    public void recordCreatureMove() {
+
+    public void captureTileInteraction (AbstractTile tile) {
+        Action addthis = new PlayerTileInteraction(tile);
+        changeBuffer.add(addthis);
+    }
+
+    /** Records a creature movement and stores it in the buffer. */
+    /**public void captureCreatureMove() {
         //FIRST, create
 
         //Find's the creature at (x, y) and moves it in a direction.
     }
-    /**
-     * Record a tile's state changing.
-     */
-    public void recordTileChange() {
+    /** Record a tile's state changing. */
+    /**public void captureTileChange() {
         //derp
-    }
+    }*/
     //Add move as needed
-    /**
-     * Clears the buffer, stores it into the recordedChanges array.
-     * Call this often!!!
-     */
+    /** Clears the buffer, stores it into the recordedChanges array. */
     public void storeBuffer() {
-
+        recordedChanges.add(changeBuffer);
+        changeBuffer = new ArrayList<Action>();
     }
 
     /**
      * Record a singular change. Ideally done if it's only ONE actor moving.
+     * eh, delete this later when you're certain...
      */
     /*public <E> void recordChange(E action) {
         //FIRST, find out what kinda move it is (REMINDER: you may need to create a method for every kinda move if the others refuse
@@ -73,4 +78,6 @@ public class Recorder {
         addThis.add(a);
         recordedChanges.add(addThis);
     }*/
+
+    public List<ArrayList<Action>> getRecordedChanges() { return recordedChanges; }
 }

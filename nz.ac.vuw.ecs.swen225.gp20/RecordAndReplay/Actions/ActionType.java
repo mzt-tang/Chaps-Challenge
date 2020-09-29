@@ -1,4 +1,6 @@
-package RecordAndReplay;
+package RecordAndReplay.Actions;
+
+import RecordAndReplay.RecordAndReplay;
 
 /**
  * Just to avoid spaghetti code.
@@ -9,7 +11,7 @@ package RecordAndReplay;
  *
  */
 public enum ActionType {
-    PLAYERACTION("player"), CREATUREACTION("creature"), MAPACTION("change");
+    PLAYERACTION("playeraction"), CREATUREACTION("creatureaction"), MAPACTION("mapaction");
 
     //NOTE TO SELF: an action type will have a list of variables on what happens.
     //              We will decide this later, depending on how the game will control and feel.
@@ -18,4 +20,5 @@ public enum ActionType {
     ActionType(String asString) {
         this.asString = asString; //to make it easier to write n stuff
     }
+    public String getString() { return asString; }
 }

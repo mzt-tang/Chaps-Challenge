@@ -1,6 +1,9 @@
 package RecordAndReplay;
 
 import Maze.Board;
+import Maze.BoardObjects.Tiles.AbstractTile;
+import Maze.BoardObjects.Tiles.Key;
+import Maze.Game;
 import Maze.Game.DIRECTION;
 
 import java.util.ArrayList;
@@ -46,13 +49,13 @@ import java.util.List;
 public class RecordAndReplay<E> {
     private Board board; //The board (level) that this record is associated with.//Change later...
     private Recorder recorder;
+    private Writer writer;
 
     /**
      * Creates a RecordAndReplay object associated with a board.
      * Ideally created whenever a new level is loaded.
      *
-     * CURRENT ASSUMPTION: RecordAndReplay object is associated with the game.
-     *                      Each will contain it's own board.
+     * NOTE: might have to delete later.
      *
      * @param board The Board object which this level is associated with
      */
@@ -62,20 +65,34 @@ public class RecordAndReplay<E> {
     }
 
     /**
-     * Parameterless constructor. (might not even need. delete later...)
+     * Parameterless constructor.
      */
     public RecordAndReplay() {
-        this.recorder = new Recorder();
+        recorder = new Recorder();
+        this.writer = new Writer();
     }
 
     //=====RECORDER=====//
     //Effectively relays all the recorder's functions here. Doing this to save me from headache.
 
+    public void capturePlayerMove(Game.DIRECTION direction) {
+        recorder.capturePlayerMove(direction);
+    }
 
+    public void captureTileInteraction(AbstractTile tile) {
+        recorder.captureTileInteraction(tile);
+    }
 
+    //DO THIS AT THE END OF ALL CAPTURES
+    public void storeRecorderBuffer() {
+        recorder.storeBuffer();
+    }
 
-    //=====SAVING=====//
+    //=====SAVING=====//  AKA WRITING
     //All functions to do with creating a save via JSON is here.
+    public void saveGameplay() {
+        writer.writeRecording(recorder.getRecordedChanges());
+    }
 
     //=====LOADING=====//
 
