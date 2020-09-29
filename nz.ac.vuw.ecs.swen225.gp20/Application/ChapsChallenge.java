@@ -31,10 +31,6 @@ import javax.swing.border.EmptyBorder;
  */
 public class ChapsChallenge extends JFrame {
 
-    //window dimensions
-    private final int WINDOW_WIDTH = 950;
-    private final int WINDOW_HEIGHT = 750;
-
     //info panel
     private final int INFO_WIDTH = 240;
     private final int INFO_HEIGHT = 540;
@@ -77,9 +73,9 @@ public class ChapsChallenge extends JFrame {
         add(basePanel);
 
         // More window properties
-        this.pack();
-        this.setResizable(false);
-        this.setVisible(true);
+        pack();
+        setResizable(false);
+        setVisible(true);
     }
 
     /**
@@ -87,7 +83,6 @@ public class ChapsChallenge extends JFrame {
      */
     public void initUI(){
         setTitle("Chap's Challenge: Among Us Edition");
-        setSize(WINDOW_WIDTH, WINDOW_HEIGHT);
         createMenuBar();
 
         setLocationRelativeTo(null);
