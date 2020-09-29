@@ -5,10 +5,10 @@ Maze:
 Application:
   ChapsChallenge.java
     -> Maze
-        * line 49
+        * line 49 (interacts with Maze.Game)
 
     -> Renderer
-        * line 62
+        * line 62 (interacts with Renderer.Renderer)
 
 Rendering:
 
