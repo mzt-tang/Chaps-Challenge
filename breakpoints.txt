@@ -3,7 +3,12 @@ Breakpoints (Team 15)
 Maze:
 
 Application:
-* test
+ChapsChallenge.java
+  -> Renderer
+      * line 62
+
+  -> Maze
+      * line 49
 
 Rendering:
 
