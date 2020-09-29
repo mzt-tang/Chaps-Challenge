@@ -20,7 +20,7 @@ public class PlayerTileInteraction extends Action {
         } else if(tile instanceof InfoField) {
             tileName = "InfoField";
         } else if(tile instanceof Key) {
-            tileName = "Key";
+            tileName = "Key"; //might have to add a little more, like "colour", if need be
         } else if(tile instanceof LockedDoor) {
             tileName = "LockedDoor";
         } else if(tile instanceof Treasure) {
