@@ -74,6 +74,7 @@ public class ChapsChallenge extends JFrame {
 
         // More window properties
         pack();
+        setLocationRelativeTo(null);
         setResizable(false);
         setVisible(true);
     }
@@ -85,7 +86,6 @@ public class ChapsChallenge extends JFrame {
         setTitle("Chap's Challenge: Among Us Edition");
         createMenuBar();
 
-        setLocationRelativeTo(null);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
     }
 
