@@ -5,12 +5,11 @@ import Maze.BoardObjects.Actors.Player;
 import Maze.BoardObjects.Tiles.*;
 import Maze.Position;
 
-import javax.sound.sampled.Clip;
 import javax.swing.*;
 import java.awt.*;
 import java.io.File;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
+import java.util.List;
 
 /**
  * This is responsible for displaying the Maze on the screen
@@ -18,14 +17,16 @@ import java.util.Map;
  * @author Chris (ID: 300498017)
  */
 public class Renderer extends Canvas {
-    private static final int FOCUS_SIZE = 9; //The grid size of the board shown, which is 9x9 tiles
-    private static final int IMAGE_SIZE = 60;
-    private static final int CANVAS_SIZE = 540; //Size in pixels, 9 x 60px images
+    public static final int FOCUS_SIZE = 9; //The grid size of the board shown, which is 9x9 tiles
+    public static final int IMAGE_SIZE = 60;
+    public static final int CANVAS_SIZE = 540; //Size in pixels, 9 x 60px images
 
     private final Map<String, Image> images;
+    private final Set<Star> stars;
 
     private AudioPlayer audioPlayer;
 
+    private int tick = 0;
     private boolean playerFlipped = false;
     private Position playerPrevPos;
 
@@ -36,6 +37,7 @@ public class Renderer extends Canvas {
      */
     public Renderer(ChapsChallenge application){ //TODO: change this to maze
         images = new HashMap<>();
+        stars = new HashSet<>();
         audioPlayer = new AudioPlayer();
         this.application = application;
         playerPrevPos = application.getGame().getPlayer().getPos();
@@ -57,9 +59,16 @@ public class Renderer extends Canvas {
         super.paint(g);
         Graphics2D g2 = (Graphics2D) g; //Graphics 2D gives you more drawing options
 
-        //Set background (Doesn't have to be white, could be space because Among Us, could even be animated)
-        g2.setColor(Color.WHITE);
+        //Set background
+        g2.setColor(Color.BLACK);
         g2.fillRect(0, 0, getWidth(), getHeight());
+
+        //Add a star
+        if (tick % 5 == 0) {
+            stars.add(new Star(0, (int) (Math.random() * CANVAS_SIZE), (int) (Math.random() * 5 + 5), (int) (Math.random() * 5 + 5)));
+        }
+
+        drawStars(g2);
 
         //Gets the board and player from the maze module via the application module
         AbstractTile[][] board = application.getGame().getBoard().getMap();
@@ -94,6 +103,23 @@ public class Renderer extends Canvas {
             g2.drawImage(images.get("Astronaut"), 4 * IMAGE_SIZE, 4 * IMAGE_SIZE, this);
         }
         playerPrevPos = player.getPos().getPositionCopy();
+
+        tick++;
+    }
+
+    /**
+     * Draws all the stars on the screen
+     * @param g2 Paint graphic
+     */
+    public void drawStars(Graphics2D g2){
+        List<Star> toRemove = new ArrayList<>();
+        for (Star star : stars){
+            star.draw(g2);
+            if (!star.updatePos()){
+                toRemove.add(star);
+            }
+        }
+        stars.removeAll(toRemove);
     }
 
 
