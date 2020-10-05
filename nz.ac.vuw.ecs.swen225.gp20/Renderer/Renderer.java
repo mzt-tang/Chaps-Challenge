@@ -5,6 +5,8 @@ import Maze.BoardObjects.Actors.Player;
 import Maze.BoardObjects.Tiles.*;
 import Maze.Position;
 
+import javax.sound.sampled.Clip;
+import javax.swing.*;
 import java.awt.*;
 import java.io.File;
 import java.util.HashMap;
@@ -22,6 +24,8 @@ public class Renderer extends Canvas {
 
     private final Map<String, Image> images;
 
+    private AudioPlayer audioPlayer;
+
     private boolean playerFlipped = false;
     private Position playerPrevPos;
 
@@ -32,6 +36,7 @@ public class Renderer extends Canvas {
      */
     public Renderer(ChapsChallenge application){ //TODO: change this to maze
         images = new HashMap<>();
+        audioPlayer = new AudioPlayer();
         this.application = application;
         playerPrevPos = application.getGame().getPlayer().getPos();
 
@@ -90,6 +95,8 @@ public class Renderer extends Canvas {
         }
         playerPrevPos = player.getPos().getPositionCopy();
     }
+
+
 
     /**
      * Returns a test board which is 9x9 and has every tile image that exists on it
@@ -153,5 +160,16 @@ public class Renderer extends Canvas {
         board[13][13] = new Treasure();
         board[8][1] = new Treasure();
         return board;
+    }
+
+    //This is just to test sound works
+    public static void main(String[] args) {
+        AudioPlayer audioPlayer = new AudioPlayer();
+        audioPlayer.playSound("SwipeGood");
+        JOptionPane.showMessageDialog(null, "Press for next sound");
+        audioPlayer.playSound("SwipeGood");
+        JOptionPane.showMessageDialog(null, "Press for next sound");
+        audioPlayer.playSound("DoorOpen");
+        JOptionPane.showMessageDialog(null, "This is just so the program doesn't end immediately");
     }
 }
