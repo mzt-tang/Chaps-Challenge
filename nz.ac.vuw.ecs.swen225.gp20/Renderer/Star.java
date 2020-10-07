@@ -1,5 +1,7 @@
 package Renderer;
 
+import Maze.Game;
+
 import java.awt.*;
 
 /**
@@ -36,6 +38,23 @@ public class Star {
             return false;
         }
         return true;
+    }
+
+    /**
+     * Moves the star so that when the plays moves in a direction
+     * the start appears to stay in the same place
+     */
+    public void playerMoved(Renderer.DIRECTION direction){
+        switch (direction){
+            case UP:
+                y += Renderer.IMAGE_SIZE/2; break;
+            case DOWN:
+                y -= Renderer.IMAGE_SIZE/2; break;
+            case LEFT:
+                x += Renderer.IMAGE_SIZE/2; break;
+            case RIGHT:
+                x -= Renderer.IMAGE_SIZE/2; break;
+        }
     }
 
     /**
