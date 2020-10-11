@@ -5,45 +5,51 @@ import Maze.BoardObjects.Actors.Player;
 import Maze.BoardObjects.Tiles.*;
 import Maze.Position;
 
+import javax.swing.*;
 import java.awt.*;
 import java.io.File;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
+import java.util.List;
 
 /**
  * This is responsible for displaying the Maze on the screen
  * including all it's tiles, animations and sound effects
  * @author Chris (ID: 300498017)
  */
-public class Renderer extends Canvas {
-    private static final int FOCUS_SIZE = 9; //The grid size of the board shown, which is 9x9 tiles
-    private static final int IMAGE_SIZE = 60;
-    private static final int CANVAS_SIZE = 540; //Size in pixels, 9 x 60px images
+public class Renderer extends JComponent {
+    public static final int FOCUS_SIZE = 9; //The grid size of the board shown, which is 9x9 tiles
+    public static final int IMAGE_SIZE = 60;
+    public static final int CANVAS_SIZE = 540; //Size in pixels, 9 x 60px images
 
     private final Map<String, Image> images;
+    private final Set<Star> stars;
 
+    private AudioPlayer audioPlayer;
+
+    private int tick = 0;
     private boolean playerFlipped = false;
     private Position playerPrevPos;
 
     private ChapsChallenge application;
 
+    public enum DIRECTION {
+        UP, DOWN, LEFT, RIGHT, NULL
+    }
+
     /**
      * Creates a new renderer canvas
      */
-    public Renderer(ChapsChallenge application){
+    public Renderer(ChapsChallenge application){ //TODO: change this to maze
         images = new HashMap<>();
+        stars = new HashSet<>();
+        audioPlayer = new AudioPlayer();
         this.application = application;
         playerPrevPos = application.getGame().getPlayer().getPos();
 
         //Really compact way of loading all the images into memory
         //It iterates through all the files in a folder and maps the file names to the loaded images
-        File[] files = new File(System.getProperty("user.dir") + "/Resources/tiles").listFiles();
-        for (File file : files){
-            images.put(file.getName().substring(0,file.getName().length()-5), //removes .jpeg extension
-                    Toolkit.getDefaultToolkit().getImage(file.getPath()));
-        }
-
-        files = new File(System.getProperty("user.dir") + "/Resources/actors").listFiles();
+        //TODO: Move image loading to player and delete this
+        File[] files = new File(System.getProperty("user.dir") + "/Resources/actors").listFiles();
         for (File file : files){
             images.put(file.getName().substring(0,file.getName().length()-4), //removes .png extension
                     Toolkit.getDefaultToolkit().getImage(file.getPath()));
@@ -53,12 +59,12 @@ public class Renderer extends Canvas {
     }
 
     @Override
-    public void paint(Graphics g) {
-        super.paint(g);
+    public void paintComponent(Graphics g) {
+        super.paintComponent(g);
         Graphics2D g2 = (Graphics2D) g; //Graphics 2D gives you more drawing options
 
-        //Set background (Doesn't have to be white, could be space because Among Us, could even be animated)
-        g2.setColor(Color.WHITE);
+        //Set background
+        g2.setColor(Color.BLACK);
         g2.fillRect(0, 0, getWidth(), getHeight());
 
         //Gets the board and player from the maze module via the application module
@@ -67,6 +73,30 @@ public class Renderer extends Canvas {
         Player player = application.getGame().getPlayer();
         int playerX = player.getPos().getX();
         int playerY = player.getPos().getY();
+
+        //Orient the player
+        DIRECTION direction = DIRECTION.NULL;
+        if (playerX < playerPrevPos.getX()){
+            playerFlipped = true;
+            direction = DIRECTION.LEFT;
+        }
+        if (playerX > playerPrevPos.getX()){
+            playerFlipped = false;
+            direction = DIRECTION.RIGHT;
+        }
+        if (playerY < playerPrevPos.getY()){
+            direction = DIRECTION.UP;
+        }
+        if (playerY > playerPrevPos.getY()){
+            direction = DIRECTION.DOWN;
+        }
+
+        //Add a star
+        if (tick % 5 == 0) {
+            stars.add(new Star(0, (int) (Math.random() * CANVAS_SIZE), (int) (Math.random() * 5 + 5), (int) (Math.random() * 5 + 5)));
+        }
+
+        drawStars(g2, direction);
 
         //Draw all tiles in the focus area
         for (int y = -4; y <= 4; y++) {
@@ -79,14 +109,6 @@ public class Renderer extends Canvas {
             }
         }
 
-        //Orient the player
-        if (playerX < playerPrevPos.getX()){
-            playerFlipped = true;
-        }
-        if (playerX > playerPrevPos.getX()){
-            playerFlipped = false;
-        }
-
         //Draw player on the centre of the screen
         if (playerFlipped) {
             g2.drawImage(images.get("AstronautFlipped"), 4 * IMAGE_SIZE, 4 * IMAGE_SIZE, this);
@@ -94,7 +116,30 @@ public class Renderer extends Canvas {
             g2.drawImage(images.get("Astronaut"), 4 * IMAGE_SIZE, 4 * IMAGE_SIZE, this);
         }
         playerPrevPos = player.getPos().getPositionCopy();
+
+        tick++;
     }
+
+    /**
+     * Draws all the stars on the screen
+     * @param g2 Paint graphic
+     */
+    public void drawStars(Graphics2D g2, DIRECTION direction){
+        System.out.println("Player moved" + direction);
+        List<Star> toRemove = new ArrayList<>();
+        for (Star star : stars){
+            if (direction != DIRECTION.NULL){
+                star.playerMoved(direction);
+            }
+            if (!star.updatePos()){
+                toRemove.add(star);
+            }
+            star.draw(g2);
+        }
+        stars.removeAll(toRemove);
+    }
+
+
 
     /**
      * Returns a test board which is 9x9 and has every tile image that exists on it
@@ -158,5 +203,16 @@ public class Renderer extends Canvas {
         board[13][13] = new Treasure();
         board[8][1] = new Treasure();
         return board;
+    }
+
+    //This is just to test sound works
+    public static void main(String[] args) {
+        AudioPlayer audioPlayer = new AudioPlayer();
+        audioPlayer.playSound("SwipeGood");
+        JOptionPane.showMessageDialog(null, "Press for next sound");
+        audioPlayer.playSound("SwipeGood");
+        JOptionPane.showMessageDialog(null, "Press for next sound");
+        audioPlayer.playSound("DoorOpen");
+        JOptionPane.showMessageDialog(null, "This is just so the program doesn't end immediately");
     }
 }
