@@ -1,5 +1,6 @@
 package Maze.BoardObjects.Actors;
 
+import Maze.Board;
 import Maze.BoardObjects.Tiles.AbstractTile;
 import Maze.BoardObjects.Tiles.Key;
 import Maze.BoardObjects.Tiles.Treasure;
@@ -68,7 +69,7 @@ public class Player extends AbstractActor{
     }
 
     @Override
-    public void move(Player player) {
+    public void move(Player player, Board board) {
 
     }
 

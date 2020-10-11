@@ -26,7 +26,7 @@ public class Game {
 
     public void moveEnemyCheckWin() {
         for(AbstractActor c : computerPlayers) {
-            c.move(player);
+            c.move(player, board);
         }
     }
 

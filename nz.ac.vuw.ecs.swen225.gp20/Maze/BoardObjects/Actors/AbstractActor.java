@@ -1,5 +1,6 @@
 package Maze.BoardObjects.Actors;
 
+import Maze.Board;
 import Maze.Position;
 
 /**
@@ -17,7 +18,7 @@ public abstract class AbstractActor {
         this.position = position;
     }
 
-    public abstract void move(Player player);
+    public abstract void move(Player player, Board board);
 
     public abstract void interact(Player player);
 
