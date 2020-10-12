@@ -8,7 +8,7 @@ import Maze.Position;
  */
 public abstract class AbstractActor {
 
-    private final Position position;
+    protected Position position;    //Could be final...?
 
     /**
      * Basic constructor for any actors

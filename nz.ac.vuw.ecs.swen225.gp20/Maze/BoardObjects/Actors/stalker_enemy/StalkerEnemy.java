@@ -6,10 +6,7 @@ import Maze.BoardObjects.Actors.Player;
 import Maze.BoardObjects.Tiles.AbstractTile;
 import Maze.Position;
 
-import java.util.HashSet;
-import java.util.PriorityQueue;
-import java.util.Queue;
-import java.util.Set;
+import java.util.*;
 
 public class StalkerEnemy extends AbstractActor {
 
@@ -22,8 +19,22 @@ public class StalkerEnemy extends AbstractActor {
 
     @Override
     public void move(Player player, Board board) {
-        Queue<Fringe> fringeQueue = new PriorityQueue<>();
-        fringeQueue.offer(new Fringe(board.getMap()[player.getPos().getX()][player.getPos().getY()], null, 0));
+        Fringe path = findPath(player, board);
+        if(path.getPrevious() == null) {
+            interact(player); //? maybe?
+            return;
+        }
+
+        while(path.getPrevious().getPrevious() != null) {
+            path = path.getPrevious();
+        }
+
+        position = board.findPosInBoard(path.getCurrent());
+    }
+
+    private Fringe findPath(Player player, Board board) {
+        Queue<Fringe> fringeQueue = new ArrayDeque<>();
+        fringeQueue.offer(new Fringe(board.getMap()[position.getX()][position.getY()], null));
         Set<AbstractTile> visited = new HashSet<>();
 
         while (!fringeQueue.isEmpty()) {
@@ -35,11 +46,18 @@ public class StalkerEnemy extends AbstractActor {
 
                 //Found the shortest path
                 if (board.findPosInBoard(node).equals(player.getPos())) {
-                    //Do stuff/return stuff
+                    return current;
+                }
+
+                for(AbstractTile n : findNeighbours(node, board)) {
+                    if(!visited.contains(n)) {
+                        fringeQueue.offer(new Fringe(n, current));
+                    }
                 }
             }
         }
 
+        return null;
     }
 
     @Override
