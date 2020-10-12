@@ -21,7 +21,7 @@ public class StalkerEnemy extends AbstractActor {
     public void move(Player player, Board board) {
         Fringe path = findPath(player, board);
         if(path.getPrevious() == null) {
-            interact(player); //? maybe?
+            //interact(player); //? maybe?
             return;
         }
 
@@ -87,8 +87,9 @@ public class StalkerEnemy extends AbstractActor {
             neighbours.add(up);
         }
 
-        if(position.getY() != map[position.getX()].length) {
-            AbstractTile down = map[position.getX() - 1][position.getY() + 1];
+        if(position.getY() != map[position.getX()].length - 1) {
+            AbstractTile down = map[position.getX()]
+                    [position.getY() + 1];
             neighbours.add(down);
         }
 

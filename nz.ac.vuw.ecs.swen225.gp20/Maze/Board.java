@@ -23,7 +23,7 @@ public class Board {
 
     public Position findPosInBoard(AbstractTile tile){
         for (int i = 0; i < map.length; i++){
-            for (int j = 0; j < map[i].length; i++){
+            for (int j = 0; j < map[i].length; j++){
                 if(tile == map[i][j]){
                     return new Position(i, j);
                 }
