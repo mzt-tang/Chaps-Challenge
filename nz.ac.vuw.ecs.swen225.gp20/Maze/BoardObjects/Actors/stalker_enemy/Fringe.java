@@ -4,12 +4,12 @@ import Maze.BoardObjects.Tiles.AbstractTile;
 
 public class Fringe implements Comparable<Fringe>{
 
-    private AbstractTile start;
+    private AbstractTile current;
     private Fringe previous;
     private int cost;
 
-    public Fringe(AbstractTile start, Fringe previous, int cost){
-        this.start = start;
+    public Fringe(AbstractTile current, Fringe previous, int cost){
+        this.current = current;
         this.previous = previous;
         this.cost = cost;
     }
@@ -22,5 +22,13 @@ public class Fringe implements Comparable<Fringe>{
 
     public int getCost() {
         return cost;
+    }
+
+    public AbstractTile getCurrent() {
+        return current;
+    }
+
+    public Fringe getPrevious() {
+        return previous;
     }
 }
