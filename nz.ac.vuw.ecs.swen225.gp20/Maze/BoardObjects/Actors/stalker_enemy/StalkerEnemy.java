@@ -4,6 +4,9 @@ import Maze.Board;
 import Maze.BoardObjects.Actors.AbstractActor;
 import Maze.BoardObjects.Actors.Player;
 import Maze.BoardObjects.Tiles.AbstractTile;
+import Maze.BoardObjects.Tiles.ExitLock;
+import Maze.BoardObjects.Tiles.LockedDoor;
+import Maze.BoardObjects.Tiles.Wall;
 import Maze.Position;
 
 import java.util.*;
@@ -20,6 +23,11 @@ public class StalkerEnemy extends AbstractActor {
     @Override
     public void move(Player player, Board board) {
         Fringe path = findPath(player, board);
+        //If path is null then there is no path current available path to the player
+        if(path == null) {
+            return;
+        }
+        //If path's previous node is null then the enemy is on top of the player
         if(path.getPrevious() == null) {
             //interact(player); //? maybe?
             return;
@@ -74,23 +82,32 @@ public class StalkerEnemy extends AbstractActor {
         assert position != null;
         if(position.getX() != 0) {
             AbstractTile left = map[position.getX() - 1][position.getY()];
-            neighbours.add(left);
+            //If the tile isn't a wall, or a exitlock or locked door.
+            //NEED TO TEST LOCKED DOOR BOOLEAN IS DONE CORRECTLY
+            if(!(left instanceof Wall) && !(left instanceof ExitLock) && !(left instanceof LockedDoor && ((LockedDoor) left).isLocked()) ) {
+                neighbours.add(left);
+            }
         }
 
         if(position.getX() != map.length-1) {
             AbstractTile right = map[position.getX() + 1][position.getY()];
-            neighbours.add(right);
+            if(!(right instanceof Wall) && !(right instanceof ExitLock) && !(right instanceof LockedDoor && ((LockedDoor) right).isLocked()) ) {
+                neighbours.add(right);
+            }
         }
 
         if(position.getY() != 0) {
             AbstractTile up = map[position.getX()][position.getY() - 1];
-            neighbours.add(up);
+            if(!(up instanceof Wall) && !(up instanceof ExitLock) && !(up instanceof LockedDoor && ((LockedDoor) up).isLocked()) ) {
+                neighbours.add(up);
+            }
         }
 
         if(position.getY() != map[position.getX()].length - 1) {
-            AbstractTile down = map[position.getX()]
-                    [position.getY() + 1];
-            neighbours.add(down);
+            AbstractTile down = map[position.getX()][position.getY() + 1];
+            if(!(down instanceof Wall) && !(down instanceof ExitLock) && !(down instanceof LockedDoor && ((LockedDoor) down).isLocked()) ) {
+                neighbours.add(down);
+            }
         }
 
         return neighbours;
