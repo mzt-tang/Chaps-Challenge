@@ -22,7 +22,7 @@ public class Renderer extends JComponent {
     public static final int IMAGE_SIZE = 60;
     public static final int CANVAS_SIZE = 540; //Size in pixels, 9 x 60px images
 
-    private final Map<String, Image> images;
+    //private final Map<String, Image> images;
     private final Set<Star> stars;
 
     private AudioPlayer audioPlayer;
@@ -41,21 +41,10 @@ public class Renderer extends JComponent {
      * Creates a new renderer canvas
      */
     public Renderer(ChapsChallenge application){ //TODO: change this to maze
-        images = new HashMap<>();
         stars = new HashSet<>();
         audioPlayer = new AudioPlayer();
         this.application = application;
         playerPrevPos = application.getGame().getPlayer().getPos();
-
-        //Really compact way of loading all the images into memory
-        //It iterates through all the files in a folder and maps the file names to the loaded images
-        //TODO: Move image loading to player and delete this
-        File[] files = new File(System.getProperty("user.dir") + "/Resources/actors").listFiles();
-        for (File file : files){
-            images.put(file.getName().substring(0,file.getName().length()-4), //removes .png extension
-                    Toolkit.getDefaultToolkit().getImage(file.getPath()));
-        }
-
         setPreferredSize(new Dimension(CANVAS_SIZE, CANVAS_SIZE));
     }
 
@@ -112,9 +101,9 @@ public class Renderer extends JComponent {
 
         //Draw player on the centre of the screen
         if (playerFlipped) {
-            g2.drawImage(images.get("AstronautFlipped"), 4 * IMAGE_SIZE, 4 * IMAGE_SIZE, this);
+            g2.drawImage(application.getGame().getPlayer().getCurrentImage(), 4 * IMAGE_SIZE, 4 * IMAGE_SIZE, this);
         } else {
-            g2.drawImage(images.get("Astronaut"), 4 * IMAGE_SIZE, 4 * IMAGE_SIZE, this);
+            g2.drawImage(application.getGame().getPlayer().getCurrentImage(), 4 * IMAGE_SIZE, 4 * IMAGE_SIZE, this);
         }
         playerPrevPos = player.getPos().getPositionCopy();
 
@@ -126,7 +115,6 @@ public class Renderer extends JComponent {
      * @param g2 Paint graphic
      */
     public void drawStars(Graphics2D g2, DIRECTION direction){
-        System.out.println("Player moved" + direction);
         List<Star> toRemove = new ArrayList<>();
         for (Star star : stars){
             if (direction != DIRECTION.NULL){
