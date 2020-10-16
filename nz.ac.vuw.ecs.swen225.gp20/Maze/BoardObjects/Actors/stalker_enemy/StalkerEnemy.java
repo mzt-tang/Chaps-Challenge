@@ -9,6 +9,7 @@ import Maze.BoardObjects.Tiles.LockedDoor;
 import Maze.BoardObjects.Tiles.Wall;
 import Maze.Position;
 
+import java.awt.*;
 import java.util.*;
 
 public class StalkerEnemy extends AbstractActor {
@@ -18,6 +19,9 @@ public class StalkerEnemy extends AbstractActor {
      */
     public StalkerEnemy(Position position) {
         super(position);
+        images.put("Astronaut", Toolkit.getDefaultToolkit().getImage("Resources/actors/Astronaut.png"));
+        images.put("AstronautFlipped", Toolkit.getDefaultToolkit().getImage("Resources/actors/AstronautFlipped.png"));
+        currentImage = images.get("Astronaut");
     }
 
     /**
