@@ -36,4 +36,7 @@ public abstract class AbstractActor {
         return position;
     }
 
+    public Image getCurrentImage() {
+        return currentImage;
+    }
 }
