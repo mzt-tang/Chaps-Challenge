@@ -1,14 +1,13 @@
 package Renderer;
 
 import Application.ChapsChallenge;
-import Maze.BoardObjects.Actors.AbstractActor;
 import Maze.BoardObjects.Actors.Player;
 import Maze.BoardObjects.Tiles.*;
+import Maze.Game;
 import Maze.Position;
 
 import javax.swing.*;
 import java.awt.*;
-import java.io.File;
 import java.util.*;
 import java.util.List;
 
@@ -31,7 +30,7 @@ public class Renderer extends JComponent {
     private boolean playerFlipped = false;
     private Position playerPrevPos;
 
-    private ChapsChallenge application;
+    private Game game;
 
     public enum DIRECTION {
         UP, DOWN, LEFT, RIGHT, NULL
@@ -40,11 +39,11 @@ public class Renderer extends JComponent {
     /**
      * Creates a new renderer canvas
      */
-    public Renderer(ChapsChallenge application){ //TODO: change this to maze
+    public Renderer(Game game){
         stars = new HashSet<>();
         audioPlayer = new AudioPlayer();
-        this.application = application;
-        playerPrevPos = application.getGame().getPlayer().getPos();
+        this.game = game;
+        playerPrevPos = game.getPlayer().getPos();
         setPreferredSize(new Dimension(CANVAS_SIZE, CANVAS_SIZE));
     }
 
@@ -57,14 +56,53 @@ public class Renderer extends JComponent {
         g2.setColor(Color.BLACK);
         g2.fillRect(0, 0, getWidth(), getHeight());
 
-        //Gets the board and player from the maze module via the application module
-        AbstractTile[][] board = application.getGame().getBoard().getMap();
-
-        Player player = application.getGame().getPlayer();
+        //Get all the necessary data from the Maze module (a Game object)
+        AbstractTile[][] board = game.getBoard().getMap();
+        Player player = game.getPlayer();
         int playerX = player.getPos().getX();
         int playerY = player.getPos().getY();
 
-        //Orient the player
+        DIRECTION orientation = getPlayerOrientation(playerX, playerY);
+
+        //Add a star
+        if (tick % 5 == 0) {
+            stars.add(new Star(0, (int) (Math.random() * CANVAS_SIZE), (int) (Math.random() * 5 + 5), (int) (Math.random() * 5 + 5)));
+        }
+
+        drawStars(g2, orientation);
+        drawFocusArea(playerX, playerY, board, g2);
+        drawPlayer(player, g2);
+
+        playerPrevPos = player.getPos().getPositionCopy();
+        tick++;
+    }
+
+    /**
+     * Draws all the stars on the screen
+     * @param g2 Paint graphic
+     */
+    private void drawStars(Graphics2D g2, DIRECTION direction){
+        List<Star> toRemove = new ArrayList<>();
+        for (Star star : stars){
+            if (direction != DIRECTION.NULL){
+                star.playerMoved(direction);
+            }
+            if (!star.updatePos()){
+                toRemove.add(star);
+            }
+            star.draw(g2);
+        }
+        stars.removeAll(toRemove);
+    }
+
+    /**
+     * Compared the players last position with it's current position
+     * to figure out with direction it moved
+     * @param playerX Player x position
+     * @param playerY Player y position
+     * @return The direction the player has moved
+     */
+    private DIRECTION getPlayerOrientation(int playerX, int playerY){
         DIRECTION direction = DIRECTION.NULL;
         if (playerX < playerPrevPos.getX()){
             playerFlipped = true;
@@ -80,15 +118,17 @@ public class Renderer extends JComponent {
         if (playerY > playerPrevPos.getY()){
             direction = DIRECTION.DOWN;
         }
+        return direction;
+    }
 
-        //Add a star
-        if (tick % 5 == 0) {
-            stars.add(new Star(0, (int) (Math.random() * CANVAS_SIZE), (int) (Math.random() * 5 + 5), (int) (Math.random() * 5 + 5)));
-        }
-
-        drawStars(g2, direction);
-
-        //Draw all tiles in the focus area
+    /**
+     * Draws all the tiles on the focus area
+     * @param playerX Player x position
+     * @param playerY Player y position
+     * @param board The game board
+     * @param g2 Paint graphic
+     */
+    private void drawFocusArea(int playerX, int playerY, AbstractTile[][] board, Graphics2D g2){
         for (int y = -4; y <= 4; y++) {
             for (int x = -4; x <= 4; x++) {
                 //If in board bounds
@@ -98,37 +138,20 @@ public class Renderer extends JComponent {
                 }
             }
         }
-
-        //Draw player on the centre of the screen
-        if (playerFlipped) {
-            g2.drawImage(application.getGame().getPlayer().getCurrentImage(), 4 * IMAGE_SIZE, 4 * IMAGE_SIZE, this);
-        } else {
-            g2.drawImage(application.getGame().getPlayer().getCurrentImage(), 4 * IMAGE_SIZE, 4 * IMAGE_SIZE, this);
-        }
-        playerPrevPos = player.getPos().getPositionCopy();
-
-        tick++;
     }
 
     /**
-     * Draws all the stars on the screen
-     * @param g2 Paint graphic
+     * Draws the player in the centre of the focus area
+     * @param player The player
+     * @param g2 Graphic from paintComponent
      */
-    public void drawStars(Graphics2D g2, DIRECTION direction){
-        List<Star> toRemove = new ArrayList<>();
-        for (Star star : stars){
-            if (direction != DIRECTION.NULL){
-                star.playerMoved(direction);
-            }
-            if (!star.updatePos()){
-                toRemove.add(star);
-            }
-            star.draw(g2);
+    private void drawPlayer(Player player, Graphics2D g2){
+        if (playerFlipped) {
+            g2.drawImage(player.getCurrentImage(), 4 * IMAGE_SIZE, 4 * IMAGE_SIZE, this);
+        } else {
+            g2.drawImage(player.getCurrentImage(), 4 * IMAGE_SIZE, 4 * IMAGE_SIZE, this);
         }
-        stars.removeAll(toRemove);
     }
-
-
 
     /**
      * Returns a test board which is 9x9 and has every tile image that exists on it
