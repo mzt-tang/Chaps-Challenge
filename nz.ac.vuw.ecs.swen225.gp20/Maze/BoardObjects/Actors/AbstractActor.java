@@ -3,12 +3,18 @@ package Maze.BoardObjects.Actors;
 import Maze.Board;
 import Maze.Position;
 
+import java.awt.*;
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * A abstract class that represents any movable objects on the board.
  */
 public abstract class AbstractActor {
 
-    protected Position position;    //Could be final...?
+    protected Position position;
+    protected Map<String, Image> images = new HashMap<>();
+    protected Image currentImage;
 
     /**
      * Basic constructor for any actors

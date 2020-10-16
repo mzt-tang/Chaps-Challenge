@@ -61,9 +61,11 @@ public class Game {
                 break;
             case LEFT:
                 newPos = new Position(player.getPos(), DIRECTION.LEFT);
+                player.flipLeftImage(); //Changes the player image direction
                 break;
             case RIGHT:
                 newPos = new Position(player.getPos(), DIRECTION.RIGHT);
+                player.flipRightImage(); //Changes the player image direction
                 break;
             default:
                 throw new IllegalStateException("Unexpected direction: " + direction);
