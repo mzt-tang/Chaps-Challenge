@@ -1,6 +1,5 @@
 package Renderer;
 
-import Maze.BoardObjects.Actors.Player;
 import Maze.BoardObjects.Tiles.*;
 import Maze.Game;
 
@@ -57,7 +56,7 @@ public class AudioPlayer {
             playSound("SwipeGood");
             playSound("DoorOpen");
         }
-        if (tile instanceof Key){
+        if (tile instanceof Key || tile instanceof InfoField){
             playSound("TaskOpen");
         }
         if (tile instanceof Treasure){
