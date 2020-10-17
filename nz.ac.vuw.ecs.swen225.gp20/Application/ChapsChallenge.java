@@ -13,6 +13,7 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Insets;
 import java.awt.event.*;
 import java.util.HashSet;
@@ -24,8 +25,11 @@ import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.Timer;
 import javax.swing.border.EmptyBorder;
+import jdk.jfr.Event;
 
 /**
  * Window of the actual game, Chap's Challenge
@@ -34,11 +38,15 @@ import javax.swing.border.EmptyBorder;
  */
 public class ChapsChallenge extends JFrame {
 
-    //info panel
-    private final int INFO_WIDTH = 240;
-    private final int INFO_HEIGHT = 540;
+    //Panels
+    private JPanel gameplayPanel;
+    private JPanel infoPanel;
 
     private Game game;
+
+    //Timer fields
+    Timer timer;
+    private int timeRemaining = 10;
 
     private RecordAndReplay recordAndReplayer;
 
@@ -55,6 +63,8 @@ public class ChapsChallenge extends JFrame {
         //////
 
         game = new Game(new Board(Renderer.level1()), new Player(new Position(4, 4)), test); //FIXME: placeholder replace later
+
+
         recordAndReplayer = new RecordAndReplay();
 
         JPanel basePanel = new JPanel();
@@ -68,20 +78,20 @@ public class ChapsChallenge extends JFrame {
 
         //PANELS
         // Gameplay panel
-        JPanel gameplay = createGamePanel(new Renderer(game));
+        gameplayPanel = createGamePanel(new Renderer(game));
         addWindowListener(new WindowAdapter() {
             @Override
             public void windowOpened(WindowEvent e) {
                 requestFocus();
-                gameplay.requestFocus();
+                gameplayPanel.requestFocus();
             }
         });
-        basePanel.add(gameplay);
+        basePanel.add(gameplayPanel);
         basePanel.add(Box.createRigidArea(new Dimension(50, 0))); // Small gap between game and info panel
 
         // Info panel
-        JPanel info = createInfoPanel();
-        basePanel.add(info);
+        infoPanel = createInfoPanel();
+        basePanel.add(infoPanel);
 
         add(basePanel);
 
@@ -98,6 +108,7 @@ public class ChapsChallenge extends JFrame {
     public void initUI(){
         setTitle("Chap's Challenge: Among Us Edition");
         createMenuBar();
+        //test commit
 
         setDefaultCloseOperation(EXIT_ON_CLOSE);
     }
@@ -128,6 +139,7 @@ public class ChapsChallenge extends JFrame {
 
         setJMenuBar(menuBar);
     }
+
 
     // ===========================================
     // JPanels
@@ -193,24 +205,45 @@ public class ChapsChallenge extends JFrame {
         infoPanel.setLayout(new BoxLayout(infoPanel, BoxLayout.Y_AXIS));
         infoPanel.setBackground(Color.WHITE);
 
+        int fontSize = 16;
+
         //level
-        JLabel levelLabel = new JLabel("Level X: placeholder");
+        JLabel levelLabel = new JLabel("LEVEL X");
+        levelLabel.setFont(new Font(levelLabel.getName(), Font.PLAIN, fontSize));
         levelLabel.setForeground(Color.RED);
         levelLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-        //Time remaining
-        JLabel timeLabel = new JLabel("Time Remaining: ");
+        //time remaining
+        JLabel timeLabel = new JLabel();
+        timeLabel.setFont(new Font(timeLabel.getName(), Font.PLAIN, fontSize));
+        timer = new Timer(1000, new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                timeLabel.setText("TIME REMAINING: \n" + timeRemaining);
+                if (timeRemaining == 0) {
+                    timer.stop();
+                    gameOver();
+                }
+                timeRemaining--;
+            }
+        });
+        timer.start();
         timeLabel.setForeground(Color.RED);
         timeLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-        //Chips remaining
-        JLabel chipsLabel = new JLabel("Chips Remaining: ");
+        //chips remaining
+        JLabel chipsLabel = new JLabel("CHIPS REMAINING: ");
+        chipsLabel.setFont(new Font(chipsLabel.getName(), Font.PLAIN, fontSize));
         chipsLabel.setForeground(Color.RED);
         chipsLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        //game.treasuresLEFT
 
 
         //TODO: inventory view
+        //player.getkeys
 
+        //info panel
+        int INFO_WIDTH = 240;
         infoPanel.add(Box.createRigidArea(new Dimension(INFO_WIDTH, 150)));
         infoPanel.add(levelLabel);
         infoPanel.add(Box.createRigidArea(new Dimension(INFO_WIDTH, 100)));
@@ -223,6 +256,19 @@ public class ChapsChallenge extends JFrame {
         return infoPanel;
     }
 
+    //other
+
+    /**
+     *
+     */
+    public void gameOver(){
+        JOptionPane.showMessageDialog(null, "You ran out of time!", "Game Over", JOptionPane.INFORMATION_MESSAGE);
+        System.exit(0);
+    }
+
+
+    //getters
+
     /**
      * Getter for game.
      * @return game
@@ -232,8 +278,24 @@ public class ChapsChallenge extends JFrame {
     }
 
     /**
+     * Getter for gameplay panel
+     * @return gameplayPanel
+     */
+    public JPanel getGameplayPanel() {
+        return gameplayPanel;
+    }
+
+    /**
+     * Getter for info panel
+     * @return infoPanel
+     */
+    public JPanel getInfoPanel() {
+        return infoPanel;
+    }
+
+    /**
      * Activated whenever a player moves in a direction.
-     * Also helps check tiles they are about to move into incase of anything
+     * Also helps check tiles they are about to move into in case of anything
      * being on said tile.
      */
     public void movementRecordHelper(Game.DIRECTION direction) {
