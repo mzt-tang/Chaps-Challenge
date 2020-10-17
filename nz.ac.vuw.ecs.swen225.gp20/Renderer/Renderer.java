@@ -1,6 +1,5 @@
 package Renderer;
 
-import Application.ChapsChallenge;
 import Maze.BoardObjects.Actors.AbstractActor;
 import Maze.BoardObjects.Actors.Player;
 import Maze.BoardObjects.Tiles.*;
@@ -22,7 +21,6 @@ public class Renderer extends JComponent {
     public static final int IMAGE_SIZE = 60;
     public static final int CANVAS_SIZE = 540; //Size in pixels, 9 x 60px images
 
-    //private final Map<String, Image> images;
     private final Set<Star> stars;
 
     private AudioPlayer audioPlayer;
@@ -156,11 +154,20 @@ public class Renderer extends JComponent {
         }
     }
 
+    /**
+     * Draws all the enemies on the focus area
+     * @param playerX Player x position
+     * @param playerY Player y position
+     * @param game The game
+     * @param g2 Paint graphic
+     */
     private void drawEnemies(int playerX, int playerY, Game game, Graphics2D g2){
+        if (game.getComputerPlayers() == null) return;
         for (AbstractActor actor : game.getComputerPlayers()){
             Position pos = actor.getPos();
-            int relX = Math.abs(pos.getX() - playerX);
-            int relY = Math.abs(pos.getY() - playerY);
+            //Calculates the position of the enemy relative to the player
+            int relX = pos.getX() - playerX;
+            int relY = pos.getY() - playerY;
             g2.drawImage(actor.getCurrentImage(), (relX + 4) * IMAGE_SIZE, (relY + 4) * IMAGE_SIZE, this);
         }
     }
