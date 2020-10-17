@@ -72,6 +72,10 @@ public class Renderer extends JComponent {
         drawFocusArea(playerX, playerY, board, g2);
         drawPlayer(player, g2);
         drawEnemies(playerX, playerY, game, g2);
+        if (orientation != DIRECTION.NULL){
+            audioPlayer.playSound("Step" + (int)(Math.random()*2 + 1));
+        }
+        audioPlayer.playTileSound(board[playerX][playerY], game);
 
         //Store player's previous position for the next frame
         playerPrevPos = player.getPos().getPositionCopy();
