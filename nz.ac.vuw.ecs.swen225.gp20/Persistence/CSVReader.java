@@ -36,10 +36,11 @@ public class CSVReader {
 	    	ArrayList<String> currentLineList = new ArrayList<String>();
 	    	String[] data = currentData.split(",");
 	    	//Remove csv "header"
-	    	if(yIndex == 0) {
-	    		String[] indexZeroTable = data[0].split("¿");
-	    		data[0] = indexZeroTable[1];
-	    	}
+//	    	if(yIndex == 0) {
+//	    		String[] indexZeroTable = data[0].split("¿");
+//	    		System.out.println(indexZeroTable[0]);
+//	    		data[0] = indexZeroTable[1];
+//	    	}
 	    	for(String entry : data) {
 	    		currentLineList.add(entry);
 	    	}
