@@ -304,4 +304,5 @@ public class ChapsChallenge extends JFrame {
         recordAndReplayer.captureTileInteraction(game.getBoard().getMap()[newPos.getX()][newPos.getY()]);
 
     }
+
 }
