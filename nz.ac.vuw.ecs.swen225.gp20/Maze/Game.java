@@ -115,7 +115,7 @@ public class Game {
         }
     }
 
-    private boolean allTreasuresCollected() {
+    public boolean allTreasuresCollected() {
         for (int i = 0; i < board.getMap().length; i++) {
             for (int j = 0; j < board.getMap()[0].length; j++) {
                 if(board.getMap()[i][j] instanceof Treasure) {
