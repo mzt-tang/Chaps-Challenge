@@ -15,7 +15,6 @@ public class ExitLock extends AbstractTile {
 
     /**
      * .
-     * @param position .
      */
     public ExitLock(boolean setVertical) {
         super(setVertical);
@@ -33,6 +32,11 @@ public class ExitLock extends AbstractTile {
      */
     @Override
     public boolean interact(Player player) {
-        return false;
+        return !locked;
+    }
+
+    public void unlock(){
+        locked = false;
+        currentImage = images.get("FloorTile");
     }
 }

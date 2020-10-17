@@ -17,6 +17,8 @@ public class Game {
     private Player player;
     private Set<AbstractActor> computerPlayers;
 
+    private boolean levelCompleted = false;
+
     public Game(Board board, Player player, Set<AbstractActor> computerPlayers) {
         //GUI calls the persistence and sends the Game object the necessary files
         this.board = board;
@@ -26,7 +28,7 @@ public class Game {
 
     public void moveEnemyCheckWin() {
         for(AbstractActor c : computerPlayers) {
-            c.move(player);
+            c.move(player, board);
         }
     }
 
@@ -37,6 +39,20 @@ public class Game {
      *                 current position is interacting with/moving towards.
      */
     public void movePlayer(DIRECTION direction) {
+
+        ////////TEST CODE
+        for(AbstractActor a : computerPlayers) {
+            System.out.println("Enemy: ");
+            a.move(player, board);
+            System.out.println(a.getPos());
+            a.move(player, board);
+            System.out.println(a.getPos());
+            a.move(player, board);
+            System.out.println(a.getPos());
+        }
+        //////
+
+
         Position newPos;
         switch (direction) {
             case UP:
@@ -47,9 +63,11 @@ public class Game {
                 break;
             case LEFT:
                 newPos = new Position(player.getPos(), DIRECTION.LEFT);
+                player.flipLeftImage(); //Changes the player image direction
                 break;
             case RIGHT:
                 newPos = new Position(player.getPos(), DIRECTION.RIGHT);
+                player.flipRightImage(); //Changes the player image direction
                 break;
             default:
                 throw new IllegalStateException("Unexpected direction: " + direction);
@@ -82,30 +100,52 @@ public class Game {
             player.getPos().move(direction);    //Move the player
         }
 
+        if(moveToTile instanceof ExitPortal) {
+            levelCompleted = true;
+        }
+
+        ////////// TEST CODE
+        System.out.println("Player: ");
+        System.out.println(player.getPos());
+        ////////////////
     }
 
     private void unlockExitLock() {
         for (int i = 0; i < board.getMap().length; i++) {
             for (int j = 0; j < board.getMap()[0].length; j++) {
                 if(board.getMap()[i][j] instanceof ExitLock){
-                    board.getMap()[i][j] = new FreeTile();
+                    ExitLock tile = (ExitLock) board.getMap()[i][j];
+                    tile.unlock();
                 }
             }
         }
     }
 
-    private boolean allTreasuresCollected() {
+    /**
+     * Tells if all treasures have been collected.
+     * @return Returns true if all treasures have been collected, false if not.
+     */
+    public boolean allTreasuresCollected() {
+        return treasuresLeft() == 0;
+    }
+
+    /**
+     * Finds the number of treasures that are still uncollected.
+     * @return Returns the number of uncollected treasures.
+     */
+    public int treasuresLeft(){
+        int treasuresLeft = 0;
         for (int i = 0; i < board.getMap().length; i++) {
             for (int j = 0; j < board.getMap()[0].length; j++) {
                 if(board.getMap()[i][j] instanceof Treasure) {
                     Treasure treasure = (Treasure)board.getMap()[i][j];
                     if (!treasure.isPickedUp()){
-                        return false;
+                        treasuresLeft++;
                     }
                 }
             }
         }
-        return true;
+        return treasuresLeft;
     }
 
     public Board getBoard() {
@@ -114,5 +154,13 @@ public class Game {
 
     public Player getPlayer() {
         return player;
+    }
+
+    public Set<AbstractActor> getComputerPlayers() {
+        return computerPlayers;
+    }
+
+    public boolean isLevelCompleted() {
+        return levelCompleted;
     }
 }

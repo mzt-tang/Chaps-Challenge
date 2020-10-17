@@ -1,24 +1,22 @@
 package Maze.BoardObjects.Actors.stalker_enemy;
 
-public class Fringe implements Comparable<Fringe>{
+import Maze.BoardObjects.Tiles.AbstractTile;
 
-    private Node start;
-    private Fringe previous;
-    private int cost;
+public class Fringe {
 
-    public Fringe(Node start, Fringe previous, int cost){
-        this.start = start;
+    private final AbstractTile current;
+    private final Fringe previous;
+
+    public Fringe(AbstractTile current, Fringe previous){
+        this.current = current;
         this.previous = previous;
-        this.cost = cost;
     }
 
-
-    @Override
-    public int compareTo(Fringe fringe) {
-        return Integer.compare(cost, fringe.getCost());
+    public AbstractTile getCurrent() {
+        return current;
     }
 
-    public int getCost() {
-        return cost;
+    public Fringe getPrevious() {
+        return previous;
     }
 }
