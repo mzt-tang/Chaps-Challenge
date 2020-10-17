@@ -47,15 +47,6 @@ public class Player extends AbstractActor{
         return null;
     }
 
-    public Set<Key> getUnmodKeys(){
-
-        Set<Key> keyCopies = new HashSet<>();
-
-            //Create copies of keys
-
-        return keyCopies;
-    }
-
     /**
      * Returns the set of keys in the player's hand
      * @return Returns the set of keys in the player's hand
