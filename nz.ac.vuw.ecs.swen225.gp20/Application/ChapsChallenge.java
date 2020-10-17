@@ -68,7 +68,7 @@ public class ChapsChallenge extends JFrame {
 
         //PANELS
         // Gameplay panel
-        JPanel gameplay = createGamePanel(new Renderer(this));
+        JPanel gameplay = createGamePanel(new Renderer(game));
         addWindowListener(new WindowAdapter() {
             @Override
             public void windowOpened(WindowEvent e) {
@@ -198,12 +198,12 @@ public class ChapsChallenge extends JFrame {
         levelLabel.setForeground(Color.RED);
         levelLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-        //time remaining
+        //Time remaining
         JLabel timeLabel = new JLabel("Time Remaining: ");
         timeLabel.setForeground(Color.RED);
         timeLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-        //chips remaining
+        //Chips remaining
         JLabel chipsLabel = new JLabel("Chips Remaining: ");
         chipsLabel.setForeground(Color.RED);
         chipsLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -241,5 +241,9 @@ public class ChapsChallenge extends JFrame {
         Position newPos = new Position(game.getPlayer().getPos(), direction);
         recordAndReplayer.captureTileInteraction(game.getBoard().getMap()[newPos.getX()][newPos.getY()]);
 
+    }
+
+    public class GameThread extends Thread {
+        //private final Game game
     }
 }
