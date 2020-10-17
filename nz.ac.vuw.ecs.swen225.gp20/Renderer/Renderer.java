@@ -1,6 +1,7 @@
 package Renderer;
 
 import Application.ChapsChallenge;
+import Maze.BoardObjects.Actors.AbstractActor;
 import Maze.BoardObjects.Actors.Player;
 import Maze.BoardObjects.Tiles.*;
 import Maze.Game;
@@ -72,7 +73,9 @@ public class Renderer extends JComponent {
         drawStars(g2, orientation);
         drawFocusArea(playerX, playerY, board, g2);
         drawPlayer(player, g2);
+        drawEnemies(playerX, playerY, game, g2);
 
+        //Store player's previous position for the next frame
         playerPrevPos = player.getPos().getPositionCopy();
         tick++;
     }
@@ -150,6 +153,15 @@ public class Renderer extends JComponent {
             g2.drawImage(player.getCurrentImage(), 4 * IMAGE_SIZE, 4 * IMAGE_SIZE, this);
         } else {
             g2.drawImage(player.getCurrentImage(), 4 * IMAGE_SIZE, 4 * IMAGE_SIZE, this);
+        }
+    }
+
+    private void drawEnemies(int playerX, int playerY, Game game, Graphics2D g2){
+        for (AbstractActor actor : game.getComputerPlayers()){
+            Position pos = actor.getPos();
+            int relX = Math.abs(pos.getX() - playerX);
+            int relY = Math.abs(pos.getY() - playerY);
+            g2.drawImage(actor.getCurrentImage(), (relX + 4) * IMAGE_SIZE, (relY + 4) * IMAGE_SIZE, this);
         }
     }
 
