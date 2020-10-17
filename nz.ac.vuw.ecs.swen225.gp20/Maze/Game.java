@@ -17,6 +17,8 @@ public class Game {
     private Player player;
     private Set<AbstractActor> computerPlayers;
 
+    private boolean levelCompleted = false;
+
     public Game(Board board, Player player, Set<AbstractActor> computerPlayers) {
         //GUI calls the persistence and sends the Game object the necessary files
         this.board = board;
@@ -98,6 +100,10 @@ public class Game {
             player.getPos().move(direction);    //Move the player
         }
 
+        if(moveToTile instanceof ExitPortal) {
+            levelCompleted = true;
+        }
+
         ////////// TEST CODE
         System.out.println("Player: ");
         System.out.println(player.getPos());
@@ -115,18 +121,31 @@ public class Game {
         }
     }
 
+    /**
+     * Tells if all treasures have been collected.
+     * @return Returns true if all treasures have been collected, false if not.
+     */
     public boolean allTreasuresCollected() {
+        return treasuresLeft() == 0;
+    }
+
+    /**
+     * Finds the number of treasures that are still uncollected.
+     * @return Returns the number of uncollected treasures.
+     */
+    public int treasuresLeft(){
+        int treasuresLeft = 0;
         for (int i = 0; i < board.getMap().length; i++) {
             for (int j = 0; j < board.getMap()[0].length; j++) {
                 if(board.getMap()[i][j] instanceof Treasure) {
                     Treasure treasure = (Treasure)board.getMap()[i][j];
                     if (!treasure.isPickedUp()){
-                        return false;
+                        treasuresLeft++;
                     }
                 }
             }
         }
-        return true;
+        return treasuresLeft;
     }
 
     public Board getBoard() {
@@ -139,5 +158,9 @@ public class Game {
 
     public Set<AbstractActor> getComputerPlayers() {
         return computerPlayers;
+    }
+
+    public boolean isLevelCompleted() {
+        return levelCompleted;
     }
 }
