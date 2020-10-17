@@ -243,7 +243,4 @@ public class ChapsChallenge extends JFrame {
 
     }
 
-    public class GameThread extends Thread {
-        //private final Game game
-    }
 }
