@@ -108,7 +108,8 @@ public class Game {
         for (int i = 0; i < board.getMap().length; i++) {
             for (int j = 0; j < board.getMap()[0].length; j++) {
                 if(board.getMap()[i][j] instanceof ExitLock){
-                    board.getMap()[i][j] = new FreeTile();
+                    ExitLock tile = (ExitLock) board.getMap()[i][j];
+                    tile.unlock();
                 }
             }
         }

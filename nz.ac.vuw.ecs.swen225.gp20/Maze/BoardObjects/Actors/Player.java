@@ -14,7 +14,7 @@ import java.util.*;
  */
 public class Player extends AbstractActor{
 
-    private final Map<String, Collection<? extends AbstractTile>> collectables = new HashMap<>();
+    private final Map<String, Collection<? extends AbstractTile>> collectibles = new HashMap<>();
 
     /**
      * .
@@ -24,15 +24,15 @@ public class Player extends AbstractActor{
         super(position);
         Set<Key> keySet = new HashSet<>(); //Keys that the player has picked up.
         Set<Treasure> treasureSet = new HashSet<>(); //Treasures that the player has picked up.
-        collectables.put("keySet", keySet);
-        collectables.put("treasureSet", treasureSet);
+        collectibles.put("keySet", keySet);
+        collectibles.put("treasureSet", treasureSet);
         images.put("Astronaut", Toolkit.getDefaultToolkit().getImage("Resources/actors/Astronaut.png"));
         images.put("AstronautFlipped", Toolkit.getDefaultToolkit().getImage("Resources/actors/AstronautFlipped.png"));
         currentImage = images.get("Astronaut");
     }
 
     public boolean hasKey(String key) {
-        for (AbstractTile k : collectables.get("keySet")) {
+        for (AbstractTile k : collectibles.get("keySet")) {
             assert (k instanceof Key) : "Tiles in keySet isn't of the Key type";
             if(key.equals(((Key) k).getColour())) return true;
         }
@@ -40,7 +40,7 @@ public class Player extends AbstractActor{
     }
 
     public Key getKey(String colour) {
-        for (AbstractTile k : collectables.get("keySet")) {
+        for (AbstractTile k : collectibles.get("keySet")) {
             assert (k instanceof Key) : "Tiles in keySet isn't of the Key type";
             if(colour.equals(((Key) k).getColour())) return (Key) k;
         }
@@ -56,20 +56,31 @@ public class Player extends AbstractActor{
         return keyCopies;
     }
 
+    /**
+     * Returns the set of keys in the player's hand
+     * @return Returns the set of keys in the player's hand
+     */
+    @SuppressWarnings("unchecked")
     public Set<Key> getKeys() {
         //Making sure all tiles in keySet are Keys
-        for (AbstractTile k : collectables.get("keySet")) {
+        for (AbstractTile k : collectibles.get("keySet")) {
             assert (k instanceof Key) : "Tiles in keySet isn't of the Key type";
         }
-        return (Set<Key>) collectables.get("keySet");
+        return (Set<Key>) collectibles.get("keySet");
     }
 
+
+    /**
+     * Returns the set of treasures in the player's hand
+     * @return Returns the set of treasures in the player's hand
+     */
+    @SuppressWarnings("unchecked")
     public Set<Treasure> getTreasures() {
         //Making sure all tiles in treasureSet are Treasures
-        for (AbstractTile t : collectables.get("treasureSet")) {
+        for (AbstractTile t : collectibles.get("treasureSet")) {
             assert (t instanceof Treasure) : "Tiles in keySet isn't of the Key type";
         }
-        return (Set<Treasure>) collectables.get("treasureSet");
+        return (Set<Treasure>) collectibles.get("treasureSet");
     }
 
     /**
@@ -89,8 +100,8 @@ public class Player extends AbstractActor{
     public void interact(Player player) {
     }
 
-    public Map<String, Collection<? extends AbstractTile>> getCollectables() {
-        return collectables;
+    public Map<String, Collection<? extends AbstractTile>> getCollectibles() {
+        return collectibles;
     }
 
     public void flipRightImage(){
