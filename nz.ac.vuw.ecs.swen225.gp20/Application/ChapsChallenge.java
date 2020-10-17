@@ -68,7 +68,7 @@ public class ChapsChallenge extends JFrame {
 
         //PANELS
         // Gameplay panel
-        JPanel gameplay = createGamePanel(new Renderer(this));
+        JPanel gameplay = createGamePanel(new Renderer(game));
         addWindowListener(new WindowAdapter() {
             @Override
             public void windowOpened(WindowEvent e) {
@@ -98,6 +98,7 @@ public class ChapsChallenge extends JFrame {
     public void initUI(){
         setTitle("Chap's Challenge: Among Us Edition");
         createMenuBar();
+        //test commit
 
         setDefaultCloseOperation(EXIT_ON_CLOSE);
     }
@@ -233,7 +234,7 @@ public class ChapsChallenge extends JFrame {
 
     /**
      * Activated whenever a player moves in a direction.
-     * Also helps check tiles they are about to move into incase of anything
+     * Also helps check tiles they are about to move into in case of anything
      * being on said tile.
      */
     public void movementRecordHelper(Game.DIRECTION direction) {
