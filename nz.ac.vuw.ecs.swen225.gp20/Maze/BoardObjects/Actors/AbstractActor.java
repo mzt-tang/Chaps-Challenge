@@ -12,6 +12,7 @@ import java.util.Map;
  */
 public abstract class AbstractActor {
 
+    protected final Position startingPos;
     protected Position position;
     protected Map<String, Image> images = new HashMap<>();
     protected Image currentImage;
@@ -22,6 +23,7 @@ public abstract class AbstractActor {
      */
     public AbstractActor(Position position) {
         this.position = position;
+        startingPos = position.getPositionCopy();
     }
 
     public abstract void move(Player player, Board board);
@@ -38,5 +40,9 @@ public abstract class AbstractActor {
 
     public Image getCurrentImage() {
         return currentImage;
+    }
+
+    public Position getStartingPos() {
+        return startingPos;
     }
 }

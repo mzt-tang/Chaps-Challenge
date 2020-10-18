@@ -53,16 +53,16 @@ public class JSONMaker {
 			//Set the colour of the tile if a colour was designated.
 			if(tileInfo.length > 2) {
 				if(tileInfo[2].equals("r")) {
-					tileColour = "red";
+					tileColour = "Red";
 				}
 				else if(tileInfo[2].equals("g")) {
-					tileColour = "green";
+					tileColour = "Green";
 				}
 				else if(tileInfo[2].equals("y")) {
-					tileColour = "yellow";
+					tileColour = "Yellow";
 				}
 				else if(tileInfo[2].equals("b")) {
-					tileColour = "blue";
+					tileColour = "Blue";
 				}
 				else {
 					arrayObjectBuilder.add("Rotation", "ERROR! value " 

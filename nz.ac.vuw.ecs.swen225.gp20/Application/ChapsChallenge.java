@@ -5,15 +5,15 @@ import Maze.BoardObjects.Actors.AbstractActor;
 import Maze.BoardObjects.Actors.PatternEnemy;
 import Maze.BoardObjects.Actors.Player;
 import Maze.BoardObjects.Actors.stalker_enemy.StalkerEnemy;
-import Maze.BoardObjects.Tiles.AbstractTile;
+import Maze.BoardObjects.Tiles.Key;
 import Maze.Game;
 import Maze.Position;
 import RecordAndReplay.RecordAndReplay;
 import Renderer.Renderer;
-import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Insets;
 import java.awt.event.*;
 import java.util.HashSet;
@@ -25,7 +25,9 @@ import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.Timer;
 import javax.swing.border.EmptyBorder;
 
 /**
@@ -35,11 +37,15 @@ import javax.swing.border.EmptyBorder;
  */
 public class ChapsChallenge extends JFrame {
 
-    //info panel
-    private final int INFO_WIDTH = 240;
-    private final int INFO_HEIGHT = 540;
+    //Panels
+    private JPanel gameplayPanel;
+    private JPanel infoPanel;
 
     private Game game;
+
+    //Timer fields
+    Timer timer;
+    private int timeRemaining = 100;
 
     private RecordAndReplay recordAndReplayer;
 
@@ -60,6 +66,8 @@ public class ChapsChallenge extends JFrame {
         //////
 
         game = new Game(new Board(Renderer.level1()), new Player(new Position(4, 4)), test); //FIXME: placeholder replace later
+
+
         recordAndReplayer = new RecordAndReplay();
 
         JPanel basePanel = new JPanel();
@@ -73,20 +81,20 @@ public class ChapsChallenge extends JFrame {
 
         //PANELS
         // Gameplay panel
-        JPanel gameplay = createGamePanel(new Renderer(game));
+        gameplayPanel = createGamePanel(new Renderer(game));
         addWindowListener(new WindowAdapter() {
             @Override
             public void windowOpened(WindowEvent e) {
                 requestFocus();
-                gameplay.requestFocus();
+                gameplayPanel.requestFocus();
             }
         });
-        basePanel.add(gameplay);
+        basePanel.add(gameplayPanel);
         basePanel.add(Box.createRigidArea(new Dimension(50, 0))); // Small gap between game and info panel
 
         // Info panel
-        JPanel info = createInfoPanel();
-        basePanel.add(info);
+        infoPanel = createInfoPanel();
+        basePanel.add(infoPanel);
 
         add(basePanel);
 
@@ -103,6 +111,7 @@ public class ChapsChallenge extends JFrame {
     public void initUI(){
         setTitle("Chap's Challenge: Among Us Edition");
         createMenuBar();
+        //test commit
 
         setDefaultCloseOperation(EXIT_ON_CLOSE);
     }
@@ -134,6 +143,7 @@ public class ChapsChallenge extends JFrame {
         setJMenuBar(menuBar);
     }
 
+
     // ===========================================
     // JPanels
     // ===========================================
@@ -149,6 +159,23 @@ public class ChapsChallenge extends JFrame {
         gamePanel.setFocusable(true);
         gamePanel.requestFocusInWindow();
         gamePanel.requestFocus();
+
+        //Star background on own thread
+        Runnable clockThread = new Runnable() {
+            @Override
+            public void run() {
+                while (true){
+                    try {
+                        Thread.sleep(1000/30); //30FPS
+                        renderer.revalidate();
+                        renderer.repaint();
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        };
+        new Thread(clockThread).start();
 
         //KeyListeners
         gamePanel.addKeyListener(new KeyAdapter() {
@@ -181,8 +208,6 @@ public class ChapsChallenge extends JFrame {
                         break;
                 }
                 recordAndReplayer.storeRecorderBuffer();
-                renderer.revalidate();
-                renderer.repaint();
             }
         });
 
@@ -198,24 +223,55 @@ public class ChapsChallenge extends JFrame {
         infoPanel.setLayout(new BoxLayout(infoPanel, BoxLayout.Y_AXIS));
         infoPanel.setBackground(Color.WHITE);
 
-        //level
-        JLabel levelLabel = new JLabel("Level X: placeholder");
+        int fontSize = 16;
+
+        //Current level label
+        JLabel levelLabel = new JLabel("LEVEL X");
+        levelLabel.setFont(new Font(levelLabel.getName(), Font.PLAIN, fontSize));
         levelLabel.setForeground(Color.RED);
         levelLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-        //Time remaining
-        JLabel timeLabel = new JLabel("Time Remaining: ");
-        timeLabel.setForeground(Color.RED);
-        timeLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        //Timer thread
+        JLabel timeLabel = new JLabel();
+        JLabel chipsLabel = new JLabel();
+        JLabel inventoryLabel = new JLabel("Inventory");
+        timer = new Timer(1000, new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                //Time remaining
+                timeLabel.setFont(new Font(timeLabel.getName(), Font.PLAIN, fontSize));
+                timeLabel.setText("TIME REMAINING: \n" + timeRemaining);
+                timeLabel.setForeground(Color.RED);
+                timeLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-        //Chips remaining
-        JLabel chipsLabel = new JLabel("Chips Remaining: ");
-        chipsLabel.setForeground(Color.RED);
-        chipsLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+                //Chips Remaining
+                chipsLabel.setFont(new Font(chipsLabel.getName(), Font.PLAIN, fontSize));
+                chipsLabel.setText("CHIPS REMAINING: " + game.treasuresLeft());
+                chipsLabel.setForeground(Color.RED);
+//                if (game.treasuresLeft() == 0){
+//                    chipsLabel.setForeground(Color.GREEN);
+//                }
+                chipsLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+                //TODO: Inventory view
+                //player.getkeys
+                for (Key key : game.getPlayer().getKeys()){
+                    key.getCurrentImage();
+                }
+
+                if (timeRemaining == 0) {
+                    timer.stop();
+                    outOfTime();
+                }
+                timeRemaining--;
+            }
+        });
+        timer.start();
 
 
-        //TODO: inventory view
 
+        //info panel
+        int INFO_WIDTH = 240;
         infoPanel.add(Box.createRigidArea(new Dimension(INFO_WIDTH, 150)));
         infoPanel.add(levelLabel);
         infoPanel.add(Box.createRigidArea(new Dimension(INFO_WIDTH, 100)));
@@ -228,6 +284,19 @@ public class ChapsChallenge extends JFrame {
         return infoPanel;
     }
 
+    //other
+
+    /**
+     * Ends the game when the game clock runs out of time.
+     */
+    public void outOfTime(){
+        JOptionPane.showMessageDialog(null, "You ran out of time!", "Game Over", JOptionPane.INFORMATION_MESSAGE);
+        System.exit(0);
+    }
+
+
+    //getters
+
     /**
      * Getter for game.
      * @return game
@@ -237,8 +306,24 @@ public class ChapsChallenge extends JFrame {
     }
 
     /**
+     * Getter for gameplay panel
+     * @return gameplayPanel
+     */
+    public JPanel getGameplayPanel() {
+        return gameplayPanel;
+    }
+
+    /**
+     * Getter for info panel
+     * @return infoPanel
+     */
+    public JPanel getInfoPanel() {
+        return infoPanel;
+    }
+
+    /**
      * Activated whenever a player moves in a direction.
-     * Also helps check tiles they are about to move into incase of anything
+     * Also helps check tiles they are about to move into in case of anything
      * being on said tile.
      */
     public void movementRecordHelper(Game.DIRECTION direction) {
@@ -247,5 +332,4 @@ public class ChapsChallenge extends JFrame {
         recordAndReplayer.captureTileInteraction(game.getBoard().getMap()[newPos.getX()][newPos.getY()]);
 
     }
-
 }
