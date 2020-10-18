@@ -7,7 +7,7 @@ import java.awt.*;
 
 public class LockedDoor extends AbstractTile {
 
-    private String colour;
+    private final String colour;
     private boolean locked = true;
 
 
