@@ -15,7 +15,7 @@ import java.util.List;
  */
 public class Player extends AbstractActor{
 
-    private final Map<String, Collection<? extends AbstractTile>> collectibles = new HashMap<>();
+    private final Map<String, Collection<? extends AbstractTile>> collectables = new HashMap<>();
 
     /**
      * .
@@ -25,15 +25,15 @@ public class Player extends AbstractActor{
         super(position, 0);
         List<Key> keySet = new ArrayList<>(); //Keys that the player has picked up.
         Set<Treasure> treasureSet = new HashSet<>(); //Treasures that the player has picked up.
-        collectibles.put("keySet", keySet);
-        collectibles.put("treasureSet", treasureSet);
+        collectables.put("keySet", keySet);
+        collectables.put("treasureSet", treasureSet);
         images.put("Astronaut", Toolkit.getDefaultToolkit().getImage("Resources/actors/Astronaut.png"));
         images.put("AstronautFlipped", Toolkit.getDefaultToolkit().getImage("Resources/actors/AstronautFlipped.png"));
         currentImage = images.get("Astronaut");
     }
 
     public boolean hasKey(String key) {
-        for (AbstractTile k : collectibles.get("keySet")) {
+        for (AbstractTile k : collectables.get("keySet")) {
             assert (k instanceof Key) : "Tiles in keySet isn't of the Key type";
             if(key.equals(((Key) k).getColour())) return true;
         }
@@ -41,38 +41,29 @@ public class Player extends AbstractActor{
     }
 
     public Key getKey(String colour) {
-        for (AbstractTile k : collectibles.get("keySet")) {
+        for (AbstractTile k : collectables.get("keySet")) {
             assert (k instanceof Key) : "Tiles in keySet isn't of the Key type";
             if(colour.equals(((Key) k).getColour())) return (Key) k;
         }
-        return null; //Should never reach here
+        return null;
     }
 
-    /**
-     * Returns the set of keys in the player's hand
-     * @return Returns the set of keys in the player's hand
-     */
     @SuppressWarnings("unchecked")
-    public Set<Key> getKeys() {
+    public List<Key> getKeys() {
         //Making sure all tiles in keySet are Keys
-        for (AbstractTile k : collectibles.get("keySet")) {
+        for (AbstractTile k : collectables.get("keySet")) {
             assert (k instanceof Key) : "Tiles in keySet isn't of the Key type";
         }
-        return (Set<Key>) collectibles.get("keySet");
+        return (List<Key>) collectables.get("keySet");
     }
 
-
-    /**
-     * Returns the set of treasures in the player's hand
-     * @return Returns the set of treasures in the player's hand
-     */
     @SuppressWarnings("unchecked")
     public Set<Treasure> getTreasures() {
         //Making sure all tiles in treasureSet are Treasures
-        for (AbstractTile t : collectibles.get("treasureSet")) {
+        for (AbstractTile t : collectables.get("treasureSet")) {
             assert (t instanceof Treasure) : "Tiles in keySet isn't of the Key type";
         }
-        return (Set<Treasure>) collectibles.get("treasureSet");
+        return (Set<Treasure>) collectables.get("treasureSet");
     }
 
     /**
@@ -81,21 +72,19 @@ public class Player extends AbstractActor{
      * @param board .
      */
     @Override
-    public void move(Player player, Board board) {}
+    public void move(Player player, Board board) {
+
+    }
 
     /**
      * Player doesn't interact with itself, though this could be set up for co-op...?
      * @param player .
      */
-    public void interact(Player player) {}
+    public void interact(Player player) {
+    }
 
-    /**
-     * Tile plugins can be added to the player's collectibles if wanted and interact with actors.
-     * This getter for the player's collectibles is useful for that.
-     * @return The player's Collectibles of tiles
-     */
-    public Map<String, Collection<? extends AbstractTile>> getCollectibles() {
-        return collectibles;
+    public Map<String, Collection<? extends AbstractTile>> getCollectables() {
+        return collectables;
     }
 
     public void flipRightImage(){
