@@ -8,6 +8,8 @@ import Maze.BoardObjects.Actors.stalker_enemy.StalkerEnemy;
 import Maze.BoardObjects.Tiles.Key;
 import Maze.Game;
 import Maze.Position;
+import Persistence.Persistence;
+import Persistence.Level;
 import RecordAndReplay.RecordAndReplay;
 import Renderer.Renderer;
 import java.awt.Color;
@@ -46,7 +48,7 @@ public class ChapsChallenge extends JFrame {
 
     //Timer fields
     Timer timer;
-    private int timeRemaining = 100;
+    private int timeRemaining;
 
     private RecordAndReplay recordAndReplayer;
 
@@ -66,11 +68,17 @@ public class ChapsChallenge extends JFrame {
         test.add(enemy1);
         //////
 
-        game = new Game(new Board(Renderer.level1()), new Player(new Position(4, 4)), test); //FIXME: placeholder replace later
+        //Persistence and Levels
+        Persistence persistence = new Persistence();
+        Level currentLevel =  persistence.getLevel(1);
+        timeRemaining = currentLevel.getTime();
 
+        game = new Game(new Board(currentLevel.getTileArray()), new Player(currentLevel.getPlayerPos()), new HashSet<>()); //FIXME: placeholder replace later
 
+        //Record & Replay
         recordAndReplayer = new RecordAndReplay();
 
+        //GUI
         JPanel basePanel = new JPanel();
         basePanel.setBackground(Color.BLACK);
 
