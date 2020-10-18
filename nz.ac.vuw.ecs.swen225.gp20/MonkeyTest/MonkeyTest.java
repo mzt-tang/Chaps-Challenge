@@ -60,7 +60,7 @@ public class MonkeyTest {
 		}
 		else { i = 100000;} **/
 
-	
+	//}
 	@Test
 	public void testSuite() { test = new TestSuite(board);}
 	
