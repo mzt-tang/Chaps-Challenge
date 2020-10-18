@@ -28,7 +28,7 @@ public class TestSuite {
 		// t = new ChapsChallenge();
 		// tester = t.getGame();
 		
-		tester =  new Game(board, new Player(new Position(4, 4)), 1); //PLACEHOLDER, need to implement level loader
+		tester =  new Game(board, new Player(new Position(4, 4)), null); //PLACEHOLDER, need to implement level loader
 		
 	}
 	
