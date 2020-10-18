@@ -1,31 +1,14 @@
 package Persistence;
-import java.io.BufferedReader;
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.io.InputStream;
-import java.io.StringWriter;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Iterator;
 
 import javax.json.Json;
 import javax.json.JsonArray;
-import javax.json.JsonArrayBuilder;
 import javax.json.JsonObject;
-import javax.json.JsonObjectBuilder;
 import javax.json.JsonReader;
-import javax.json.JsonStructure;
 import javax.json.JsonValue;
-import javax.json.JsonWriter;
-import javax.json.JsonWriterFactory;
-import javax.json.stream.JsonGenerator;
-import javax.json.stream.JsonParser;
-import javax.json.stream.JsonParser.Event;
 
 import Maze.Position;
 import Maze.BoardObjects.Tiles.AbstractTile;
@@ -37,11 +20,6 @@ import Maze.BoardObjects.Tiles.Key;
 import Maze.BoardObjects.Tiles.LockedDoor;
 import Maze.BoardObjects.Tiles.Treasure;
 import Maze.BoardObjects.Tiles.Wall;
-
-import javax.json.JsonReader;
-import javax.json.JsonStructure;
-import javax.json.stream.JsonParser;
-import javax.json.stream.JsonParser.Event;
 
 public class JSONReader {
 
@@ -90,9 +68,7 @@ public class JSONReader {
 			String tileName = type.toString();
 			int tileRow = StringToInt(row.toString());
 			int tileColumn = StringToInt(column.toString());
-			System.out.println(row);
 			Position tilePos = new Position(tileColumn, tileRow);
-			System.out.println(tilePos.getX() + " " + tilePos.getY() + " " + tileName);
 			AbstractTile tileObject;
 			if(tileName.equals("\"Key\"")) {
 				JsonValue colour = currentTile.get("Colour");
