@@ -99,8 +99,6 @@ public class JSONReader {
 				String tileColour = colour.toString();
 				tileColour = tileColour.substring(1, tileColour.length()-1);
 				tileObject = new Key(tileColour);
-				Key tileToKey = (Key) tileObject;
-				System.out.println(tileToKey.getColour());
 			}
 			else if(tileName.equals("\"ExitPortal\"")) {
 				tileObject = new ExitPortal();
@@ -116,6 +114,7 @@ public class JSONReader {
 			else if(tileName.equals("\"LockedDoor\"")) {
 				JsonValue colour = currentTile.get("Colour");
 				String tileColour = colour.toString();
+				tileColour = tileColour.substring(1, tileColour.length()-1);
 				tileObject = new LockedDoor(isRotated, tileColour);
 			}
 			else if(tileName.equals("\"Treasure\"")) {
