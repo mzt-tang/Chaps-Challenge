@@ -5,6 +5,8 @@ import Maze.BoardObjects.Tiles.*;
 import Maze.Game;
 import Maze.Position;
 
+import java.awt.*;
+
 /**
  * An actor that follows a specific pattern/route defined by it's constructor parameter.
  */
@@ -16,6 +18,9 @@ public class PatternEnemy extends AbstractActor{
     public PatternEnemy(Position position, String routeStr) {
         super(position);
         this.route = routeStr.toCharArray();
+        images.put("Astronaut", Toolkit.getDefaultToolkit().getImage("Resources/actors/Astronaut.png"));
+        images.put("AstronautFlipped", Toolkit.getDefaultToolkit().getImage("Resources/actors/AstronautFlipped.png"));
+        currentImage = images.get("Astronaut");
     }
 
     @Override
@@ -26,18 +31,18 @@ public class PatternEnemy extends AbstractActor{
 
         switch (Character.toLowerCase(direction)) {
             case 'w':
-                newPos = new Position(player.getPos(), Game.DIRECTION.UP);
+                newPos = new Position(position, Game.DIRECTION.UP);
                 break;
             case 's':
-                newPos = new Position(player.getPos(), Game.DIRECTION.DOWN);
+                newPos = new Position(position, Game.DIRECTION.DOWN);
                 break;
             case 'a':
-                newPos = new Position(player.getPos(), Game.DIRECTION.LEFT);
-                player.flipLeftImage(); //Changes the player image direction
+                newPos = new Position(position, Game.DIRECTION.LEFT);
+                currentImage = images.get("AstronautFlipped"); //Changes the actor image direction
                 break;
             case 'd':
-                newPos = new Position(player.getPos(), Game.DIRECTION.RIGHT);
-                player.flipRightImage(); //Changes the player image direction
+                newPos = new Position(position, Game.DIRECTION.RIGHT);
+                currentImage = images.get("Astronaut"); //Changes the actor image direction
                 break;
             default:
                 throw new IllegalStateException("Unexpected direction: " + direction);

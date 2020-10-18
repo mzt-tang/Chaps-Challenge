@@ -91,6 +91,11 @@ public class Player extends AbstractActor{
     public void interact(Player player) {
     }
 
+    /**
+     * Tile plugins can be added to the player's collectibles if wanted and interact with actors.
+     * This getter for the player's collectibles is useful for that.
+     * @return The player's Collectibles of tiles
+     */
     public Map<String, Collection<? extends AbstractTile>> getCollectibles() {
         return collectibles;
     }
