@@ -1,29 +1,42 @@
-package Maze.Tests;
+package Maze;
 
 import Maze.Board;
+import Maze.BoardObjects.Actors.AbstractActor;
 import Maze.BoardObjects.Actors.Player;
 import Maze.BoardObjects.Tiles.*;
 import Maze.Game;
 import Maze.Position;
 import org.junit.Test;
 
-public class MazeTests {
+import java.util.HashSet;
+import java.util.Set;
+
+public class Tests {
 
 
     /**
-     * 
+     *
+     * TILE / PLAYER INTERACTIONS
+     *
      */
 
     /**
-     * Testing
+     * Testing Free tiles, infofields, and wall interactions
      */
     @Test
     public void test1(){
         AbstractTile[][] map = makeMap();
-        map[3][1] = new InfoField("test");
+        map[3][2] = new InfoField("test");
 
         Player player = new Player(new Position(1, 1));
-        Game game = new Game(new Board(map), player, null);
+        Set<AbstractActor> enemies = new HashSet<>();
+        Game game = new Game(new Board(map), player, enemies);
+
+        game.movePlayer(Game.DIRECTION.UP);
+        game.movePlayer(Game.DIRECTION.LEFT);
+        game.movePlayer(Game.DIRECTION.RIGHT);
+        game.movePlayer(Game.DIRECTION.RIGHT);
+        game.movePlayer(Game.DIRECTION.RIGHT);
     }
 
 
