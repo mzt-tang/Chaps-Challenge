@@ -2,17 +2,21 @@ package Application;
 
 import Maze.Board;
 import Maze.BoardObjects.Actors.AbstractActor;
+import Maze.BoardObjects.Actors.PatternEnemy;
 import Maze.BoardObjects.Actors.Player;
 import Maze.BoardObjects.Actors.stalker_enemy.StalkerEnemy;
 import Maze.BoardObjects.Tiles.Key;
 import Maze.Game;
 import Maze.Position;
+import Persistence.Persistence;
+import Persistence.Level;
 import RecordAndReplay.RecordAndReplay;
 import Renderer.Renderer;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.Graphics2D;
 import java.awt.Insets;
 import java.awt.event.*;
 import java.util.HashSet;
@@ -44,7 +48,7 @@ public class ChapsChallenge extends JFrame {
 
     //Timer fields
     Timer timer;
-    private int timeRemaining = 100;
+    private int timeRemaining;
 
     private RecordAndReplay recordAndReplayer;
 
@@ -55,16 +59,26 @@ public class ChapsChallenge extends JFrame {
         initUI();
 
         /////// TEST CODE
-        StalkerEnemy enemy = new StalkerEnemy(new Position(10, 10));
         Set<AbstractActor> test = new HashSet<>();
+
+        StalkerEnemy enemy = new StalkerEnemy(new Position(10, 10), 1);
         test.add(enemy);
+
+        PatternEnemy enemy1 = new PatternEnemy(new Position(2, 9), 1, "dddsssaaawww");
+        test.add(enemy1);
         //////
 
-        game = new Game(new Board(Renderer.level1()), new Player(new Position(4, 4)), test); //FIXME: placeholder replace later
+        //Persistence and Levels
+        Persistence persistence = new Persistence();
+        Level currentLevel =  persistence.getLevel(1);
+        timeRemaining = currentLevel.getTime();
 
+        game = new Game(new Board(currentLevel.getTileArray()), new Player(currentLevel.getPlayerPos()), new HashSet<>()); //FIXME: placeholder replace later
 
+        //Record & Replay
         recordAndReplayer = new RecordAndReplay();
 
+        //GUI
         JPanel basePanel = new JPanel();
         basePanel.setBackground(Color.BLACK);
 
@@ -229,7 +243,11 @@ public class ChapsChallenge extends JFrame {
         //Timer thread
         JLabel timeLabel = new JLabel();
         JLabel chipsLabel = new JLabel();
-        JLabel inventoryLabel = new JLabel("Inventory");
+        JLabel inventoryLabel = new JLabel("INVENTORY");
+        inventoryLabel.setFont(new Font(timeLabel.getName(), Font.PLAIN, fontSize));
+        inventoryLabel.setForeground(Color.RED);
+        inventoryLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+
         timer = new Timer(1000, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -248,12 +266,10 @@ public class ChapsChallenge extends JFrame {
 //                }
                 chipsLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-                //TODO: Inventory view
-                //player.getkeys
-                for (Key key : game.getPlayer().getKeys()){
-                    key.getCurrentImage();
-                }
+                //Inventory view
+                //todo
 
+                //Stopping the timer once it runs out of time
                 if (timeRemaining == 0) {
                     timer.stop();
                     outOfTime();
@@ -267,19 +283,23 @@ public class ChapsChallenge extends JFrame {
 
         //info panel
         int INFO_WIDTH = 240;
-        infoPanel.add(Box.createRigidArea(new Dimension(INFO_WIDTH, 150)));
+        infoPanel.add(Box.createRigidArea(new Dimension(INFO_WIDTH, 100)));
         infoPanel.add(levelLabel);
-        infoPanel.add(Box.createRigidArea(new Dimension(INFO_WIDTH, 100)));
+        infoPanel.add(Box.createRigidArea(new Dimension(INFO_WIDTH, 66)));
         infoPanel.add(timeLabel);
-        infoPanel.add(Box.createRigidArea(new Dimension(INFO_WIDTH, 100)));
+        infoPanel.add(Box.createRigidArea(new Dimension(INFO_WIDTH, 66)));
         infoPanel.add(chipsLabel);
-        infoPanel.add(Box.createRigidArea(new Dimension(INFO_WIDTH, 150)));
+        infoPanel.add(Box.createRigidArea(new Dimension(INFO_WIDTH, 66)));
+        infoPanel.add(inventoryLabel);
+        infoPanel.add(Box.createRigidArea(new Dimension(INFO_WIDTH, 200)));
 
 
         return infoPanel;
     }
 
-    //other
+    // ===========================================
+    // Controlling Game Status
+    // ===========================================
 
     /**
      * Ends the game when the game clock runs out of time.
@@ -289,8 +309,19 @@ public class ChapsChallenge extends JFrame {
         System.exit(0);
     }
 
+    public void nextLevel(){
+        int options = JOptionPane.showConfirmDialog(null, "Level 1 Completed!", "Continue to next level?",
+                JOptionPane.YES_NO_OPTION);
+        if(options == 0) {
+            System.out.println("Level 2 called...");
+        } else {
+            System.exit(0);
+        }
+    }
 
-    //getters
+    // ===========================================
+    // Getters
+    // ===========================================
 
     /**
      * Getter for game.
