@@ -15,8 +15,8 @@ public class PatternEnemy extends AbstractActor{
     private final char[] route;
     private int routePos = 0;
 
-    public PatternEnemy(Position position, String routeStr) {
-        super(position);
+    public PatternEnemy(Position position, int tickRate, String routeStr) {
+        super(position, tickRate);
         this.route = routeStr.toCharArray();
         images.put("Astronaut", Toolkit.getDefaultToolkit().getImage("Resources/actors/Astronaut.png"));
         images.put("AstronautFlipped", Toolkit.getDefaultToolkit().getImage("Resources/actors/AstronautFlipped.png"));

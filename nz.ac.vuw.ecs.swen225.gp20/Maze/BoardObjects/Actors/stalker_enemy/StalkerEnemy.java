@@ -17,8 +17,8 @@ public class StalkerEnemy extends AbstractActor {
     /*
      * @param position the position of the actors
      */
-    public StalkerEnemy(Position position) {
-        super(position);
+    public StalkerEnemy(Position position, int tickRate) {
+        super(position, tickRate);
         images.put("Astronaut", Toolkit.getDefaultToolkit().getImage("Resources/actors/Astronaut.png"));
         images.put("AstronautFlipped", Toolkit.getDefaultToolkit().getImage("Resources/actors/AstronautFlipped.png"));
         currentImage = images.get("Astronaut");
