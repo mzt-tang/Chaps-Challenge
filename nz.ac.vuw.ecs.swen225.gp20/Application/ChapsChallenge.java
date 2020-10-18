@@ -16,6 +16,7 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Insets;
 import java.awt.event.*;
@@ -46,9 +47,11 @@ public class ChapsChallenge extends JFrame {
 
     private Game game;
 
-    //Timer fields
-    Timer timer;
+    //Informating stored for info panel
+    private Timer timer;
     private int timeRemaining;
+    private InventoryView inventoryView;
+
 
     private RecordAndReplay recordAndReplayer;
 
@@ -74,6 +77,7 @@ public class ChapsChallenge extends JFrame {
         timeRemaining = currentLevel.getTime();
 
         game = new Game(new Board(currentLevel.getTileArray()), new Player(currentLevel.getPlayerPos()), new HashSet<>()); //FIXME: placeholder replace later
+        inventoryView = new InventoryView(game.getPlayer());
 
         //Record & Replay
         recordAndReplayer = new RecordAndReplay();
@@ -178,6 +182,8 @@ public class ChapsChallenge extends JFrame {
                         Thread.sleep(1000/30); //30FPS
                         renderer.revalidate();
                         renderer.repaint();
+                        inventoryView.revalidate();
+                        inventoryView.repaint();
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
@@ -267,7 +273,7 @@ public class ChapsChallenge extends JFrame {
                 chipsLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
                 //Inventory view
-                //todo
+
 
                 //Stopping the timer once it runs out of time
                 if (timeRemaining == 0) {
@@ -291,19 +297,12 @@ public class ChapsChallenge extends JFrame {
         infoPanel.add(chipsLabel);
         infoPanel.add(Box.createRigidArea(new Dimension(INFO_WIDTH, 66)));
         infoPanel.add(inventoryLabel);
-        infoPanel.add(Box.createRigidArea(new Dimension(INFO_WIDTH, 200)));
-
+        infoPanel.add(inventoryView);
+        infoPanel.add(Box.createRigidArea(new Dimension(INFO_WIDTH, 75)));
 
         return infoPanel;
     }
 
-    public JPanel gameInventory(Graphics2D g){
-        JPanel inventoryPanel = new JPanel();
-        for (Key key : game.getPlayer().getKeys()){
-            //g.drawImage(key.getCurrentImage(), );
-        }
-        return inventoryPanel;
-    }
 
     // ===========================================
     // Controlling Game Status
