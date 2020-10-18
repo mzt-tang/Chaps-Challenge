@@ -2,6 +2,7 @@ package Application;
 
 import Maze.Board;
 import Maze.BoardObjects.Actors.AbstractActor;
+import Maze.BoardObjects.Actors.PatternEnemy;
 import Maze.BoardObjects.Actors.Player;
 import Maze.BoardObjects.Actors.stalker_enemy.StalkerEnemy;
 import Maze.BoardObjects.Tiles.Key;
@@ -56,9 +57,13 @@ public class ChapsChallenge extends JFrame {
         initUI();
 
         /////// TEST CODE
-        StalkerEnemy enemy = new StalkerEnemy(new Position(10, 10));
         Set<AbstractActor> test = new HashSet<>();
+
+        StalkerEnemy enemy = new StalkerEnemy(new Position(10, 10), 1);
         test.add(enemy);
+
+        PatternEnemy enemy1 = new PatternEnemy(new Position(2, 9), 1, "dddsssaaawww");
+        test.add(enemy1);
         //////
 
         game = new Game(new Board(Renderer.level1()), new Player(new Position(4, 4)), test); //FIXME: placeholder replace later
@@ -296,6 +301,15 @@ public class ChapsChallenge extends JFrame {
         System.exit(0);
     }
 
+    public void nextLevel(){
+        int options = JOptionPane.showConfirmDialog(null, "Level 1 Completed!", "Continue to next level?",
+                JOptionPane.YES_NO_OPTION);
+        if(options == 0) {
+            System.out.println("Level 2 called...");
+        } else {
+            System.exit(0);
+        }
+    }
 
     // ===========================================
     // Getters

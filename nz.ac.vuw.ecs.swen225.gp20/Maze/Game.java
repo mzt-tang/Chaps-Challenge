@@ -5,6 +5,7 @@ import Maze.BoardObjects.Actors.Player;
 import Maze.BoardObjects.Tiles.*;
 import RecordAndReplay.RecordAndReplay;
 
+import java.util.HashSet;
 import java.util.Set;
 
 public class Game {
@@ -26,7 +27,7 @@ public class Game {
         this.computerPlayers = computerPlayers;
     }
 
-    public void moveEnemyCheckWin() {
+    public void moveEnemy() {
         for(AbstractActor c : computerPlayers) {
             c.move(player, board);
         }
@@ -41,14 +42,14 @@ public class Game {
     public void movePlayer(DIRECTION direction) {
 
         ////////TEST CODE
+        int count = 0;
         for(AbstractActor a : computerPlayers) {
-            System.out.println("Enemy: ");
+            System.out.println("Enemy " + count + ": ");
             a.move(player, board);
             System.out.println(a.getPos());
-            a.move(player, board);
-            System.out.println(a.getPos());
-            a.move(player, board);
-            System.out.println(a.getPos());
+            //a.move(player, board);
+            //System.out.println(a.getPos());
+            count++;
         }
         //////
 
@@ -123,7 +124,7 @@ public class Game {
 
     /**
      * Tells if all treasures have been collected.
-     * @return Returns true if all treasures have been collected, false if not.
+     * @return Returns true if all treasures have been collected, false if not.a
      */
     public boolean allTreasuresCollected() {
         return treasuresLeft() == 0;

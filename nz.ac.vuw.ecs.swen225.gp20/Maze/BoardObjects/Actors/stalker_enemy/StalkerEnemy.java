@@ -17,8 +17,8 @@ public class StalkerEnemy extends AbstractActor {
     /*
      * @param position the position of the actors
      */
-    public StalkerEnemy(Position position) {
-        super(position);
+    public StalkerEnemy(Position position, int tickRate) {
+        super(position, tickRate);
         images.put("Astronaut", Toolkit.getDefaultToolkit().getImage("Resources/actors/Astronaut.png"));
         images.put("AstronautFlipped", Toolkit.getDefaultToolkit().getImage("Resources/actors/AstronautFlipped.png"));
         currentImage = images.get("Astronaut");
@@ -46,7 +46,16 @@ public class StalkerEnemy extends AbstractActor {
             path = path.getPrevious();
         }
 
-        position = board.findPosInBoard(path.getCurrent()); //Move the the position
+        Position newPos = board.findPosInBoard(path.getCurrent()); //Move the the position
+
+        //Changes the actor image direction
+        if(newPos.getX() >= position.getX()){
+            currentImage = images.get("Astronaut");
+        } else {
+            currentImage = images.get("AstronautFlipped");
+        }
+
+        position = newPos;
     }
 
     /**
@@ -85,9 +94,13 @@ public class StalkerEnemy extends AbstractActor {
         return null;
     }
 
+    /**
+     * The enemy "kills" the player and sends them back to their starting position.
+     * @param player The player.
+     */
     @Override
     public void interact(Player player) {
-
+        player.getPos().setPosition(player.getStartingPos());
     }
 
     /**

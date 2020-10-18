@@ -1,31 +1,14 @@
 package Persistence;
-import java.io.BufferedReader;
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.io.InputStream;
-import java.io.StringWriter;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Iterator;
 
 import javax.json.Json;
 import javax.json.JsonArray;
-import javax.json.JsonArrayBuilder;
 import javax.json.JsonObject;
-import javax.json.JsonObjectBuilder;
 import javax.json.JsonReader;
-import javax.json.JsonStructure;
 import javax.json.JsonValue;
-import javax.json.JsonWriter;
-import javax.json.JsonWriterFactory;
-import javax.json.stream.JsonGenerator;
-import javax.json.stream.JsonParser;
-import javax.json.stream.JsonParser.Event;
 
 import Maze.Position;
 import Maze.BoardObjects.Tiles.AbstractTile;
@@ -38,19 +21,12 @@ import Maze.BoardObjects.Tiles.LockedDoor;
 import Maze.BoardObjects.Tiles.Treasure;
 import Maze.BoardObjects.Tiles.Wall;
 
-import javax.json.JsonReader;
-import javax.json.JsonStructure;
-import javax.json.stream.JsonParser;
-import javax.json.stream.JsonParser.Event;
-
 public class JSONReader {
 
   /**
    * @param jsonName -  The name of the JSON file to use.
    */
   public AbstractTile[][] readJSON(String jsonName) {
-	int rowIndex = 0;
-	int colIndex = 0;
 	InputStream levelInputStream;
 	 System.out.println("Working Directory = " + System.getProperty("user.dir"));
 	try {
@@ -90,16 +66,14 @@ public class JSONReader {
 				isRotated = true;
 			}
 			String tileName = type.toString();
-			int tileRow = row.toString().charAt(0);
-			int tileColumn = column.toString().charAt(0);
-			tileRow = tileRow - '0';
-			tileColumn = tileColumn - '0';
+			int tileRow = StringToInt(row.toString());
+			int tileColumn = StringToInt(column.toString());
 			Position tilePos = new Position(tileColumn, tileRow);
-			System.out.println(tilePos.getX() + " " + tilePos.getY());
 			AbstractTile tileObject;
 			if(tileName.equals("\"Key\"")) {
 				JsonValue colour = currentTile.get("Colour");
 				String tileColour = colour.toString();
+				tileColour = tileColour.substring(1, tileColour.length()-1);
 				tileObject = new Key(tileColour);
 			}
 			else if(tileName.equals("\"ExitPortal\"")) {
@@ -116,6 +90,7 @@ public class JSONReader {
 			else if(tileName.equals("\"LockedDoor\"")) {
 				JsonValue colour = currentTile.get("Colour");
 				String tileColour = colour.toString();
+				tileColour = tileColour.substring(1, tileColour.length()-1);
 				tileObject = new LockedDoor(isRotated, tileColour);
 			}
 			else if(tileName.equals("\"Treasure\"")) {
@@ -135,5 +110,14 @@ public class JSONReader {
 	return tileArray;
 	
   
+  }
+
+  private int StringToInt(String intString) {
+	  int charInt = 0;
+	  for(int i = 0; i < intString.length(); i++) {
+		  charInt = charInt*10;
+		  charInt += intString.charAt(i) - '0';
+	  }
+	  return charInt;
   }
 }

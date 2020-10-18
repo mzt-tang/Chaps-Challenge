@@ -21,7 +21,7 @@ public class Player extends AbstractActor{
      * @param position .
      */
     public Player(Position position) {
-        super(position);
+        super(position, 0);
         Set<Key> keySet = new HashSet<>(); //Keys that the player has picked up.
         Set<Treasure> treasureSet = new HashSet<>(); //Treasures that the player has picked up.
         collectibles.put("keySet", keySet);
@@ -80,17 +80,19 @@ public class Player extends AbstractActor{
      * @param board .
      */
     @Override
-    public void move(Player player, Board board) {
-
-    }
+    public void move(Player player, Board board) {}
 
     /**
      * Player doesn't interact with itself, though this could be set up for co-op...?
      * @param player .
      */
-    public void interact(Player player) {
-    }
+    public void interact(Player player) {}
 
+    /**
+     * Tile plugins can be added to the player's collectibles if wanted and interact with actors.
+     * This getter for the player's collectibles is useful for that.
+     * @return The player's Collectibles of tiles
+     */
     public Map<String, Collection<? extends AbstractTile>> getCollectibles() {
         return collectibles;
     }
