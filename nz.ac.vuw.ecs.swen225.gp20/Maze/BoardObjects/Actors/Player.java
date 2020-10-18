@@ -8,6 +8,7 @@ import Maze.Position;
 
 import java.awt.*;
 import java.util.*;
+import java.util.List;
 
 /**
  * The actor that the player is controlling.
@@ -22,7 +23,7 @@ public class Player extends AbstractActor{
      */
     public Player(Position position) {
         super(position, 0);
-        Set<Key> keySet = new HashSet<>(); //Keys that the player has picked up.
+        List<Key> keySet = new ArrayList<>(); //Keys that the player has picked up.
         Set<Treasure> treasureSet = new HashSet<>(); //Treasures that the player has picked up.
         collectibles.put("keySet", keySet);
         collectibles.put("treasureSet", treasureSet);
@@ -44,7 +45,7 @@ public class Player extends AbstractActor{
             assert (k instanceof Key) : "Tiles in keySet isn't of the Key type";
             if(colour.equals(((Key) k).getColour())) return (Key) k;
         }
-        return null;
+        return null; //Should never reach here
     }
 
     /**
