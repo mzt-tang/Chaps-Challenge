@@ -2,6 +2,7 @@ package Application;
 
 import Maze.Board;
 import Maze.BoardObjects.Actors.AbstractActor;
+import Maze.BoardObjects.Actors.PatternEnemy;
 import Maze.BoardObjects.Actors.Player;
 import Maze.BoardObjects.Actors.stalker_enemy.StalkerEnemy;
 import Maze.BoardObjects.Tiles.AbstractTile;
@@ -49,9 +50,13 @@ public class ChapsChallenge extends JFrame {
         initUI();
 
         /////// TEST CODE
-        StalkerEnemy enemy = new StalkerEnemy(new Position(10, 10));
         Set<AbstractActor> test = new HashSet<>();
+
+        StalkerEnemy enemy = new StalkerEnemy(new Position(10, 10));
         test.add(enemy);
+
+        PatternEnemy enemy1 = new PatternEnemy(new Position(2, 9), "dddsssaaawww");
+        test.add(enemy1);
         //////
 
         game = new Game(new Board(Renderer.level1()), new Player(new Position(4, 4)), test); //FIXME: placeholder replace later
