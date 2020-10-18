@@ -49,8 +49,6 @@ public class JSONReader {
    * @param jsonName -  The name of the JSON file to use.
    */
   public AbstractTile[][] readJSON(String jsonName) {
-	int rowIndex = 0;
-	int colIndex = 0;
 	InputStream levelInputStream;
 	 System.out.println("Working Directory = " + System.getProperty("user.dir"));
 	try {
@@ -90,12 +88,11 @@ public class JSONReader {
 				isRotated = true;
 			}
 			String tileName = type.toString();
-			int tileRow = row.toString().charAt(0);
-			int tileColumn = column.toString().charAt(0);
-			tileRow = tileRow - '0';
-			tileColumn = tileColumn - '0';
+			int tileRow = StringToInt(row.toString());
+			int tileColumn = StringToInt(column.toString());
+			System.out.println(row);
 			Position tilePos = new Position(tileColumn, tileRow);
-			System.out.println(tilePos.getX() + " " + tilePos.getY());
+			System.out.println(tilePos.getX() + " " + tilePos.getY() + " " + tileName);
 			AbstractTile tileObject;
 			if(tileName.equals("\"Key\"")) {
 				JsonValue colour = currentTile.get("Colour");
@@ -135,5 +132,14 @@ public class JSONReader {
 	return tileArray;
 	
   
+  }
+
+  private int StringToInt(String intString) {
+	  int charInt = 0;
+	  for(int i = 0; i < intString.length(); i++) {
+		  charInt = charInt*10;
+		  charInt += intString.charAt(i) - '0';
+	  }
+	  return charInt;
   }
 }

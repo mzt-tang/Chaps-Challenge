@@ -10,7 +10,7 @@ public class PersistenceTest {
 	    makeJSON.makeJSON(csvRead.readCSV("nz.ac.vuw.ecs.swen225.gp20/Persistence/level.csv"), "nz.ac.vuw.ecs.swen225.gp20/Persistence/level.json");
 	    
 	    AbstractTile[][] tileTest = getJson.getLevel(1);
-	    String className = tileTest[0][0].getClass().getName();
+	    String className = tileTest[1][1].getClass().getName();
 	    System.out.println("First abstract tile: " + className);
 	}
 }

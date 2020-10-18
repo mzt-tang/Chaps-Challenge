@@ -167,7 +167,7 @@
                         "column": 3,
                         "Tile Type": "LockedDoor",
                         "Rotation": "Horizontal",
-                        "Colour": "green"
+                        "Colour": "Green"
                     },
                     {
                         "row": 2,
@@ -192,7 +192,7 @@
                         "column": 7,
                         "Tile Type": "LockedDoor",
                         "Rotation": "Horizontal",
-                        "Colour": "green"
+                        "Colour": "Green"
                     },
                     {
                         "row": 2,
@@ -233,7 +233,7 @@
                         "column": 2,
                         "Tile Type": "LockedDoor",
                         "Rotation": "Horizontal",
-                        "Colour": "blue"
+                        "Colour": "Blue"
                     },
                     {
                         "row": 3,
@@ -270,7 +270,7 @@
                         "column": 8,
                         "Tile Type": "LockedDoor",
                         "Rotation": "Horizontal",
-                        "Colour": "red"
+                        "Colour": "Red"
                     },
                     {
                         "row": 3,
@@ -311,7 +311,7 @@
                         "column": 3,
                         "Tile Type": "Key",
                         "Rotation": "Horizontal",
-                        "Colour": "blue"
+                        "Colour": "Blue"
                     },
                     {
                         "row": 4,
@@ -337,7 +337,7 @@
                         "column": 7,
                         "Tile Type": "Key",
                         "Rotation": "Horizontal",
-                        "Colour": "red"
+                        "Colour": "Red"
                     },
                     {
                         "row": 4,
@@ -454,7 +454,7 @@
                         "column": 3,
                         "Tile Type": "Key",
                         "Rotation": "Horizontal",
-                        "Colour": "blue"
+                        "Colour": "Blue"
                     },
                     {
                         "row": 6,
@@ -479,7 +479,7 @@
                         "column": 7,
                         "Tile Type": "Key",
                         "Rotation": "Horizontal",
-                        "Colour": "red"
+                        "Colour": "Red"
                     },
                     {
                         "row": 6,
@@ -520,7 +520,7 @@
                         "column": 2,
                         "Tile Type": "LockedDoor",
                         "Rotation": "Horizontal",
-                        "Colour": "red"
+                        "Colour": "Red"
                     },
                     {
                         "row": 7,
@@ -557,7 +557,7 @@
                         "column": 8,
                         "Tile Type": "LockedDoor",
                         "Rotation": "Horizontal",
-                        "Colour": "blue"
+                        "Colour": "Blue"
                     },
                     {
                         "row": 7,
@@ -604,7 +604,7 @@
                         "column": 4,
                         "Tile Type": "LockedDoor",
                         "Rotation": "Horizontal",
-                        "Colour": "yellow"
+                        "Colour": "Yellow"
                     },
                     {
                         "row": 8,
@@ -617,7 +617,7 @@
                         "column": 6,
                         "Tile Type": "LockedDoor",
                         "Rotation": "Horizontal",
-                        "Colour": "yellow"
+                        "Colour": "Yellow"
                     },
                     {
                         "row": 8,
