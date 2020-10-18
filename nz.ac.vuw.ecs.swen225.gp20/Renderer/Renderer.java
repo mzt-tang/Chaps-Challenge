@@ -5,7 +5,6 @@ import Maze.BoardObjects.Actors.Player;
 import Maze.BoardObjects.Tiles.*;
 import Maze.Game;
 import Maze.Position;
-import org.junit.platform.commons.util.StringUtils;
 
 import javax.swing.*;
 import java.awt.*;

@@ -21,6 +21,7 @@ public class PatternEnemy extends AbstractActor{
     }
 
     public void interact(Player player) {
+
     }
 
 }

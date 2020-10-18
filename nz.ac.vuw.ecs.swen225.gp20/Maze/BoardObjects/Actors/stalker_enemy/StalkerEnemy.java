@@ -85,9 +85,13 @@ public class StalkerEnemy extends AbstractActor {
         return null;
     }
 
+    /**
+     * The enemy "kills" the player and sends them back to their starting position.
+     * @param player The player.
+     */
     @Override
     public void interact(Player player) {
-
+        player.getPos().setPosition(player.getStartingPos());
     }
 
     /**
