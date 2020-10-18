@@ -14,6 +14,7 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.Graphics2D;
 import java.awt.Insets;
 import java.awt.event.*;
 import java.util.HashSet;
@@ -58,10 +59,10 @@ public class ChapsChallenge extends JFrame {
         /////// TEST CODE
         Set<AbstractActor> test = new HashSet<>();
 
-        StalkerEnemy enemy = new StalkerEnemy(new Position(10, 10));
+        StalkerEnemy enemy = new StalkerEnemy(new Position(10, 10), 1);
         test.add(enemy);
 
-        PatternEnemy enemy1 = new PatternEnemy(new Position(2, 9), "dddsssaaawww");
+        PatternEnemy enemy1 = new PatternEnemy(new Position(2, 9), 1, "dddsssaaawww");
         test.add(enemy1);
         //////
 
@@ -234,7 +235,11 @@ public class ChapsChallenge extends JFrame {
         //Timer thread
         JLabel timeLabel = new JLabel();
         JLabel chipsLabel = new JLabel();
-        JLabel inventoryLabel = new JLabel("Inventory");
+        JLabel inventoryLabel = new JLabel("INVENTORY");
+        inventoryLabel.setFont(new Font(timeLabel.getName(), Font.PLAIN, fontSize));
+        inventoryLabel.setForeground(Color.RED);
+        inventoryLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+
         timer = new Timer(1000, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -253,12 +258,10 @@ public class ChapsChallenge extends JFrame {
 //                }
                 chipsLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-                //TODO: Inventory view
-                //player.getkeys
-                for (Key key : game.getPlayer().getKeys()){
-                    key.getCurrentImage();
-                }
+                //Inventory view
+                //todo
 
+                //Stopping the timer once it runs out of time
                 if (timeRemaining == 0) {
                     timer.stop();
                     outOfTime();
@@ -272,19 +275,31 @@ public class ChapsChallenge extends JFrame {
 
         //info panel
         int INFO_WIDTH = 240;
-        infoPanel.add(Box.createRigidArea(new Dimension(INFO_WIDTH, 150)));
+        infoPanel.add(Box.createRigidArea(new Dimension(INFO_WIDTH, 100)));
         infoPanel.add(levelLabel);
-        infoPanel.add(Box.createRigidArea(new Dimension(INFO_WIDTH, 100)));
+        infoPanel.add(Box.createRigidArea(new Dimension(INFO_WIDTH, 66)));
         infoPanel.add(timeLabel);
-        infoPanel.add(Box.createRigidArea(new Dimension(INFO_WIDTH, 100)));
+        infoPanel.add(Box.createRigidArea(new Dimension(INFO_WIDTH, 66)));
         infoPanel.add(chipsLabel);
-        infoPanel.add(Box.createRigidArea(new Dimension(INFO_WIDTH, 150)));
+        infoPanel.add(Box.createRigidArea(new Dimension(INFO_WIDTH, 66)));
+        infoPanel.add(inventoryLabel);
+        infoPanel.add(Box.createRigidArea(new Dimension(INFO_WIDTH, 200)));
 
 
         return infoPanel;
     }
 
-    //other
+    public JPanel gameInventory(Graphics2D g){
+        JPanel inventoryPanel = new JPanel();
+        for (Key key : game.getPlayer().getKeys()){
+            //g.drawImage(key.getCurrentImage(), );
+        }
+        return inventoryPanel;
+    }
+
+    // ===========================================
+    // Controlling Game Status
+    // ===========================================
 
     /**
      * Ends the game when the game clock runs out of time.
@@ -294,8 +309,20 @@ public class ChapsChallenge extends JFrame {
         System.exit(0);
     }
 
+    public void nextLevel(){
+        int options = JOptionPane.showConfirmDialog(null, "Level 1 Completed!", "Continue to next level?",
+                JOptionPane.YES_NO_OPTION);
+        if(options == 0) {
+            System.out.println("Level 2 called...");
+        } else {
+            System.exit(0);
+        }
+    }
 
-    //getters
+
+    // ===========================================
+    // Getters
+    // ===========================================
 
     /**
      * Getter for game.
