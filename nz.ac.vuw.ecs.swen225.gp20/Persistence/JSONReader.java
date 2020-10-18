@@ -97,7 +97,10 @@ public class JSONReader {
 			if(tileName.equals("\"Key\"")) {
 				JsonValue colour = currentTile.get("Colour");
 				String tileColour = colour.toString();
+				tileColour = tileColour.substring(1, tileColour.length()-1);
 				tileObject = new Key(tileColour);
+				Key tileToKey = (Key) tileObject;
+				System.out.println(tileToKey.getColour());
 			}
 			else if(tileName.equals("\"ExitPortal\"")) {
 				tileObject = new ExitPortal();
