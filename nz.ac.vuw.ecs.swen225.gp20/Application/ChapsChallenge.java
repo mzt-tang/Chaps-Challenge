@@ -4,12 +4,11 @@ import Maze.Board;
 import Maze.BoardObjects.Actors.AbstractActor;
 import Maze.BoardObjects.Actors.Player;
 import Maze.BoardObjects.Actors.stalker_enemy.StalkerEnemy;
-import Maze.BoardObjects.Tiles.AbstractTile;
+import Maze.BoardObjects.Tiles.Key;
 import Maze.Game;
 import Maze.Position;
 import RecordAndReplay.RecordAndReplay;
 import Renderer.Renderer;
-import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
@@ -29,7 +28,6 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 import javax.swing.border.EmptyBorder;
-import jdk.jfr.Event;
 
 /**
  * Window of the actual game, Chap's Challenge
@@ -46,7 +44,7 @@ public class ChapsChallenge extends JFrame {
 
     //Timer fields
     Timer timer;
-    private int timeRemaining = 10;
+    private int timeRemaining = 100;
 
     private RecordAndReplay recordAndReplayer;
 
@@ -157,6 +155,23 @@ public class ChapsChallenge extends JFrame {
         gamePanel.requestFocusInWindow();
         gamePanel.requestFocus();
 
+        //Star background on own thread
+        Runnable clockThread = new Runnable() {
+            @Override
+            public void run() {
+                while (true){
+                    try {
+                        Thread.sleep(1000/30); //30FPS
+                        renderer.revalidate();
+                        renderer.repaint();
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        };
+        new Thread(clockThread).start();
+
         //KeyListeners
         gamePanel.addKeyListener(new KeyAdapter() {
             @Override
@@ -188,8 +203,6 @@ public class ChapsChallenge extends JFrame {
                         break;
                 }
                 recordAndReplayer.storeRecorderBuffer();
-                renderer.revalidate();
-                renderer.repaint();
             }
         });
 
@@ -207,40 +220,50 @@ public class ChapsChallenge extends JFrame {
 
         int fontSize = 16;
 
-        //level
+        //Current level label
         JLabel levelLabel = new JLabel("LEVEL X");
         levelLabel.setFont(new Font(levelLabel.getName(), Font.PLAIN, fontSize));
         levelLabel.setForeground(Color.RED);
         levelLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-        //time remaining
+        //Timer thread
         JLabel timeLabel = new JLabel();
-        timeLabel.setFont(new Font(timeLabel.getName(), Font.PLAIN, fontSize));
+        JLabel chipsLabel = new JLabel();
+        JLabel inventoryLabel = new JLabel("Inventory");
         timer = new Timer(1000, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                //Time remaining
+                timeLabel.setFont(new Font(timeLabel.getName(), Font.PLAIN, fontSize));
                 timeLabel.setText("TIME REMAINING: \n" + timeRemaining);
+                timeLabel.setForeground(Color.RED);
+                timeLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+                //Chips Remaining
+                chipsLabel.setFont(new Font(chipsLabel.getName(), Font.PLAIN, fontSize));
+                chipsLabel.setText("CHIPS REMAINING: " + game.treasuresLeft());
+                chipsLabel.setForeground(Color.RED);
+//                if (game.treasuresLeft() == 0){
+//                    chipsLabel.setForeground(Color.GREEN);
+//                }
+                chipsLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+                //TODO: Inventory view
+                //player.getkeys
+                for (Key key : game.getPlayer().getKeys()){
+                    key.getCurrentImage();
+                }
+
                 if (timeRemaining == 0) {
                     timer.stop();
-                    gameOver();
+                    outOfTime();
                 }
                 timeRemaining--;
             }
         });
         timer.start();
-        timeLabel.setForeground(Color.RED);
-        timeLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
-
-        //chips remaining
-        JLabel chipsLabel = new JLabel("CHIPS REMAINING: ");
-        chipsLabel.setFont(new Font(chipsLabel.getName(), Font.PLAIN, fontSize));
-        chipsLabel.setForeground(Color.RED);
-        chipsLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
-        //game.treasuresLEFT
 
 
-        //TODO: inventory view
-        //player.getkeys
 
         //info panel
         int INFO_WIDTH = 240;
@@ -259,9 +282,9 @@ public class ChapsChallenge extends JFrame {
     //other
 
     /**
-     *
+     * Ends the game when the game clock runs out of time.
      */
-    public void gameOver(){
+    public void outOfTime(){
         JOptionPane.showMessageDialog(null, "You ran out of time!", "Game Over", JOptionPane.INFORMATION_MESSAGE);
         System.exit(0);
     }
@@ -304,5 +327,4 @@ public class ChapsChallenge extends JFrame {
         recordAndReplayer.captureTileInteraction(game.getBoard().getMap()[newPos.getX()][newPos.getY()]);
 
     }
-
 }
