@@ -26,7 +26,8 @@ public class JSONReader {
   /**
    * @param jsonName -  The name of the JSON file to use.
    */
-  public AbstractTile[][] readJSON(String jsonName) {
+  public Level readJSON(String jsonName) {
+	Level returnLevel;
 	InputStream levelInputStream;
 	 System.out.println("Working Directory = " + System.getProperty("user.dir"));
 	try {
@@ -39,12 +40,19 @@ public class JSONReader {
 	JsonReader levelReader = Json.createReader(levelInputStream);
 	
 	JsonObject fileObject = levelReader.readObject();
+	JsonObject levelInfo = fileObject.getJsonObject("Level Info");
 	JsonObject tiles = fileObject.getJsonObject("Tiles");
 	JsonArray rows = (JsonArray) tiles.get("rows");
-	int rowCount = fileObject.getInt("rowCount");
-	int colCount = fileObject.getInt("columnCount");
+	
+	int rowCount = levelInfo.getInt("rowCount");
+	int colCount = levelInfo.getInt("columnCount");
+	int maxTime = levelInfo.getInt("timeLimit");
+	Position playerStart = new Position(levelInfo.getInt("playerX"), levelInfo.getInt("playerY"));
+	
 	AbstractTile[][] tileArray = new AbstractTile[colCount][rowCount];
+	
 	Iterator<JsonValue> rowsIterator = rows.iterator();
+	
 	while(rowsIterator.hasNext()) {
 		//Convert from jsonValue to jsonObject, then get the array of tiles
 		JsonObject currentRowObject = (JsonObject) rowsIterator.next();
@@ -68,7 +76,6 @@ public class JSONReader {
 			String tileName = type.toString();
 			int tileRow = StringToInt(row.toString());
 			int tileColumn = StringToInt(column.toString());
-			Position tilePos = new Position(tileColumn, tileRow);
 			AbstractTile tileObject;
 			if(tileName.equals("\"Key\"")) {
 				JsonValue colour = currentTile.get("Colour");
@@ -106,8 +113,8 @@ public class JSONReader {
 			tileArray[tileColumn][tileRow] = tileObject;
 		}
 	}
-	
-	return tileArray;
+	returnLevel = new Level(maxTime, playerStart, tileArray);
+	return returnLevel;
 	
   
   }

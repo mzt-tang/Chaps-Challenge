@@ -1442,8 +1442,9 @@
                     {
                         "row": 13,
                         "column": 7,
-                        "Tile Type": "FreeTile",
-                        "Rotation": "Horizontal"
+                        "Tile Type": "Key",
+                        "Rotation": "Horizontal",
+                        "Colour": "Green"
                     },
                     {
                         "row": 13,
@@ -1716,6 +1717,11 @@
             }
         ]
     },
-    "rowCount": 16,
-    "columnCount": 17
+    "Level Info": {
+        "rowCount": 16,
+        "columnCount": 17,
+        "playerX": 8,
+        "playerY": 7,
+        "timeLimit": 100
+    }
 }
