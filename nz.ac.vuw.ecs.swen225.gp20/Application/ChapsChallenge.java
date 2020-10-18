@@ -284,14 +284,6 @@ public class ChapsChallenge extends JFrame {
         return infoPanel;
     }
 
-    public JPanel gameInventory(Graphics2D g){
-        JPanel inventoryPanel = new JPanel();
-        for (Key key : game.getPlayer().getKeys()){
-            //g.drawImage(key.getCurrentImage(), );
-        }
-        return inventoryPanel;
-    }
-
     // ===========================================
     // Controlling Game Status
     // ===========================================
@@ -302,16 +294,6 @@ public class ChapsChallenge extends JFrame {
     public void outOfTime(){
         JOptionPane.showMessageDialog(null, "You ran out of time!", "Game Over", JOptionPane.INFORMATION_MESSAGE);
         System.exit(0);
-    }
-
-    public void nextLevel(){
-        int options = JOptionPane.showConfirmDialog(null, "Level 1 Completed!", "Continue to next level?",
-                JOptionPane.YES_NO_OPTION);
-        if(options == 0) {
-            System.out.println("Level 2 called...");
-        } else {
-            System.exit(0);
-        }
     }
 
 
