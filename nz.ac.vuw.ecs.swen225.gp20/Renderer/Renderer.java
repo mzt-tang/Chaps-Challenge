@@ -201,7 +201,7 @@ public class Renderer extends JComponent {
             InfoField infoField = (InfoField) board[playerX][playerY];
             g2.setFont(new Font("VCR OSD Mono", Font.BOLD, 45));
             g2.setColor(Color.WHITE);
-            drawWrappedText("COLLECT CHIPS TO GET PAST THE CHIP SOCKET. USE KEYS TO OPEN DOORS", g2, 50, 150, 500);
+            drawWrappedText(infoField.getInfoText(), g2, 50, 150, 500);
         }
     }
 
@@ -298,16 +298,5 @@ public class Renderer extends JComponent {
         board[8][1] = new Treasure();
         board[5][4] = new InfoField("COLLECT CHIPS TO GET PAST THE CHIP SOCKET. USE KEYS TO OPEN DOORS");
         return board;
-    }
-
-    //This is just to test sound works
-    public static void main(String[] args) {
-        AudioPlayer audioPlayer = new AudioPlayer();
-        audioPlayer.playSound("SwipeGood");
-        JOptionPane.showMessageDialog(null, "Press for next sound");
-        audioPlayer.playSound("SwipeGood");
-        JOptionPane.showMessageDialog(null, "Press for next sound");
-        audioPlayer.playSound("DoorOpen");
-        JOptionPane.showMessageDialog(null, "This is just so the program doesn't end immediately");
     }
 }
