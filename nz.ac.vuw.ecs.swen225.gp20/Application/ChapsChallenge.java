@@ -297,6 +297,14 @@ public class ChapsChallenge extends JFrame {
         return infoPanel;
     }
 
+    public JPanel gameInventory(Graphics2D g){
+        JPanel inventoryPanel = new JPanel();
+        for (Key key : game.getPlayer().getKeys()){
+            //g.drawImage(key.getCurrentImage(), );
+        }
+        return inventoryPanel;
+    }
+
     // ===========================================
     // Controlling Game Status
     // ===========================================
