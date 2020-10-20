@@ -44,6 +44,8 @@ public class JSONMaker {
 	int playerX = 0;
 	int playerY = 0;
 	boolean playerSet = false;
+	
+	ArrayList<Position> enemyLocations = new ArrayList<Position>();
 	JsonArrayBuilder colBuilder = Json.createArrayBuilder();
 	for(ArrayList<String> aL : ArrayFormat) {
 		colIndex = 0;
@@ -101,6 +103,12 @@ public class JSONMaker {
 			else if(tileInfo[0].equals("ep")) {
 				tileName = "ExitPortal";
 			}
+			//Enemy starting point, is fundamentally a freetile
+			else if(tileInfo[0].equals("ene")) {
+				tileName = "FreeTile";
+				enemyLocations.add(new Position(colIndex, rowIndex));
+			}
+			//Player starting point, is fundamentally a freetile
 			else if(tileInfo[0].equals("p") && playerSet == false) {
 				tileName = "FreeTile";
 				playerX = colIndex;
