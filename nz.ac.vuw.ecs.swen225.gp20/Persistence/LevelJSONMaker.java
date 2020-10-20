@@ -32,7 +32,7 @@ import javax.json.JsonStructure;
 import javax.json.stream.JsonParser;
 import javax.json.stream.JsonParser.Event;
 
-public class JSONMaker {
+public class LevelJSONMaker {
 
   /**
    * @param ArrayFormat - The csv file converted to an ArrayList of ArrayLists.
@@ -160,6 +160,19 @@ public class JSONMaker {
 		rowIndex++;
 	}
 	
+	//Create Json Array for enemy locations + AI
+	
+	JsonArrayBuilder enemyArrayBuilder = Json.createArrayBuilder();
+	JsonObjectBuilder enemyArrayObject;
+	for(int i = 0; i < enemyLocations.size(); i++) {
+		enemyArrayObject = Json.createObjectBuilder();
+		Position currentLoc = enemyLocations.get(i);
+		enemyArrayObject.add("startingX", currentLoc.getX());
+		enemyArrayObject.add("startingY", currentLoc.getY());
+		enemyArrayObject.add("AI Type", "PLACEHOLDER");
+		enemyArrayBuilder.add(enemyArrayObject);
+	}
+	
 	JsonObject arrayCol = Json.createObjectBuilder()
 			.add("rows", colBuilder)
 			.build();
@@ -169,6 +182,7 @@ public class JSONMaker {
 			.add("playerX", playerX)
 			.add("playerY", playerY)
 			.add("timeLimit", 100)
+			.add("Enemies", enemyArrayBuilder.build())
 			.build();
 	JsonObject mapObject = Json.createObjectBuilder()
 			.add("Tiles", arrayCol)
