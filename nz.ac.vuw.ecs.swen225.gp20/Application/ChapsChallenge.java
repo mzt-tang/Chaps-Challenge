@@ -44,6 +44,7 @@ public class ChapsChallenge extends JFrame {
     //Panels
     private JPanel gameplayPanel;
     private JPanel infoPanel;
+    public static final int INFO_WIDTH = 240;
 
     private Game game;
 
@@ -222,6 +223,7 @@ public class ChapsChallenge extends JFrame {
 //                        System.out.println("Key Pressed");
                         break;
                 }
+                nextLevel(); //check if the player is on the vent
                 recordAndReplayer.storeRecorderBuffer();
             }
         });
@@ -272,9 +274,6 @@ public class ChapsChallenge extends JFrame {
 //                }
                 chipsLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-                //Inventory view
-
-
                 //Stopping the timer once it runs out of time
                 if (timeRemaining == 0) {
                     timer.stop();
@@ -288,7 +287,6 @@ public class ChapsChallenge extends JFrame {
 
 
         //info panel
-        int INFO_WIDTH = 240;
         infoPanel.add(Box.createRigidArea(new Dimension(INFO_WIDTH, 100)));
         infoPanel.add(levelLabel);
         infoPanel.add(Box.createRigidArea(new Dimension(INFO_WIDTH, 66)));
@@ -317,12 +315,14 @@ public class ChapsChallenge extends JFrame {
     }
 
     public void nextLevel(){
-        int options = JOptionPane.showConfirmDialog(null, "Level 1 Completed!", "Continue to next level?",
-                JOptionPane.YES_NO_OPTION);
-        if(options == 0) {
-            System.out.println("Level 2 called...");
-        } else {
-            System.exit(0);
+        if (game.isLevelCompleted()) {
+            int options = JOptionPane.showConfirmDialog(null, "Continue to next level?", "Level 1 Completed!",
+                    JOptionPane.YES_NO_OPTION);
+            if (options == 0) {
+                System.out.println("Level 2 called...");
+            } else {
+                System.exit(0);
+            }
         }
     }
 
