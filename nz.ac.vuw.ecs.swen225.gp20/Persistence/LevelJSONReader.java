@@ -12,6 +12,8 @@ import javax.json.JsonReader;
 import javax.json.JsonValue;
 
 import Maze.Position;
+import Maze.BoardObjects.Actors.AbstractActor;
+import Maze.BoardObjects.Actors.PatternEnemy;
 import Maze.BoardObjects.Actors.Player;
 import Maze.BoardObjects.Tiles.AbstractTile;
 import Maze.BoardObjects.Tiles.ExitLock;
@@ -116,25 +118,29 @@ public class LevelJSONReader {
 		}
 	}
 	
-	ArrayList<EnemyBlueprint> enemiesArrayList = new ArrayList<EnemyBlueprint>();
+	ArrayList<AbstractActor> enemiesArrayList = new ArrayList<AbstractActor>();
 	
 	Iterator<JsonValue> enemiesIterator = enemies.iterator();
 	EnemyBlueprint currentEnemyBlueprint;
 	JsonObject currentEnemyObject;
 	
 	while(enemiesIterator.hasNext()) {
+		AbstractActor currentEnemy;
 		currentEnemyObject = (JsonObject) enemiesIterator.next();
-		JsonValue xStartPos = currentEnemyObject.get("startingX");
-		JsonValue yStartPos = currentEnemyObject.get("startingY");
+		int xStartPos = currentEnemyObject.getInt("startingX");
+		int yStartPos = currentEnemyObject.getInt("startingY");
 		JsonValue aiType = currentEnemyObject.get("AI Type");
-		currentEnemyBlueprint = new EnemyBlueprint(
-				new Position(
-						StringToInt(xStartPos.toString()), 
-						StringToInt(yStartPos.toString())
-				), 
-				aiType.toString()
-		);
-		enemiesArrayList.add(currentEnemyBlueprint);
+		System.out.println("AI type: " + aiType.toString()) ;
+		
+		Position aiStartPos = new Position(xStartPos, yStartPos);
+		
+		String aiTypeString = aiType.toString();
+		aiTypeString = aiTypeString.substring(1, aiTypeString.length()-1);
+		
+		if(aiTypeString == "PatternEnemy") {
+			currentEnemy = new PatternEnemy(aiStartPos, 1, "");
+			enemiesArrayList.add(currentEnemy);
+		}
 		
 	}
 	

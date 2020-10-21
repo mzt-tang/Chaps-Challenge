@@ -12,6 +12,7 @@ import javax.json.JsonReader;
 import javax.json.JsonValue;
 
 import Maze.Position;
+import Maze.BoardObjects.Actors.AbstractActor;
 import Maze.BoardObjects.Actors.Player;
 import Maze.BoardObjects.Tiles.AbstractTile;
 import Maze.BoardObjects.Tiles.ExitLock;
@@ -29,7 +30,7 @@ public class SaveJSONReader {
    * @param jsonName -  The name of the JSON file to use.
    */
   public static Level readJSON(String jsonName, Level loadedLevel) {
-	ArrayList<EnemyBlueprint> enemyBlueprintsNew = new ArrayList<EnemyBlueprint>();
+	ArrayList<AbstractActor> enemiesUpdated = new ArrayList<AbstractActor>();
 	
 	AbstractTile[][] tileArray = loadedLevel.getTileArray();
 	Level returnLevel;
@@ -58,31 +59,15 @@ public class SaveJSONReader {
 	
 	Iterator<JsonValue> tilesIterator = changedTiles.iterator();
 	
-	//Utility player object with all keys for unlocking doors
-	Player utilityPlayer = new Player(new Position(0,0));
 	
-	while(tilesIterator.hasNext()) {
-		
+	while(tilesIterator.hasNext()) {	
 		JsonObject currentTileJSON = (JsonObject) tilesIterator.next();
 		int tileX = currentTileJSON.getInt("xPos");
 		int tileY = currentTileJSON.getInt("yPos");
 		AbstractTile currentTileObject;
 		currentTileObject = tileArray[tileX][tileY];
-		if(currentTileObject instanceof ExitLock) {
-			ExitLock castTile = (ExitLock) currentTileObject;
-			castTile.unlock();
-		}
-		else if(currentTileObject instanceof Treasure) {
-			Treasure castTile = (Treasure) currentTileObject;
-			castTile.interact(utilityPlayer);
-		}
-		else if(currentTileObject instanceof LockedDoor) {
-			LockedDoor castTile = (LockedDoor) currentTileObject;
-			castTile.interact(utilityPlayer);
-		}
-		else if(currentTileObject instanceof Key) {
-			Key castTile = (Key) currentTileObject;
-			castTile.interact(utilityPlayer);
+		if(currentTileObject.isChanged()) {
+			currentTileObject.setChangedTile();
 		}
 		
 	}
@@ -92,11 +77,22 @@ public class SaveJSONReader {
 	//With each enemy, get its new position and retrieve the AI type to ensure it is the same type of enemy as when saved
 	while(enemiesIterator.hasNext()) {	
 		JsonObject currentEnemyJSON = (JsonObject) enemiesIterator.next();
-		int enemyX = currentEnemyJSON.getInt("startingX");
-		int enemyY = currentEnemyJSON.getInt("startingY");
-		String enemyAI = currentEnemyJSON.getString("AI Type");
-		EnemyBlueprint currentEnemyBlueprint = new EnemyBlueprint(new Position(enemyX, enemyY), enemyAI);
-		enemyBlueprintsNew.add(currentEnemyBlueprint);
+		int startingX = currentEnemyJSON.getInt("startingX");
+		int startingY = currentEnemyJSON.getInt("startingY");
+		int newX = currentEnemyJSON.getInt("startingX");
+		int newY = currentEnemyJSON.getInt("startingX");
+		
+		Position newPos = new Position(newX, newY);
+		Position startingPos = new Position(startingX, startingY);
+		
+		AbstractActor currentEnemy = findEnemy(startingPos, loadedLevel.getEnemies());
+		
+		if(currentEnemy == null) {
+			System.out.println("ORIGINAL ENEMY NOT FOUND");
+		}
+		else {
+			currentEnemy.setPos(newPos);
+		}
 	}
 	
 	//Iterate through all keys in hand
@@ -133,17 +129,19 @@ public class SaveJSONReader {
 	
 	//Make a revised level object that accounts for new enemy and player positions
 	//as well as changed tile state.
-	returnLevel = new Level(startingTime, loadedLevel.getPlayer(), tileArray, enemyBlueprintsNew);
+	returnLevel = new Level(startingTime, loadedLevel.getPlayer(), tileArray, loadedLevel.getEnemies());
 	return returnLevel;
   
   }
 
-  private int StringToInt(String intString) {
-	  int charInt = 0;
-	  for(int i = 0; i < intString.length(); i++) {
-		  charInt = charInt*10;
-		  charInt += intString.charAt(i) - '0';
+  private static AbstractActor findEnemy(Position pos, ArrayList<AbstractActor> passedArray) {
+	  for(AbstractActor aA : passedArray) {
+		 if(aA.getPos().getX() == pos.getX() && aA.getPos().getY() == pos.getY()){
+			 return aA;
+		 }
 	  }
-	  return charInt;
+	  return null;
   }
+  
+  
 }

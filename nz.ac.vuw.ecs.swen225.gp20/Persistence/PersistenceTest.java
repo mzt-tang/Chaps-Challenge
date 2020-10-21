@@ -31,6 +31,6 @@ public class PersistenceTest {
 	    getJson.saveGame(91, new Player(new Position(3, 4)), actorArray, 1, tileTest);
 	    
 	    Level newLevel = Persistence.loadGame(1);
-	    System.out.println(newLevel.getEnemies().get(0).getBehaviour());
+	    System.out.println(newLevel.getEnemies().get(0).getPos());
 	}
 }

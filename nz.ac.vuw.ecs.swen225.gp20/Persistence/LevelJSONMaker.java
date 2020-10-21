@@ -113,6 +113,7 @@ public class LevelJSONMaker {
 				tileName = "FreeTile";
 				playerX = colIndex;
 				playerY = rowIndex;
+				playerSet = true;
 			}
 			else {
 				arrayObjectBuilder.add("Rotation", "ERROR! value " 
