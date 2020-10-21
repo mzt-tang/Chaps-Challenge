@@ -46,7 +46,9 @@ public class ChapsChallenge extends JFrame {
     private JPanel infoPanel;
     public static final int INFO_WIDTH = 240;
 
+    //Game
     private Game game;
+    private boolean isPaused = false;
 
     //Informating stored for info panel
     private Timer timer;
@@ -197,31 +199,32 @@ public class ChapsChallenge extends JFrame {
         gamePanel.addKeyListener(new KeyAdapter() {
             @Override
             public void keyPressed(KeyEvent e) {
-                switch (e.getKeyCode()){
-                    case KeyEvent.VK_W:
-                        System.out.println("Up");
-                        movementRecordHelper(Game.DIRECTION.UP);
-                        game.movePlayer(Game.DIRECTION.UP);
-                        break;
-                    case KeyEvent.VK_A:
-                        System.out.println("Left");
-                        movementRecordHelper(Game.DIRECTION.LEFT);
-                        game.movePlayer(Game.DIRECTION.LEFT);
-                        break;
-                    case KeyEvent.VK_S:
-                        System.out.println("Down");
-                        movementRecordHelper(Game.DIRECTION.DOWN);
-                        game.movePlayer(Game.DIRECTION.DOWN);
-                        break;
-                    case KeyEvent.VK_D:
-                        System.out.println("Right");
-                        movementRecordHelper(Game.DIRECTION.RIGHT);
-                        game.movePlayer(Game.DIRECTION.RIGHT);
-                        break;
-                    default:
-                        //if player isn't moving add a println here
-//                        System.out.println("Key Pressed");
-                        break;
+                //up
+                if (e.getKeyCode() == KeyEvent.VK_W || e.getKeyCode() == KeyEvent.VK_UP) {
+                    System.out.println("Up");
+                    movementRecordHelper(Game.DIRECTION.UP);
+                    game.movePlayer(Game.DIRECTION.UP);
+                }
+                //left
+                else if (e.getKeyCode() == KeyEvent.VK_A || e.getKeyCode() == KeyEvent.VK_LEFT) {
+                    System.out.println("Left");
+                    movementRecordHelper(Game.DIRECTION.LEFT);
+                    game.movePlayer(Game.DIRECTION.LEFT);
+                }
+                //down
+                else if (e.getKeyCode() == KeyEvent.VK_S || e.getKeyCode() == KeyEvent.VK_DOWN){
+                    System.out.println("Down");
+                    movementRecordHelper(Game.DIRECTION.DOWN);
+                    game.movePlayer(Game.DIRECTION.DOWN);
+                }
+                //right
+                else if (e.getKeyCode() == KeyEvent.VK_D || e.getKeyCode() == KeyEvent.VK_RIGHT){
+                    System.out.println("Right");
+                    movementRecordHelper(Game.DIRECTION.RIGHT);
+                    game.movePlayer(Game.DIRECTION.RIGHT);
+                }
+                else {
+                    //dead code
                 }
                 nextLevel(); //check if the player is on the vent
                 //recordAndReplayer.storeRecorderBuffer();
@@ -324,6 +327,18 @@ public class ChapsChallenge extends JFrame {
             } else {
                 System.exit(0);
             }
+        }
+    }
+
+    public void pauseGame(){
+        if (!isPaused) {
+            isPaused = true;
+        }
+    }
+
+    public void resumeGame(){
+        if (isPaused) {
+            isPaused = false;
         }
     }
 
