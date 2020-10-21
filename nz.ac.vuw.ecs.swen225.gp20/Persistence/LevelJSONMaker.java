@@ -44,13 +44,16 @@ public class LevelJSONMaker {
 	int playerX = 0;
 	int playerY = 0;
 	boolean playerSet = false;
+	boolean noTile = false;
 	
 	ArrayList<Position> enemyLocations = new ArrayList<Position>();
 	JsonArrayBuilder colBuilder = Json.createArrayBuilder();
 	for(ArrayList<String> aL : ArrayFormat) {
 		colIndex = 0;
 		JsonArrayBuilder rowBuilder = Json.createArrayBuilder();
+		
 		for(String s : aL) {
+			noTile = false;
 			String[] tileInfo = s.split(" ");
 			String tileName = "ERROR!";
 			String tileColour = "ERROR!";
@@ -115,6 +118,9 @@ public class LevelJSONMaker {
 				playerY = rowIndex;
 				playerSet = true;
 			}
+			else {
+				noTile = true;
+			}
 			arrayObjectBuilder.add("column", colIndex);
 			arrayObjectBuilder.add("row", rowIndex);
 			arrayObjectBuilder.add("Tile Type", tileName);
@@ -144,7 +150,10 @@ public class LevelJSONMaker {
 				arrayObjectBuilder.add("InfoText", "Placeholder text");
 			}
 			JsonObject arrayObject = arrayObjectBuilder.build();
-			rowBuilder.add(arrayObject);
+			
+			if(noTile == false) {
+				rowBuilder.add(arrayObject);
+			}
 			colIndex++;
 		}
 		
