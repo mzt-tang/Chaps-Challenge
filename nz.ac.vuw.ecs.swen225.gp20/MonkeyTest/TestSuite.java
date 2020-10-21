@@ -40,10 +40,10 @@ public class TestSuite {
 		Random ran = new Random();
 		float num = ran.nextFloat();
 		
-		if(num < 0.25) {System.out.println("DEBUG - MOVE UP"); tester.movePlayer(Game.DIRECTION.UP);}
-		else if(num < 0.5) {System.out.println("DEBUG - MOVE DOWN");tester.movePlayer(Game.DIRECTION.DOWN);}
-		else if(num < 0.75) {System.out.println("DEBUG - MOVE LEFT");tester.movePlayer(Game.DIRECTION.LEFT);}
-		else {System.out.println("DEBUG - MOVE RIGHT"); tester.movePlayer(Game.DIRECTION.RIGHT);}
+		if(num < 0.25) { tester.movePlayer(Game.DIRECTION.UP);}
+		else if(num < 0.5) {tester.movePlayer(Game.DIRECTION.DOWN);}
+		else if(num < 0.75) {tester.movePlayer(Game.DIRECTION.LEFT);}
+		else { tester.movePlayer(Game.DIRECTION.RIGHT);}
 	}
 	
 	/**
