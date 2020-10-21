@@ -40,7 +40,6 @@ public class SaveJSONReader {
 	try {
 		levelInputStream = new FileInputStream(jsonName);
 	} catch (FileNotFoundException e) {
-		e.printStackTrace();
 		return null;
 	}
 	JsonReader saveReader = Json.createReader(levelInputStream);
@@ -123,7 +122,7 @@ public class SaveJSONReader {
 			loadedLevel.getPlayer().pickupTreasure(treasureObject);
 		}
 		else {
-			System.out.println("ERROR - KEY IN HAND NOT LOADED ON MAP");
+			System.out.println("ERROR - TREASURE IN HAND NOT LOADED ON MAP");
 		}
 	}
 	

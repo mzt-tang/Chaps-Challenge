@@ -170,7 +170,9 @@ public class LevelJSONMaker {
 		Position currentLoc = enemyLocations.get(i);
 		enemyArrayObject.add("startingX", currentLoc.getX());
 		enemyArrayObject.add("startingY", currentLoc.getY());
-		enemyArrayObject.add("AI Type", "PLACEHOLDER");
+		enemyArrayObject.add("AI Type", "PLACEHOLDER - INSERT AI TYPE (EG: PatternEnemy, StalkerEnemy) INSERT RATE OF MOVEMENT BELOW");
+		enemyArrayObject.add("Tick Speed", 1);
+		enemyArrayObject.add("Movement String", "PLACEHOLDER - USED FOR MOVEMENT OF PATTERNENEMY. FORMAT IS wasd eg: wassawdws");
 		enemyArrayBuilder.add(enemyArrayObject);
 	}
 	
