@@ -71,10 +71,10 @@ public class LevelJSONReader {
 			JsonValue column = currentTile.get("column");
 			JsonValue rotated = currentTile.get("Rotation");
 			boolean isRotated = false;
-			if(rotated.toString().equals("Horizontal")) {
+			if(rotated.toString().equals("\"Horizontal\"")) {
 				isRotated = false;
 			}
-			else if(rotated.toString().equals("Vertical")) {
+			else if(rotated.toString().equals("\"Vertical\"")) {
 				isRotated = true;
 			}
 			String tileName = type.toString();
