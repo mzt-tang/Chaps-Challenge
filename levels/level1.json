@@ -5,10 +5,10 @@
             {
                 "objects": [
                     {
+                        "Rotation": "Horizontal",
                         "column": 0,
                         "row": 0,
-                        "Tile Type": "FreeTile",
-                        "Rotation": "Horizontal"
+                        "Tile Type": "ERROR!"
                     },
                     {
                         "column": 1,
@@ -571,7 +571,7 @@
                         "column": 5,
                         "row": 5,
                         "Tile Type": "LockedDoor",
-                        "Rotation": "Horizontal",
+                        "Rotation": "Vertical",
                         "Colour": "Blue"
                     },
                     {
@@ -608,7 +608,7 @@
                         "column": 11,
                         "row": 5,
                         "Tile Type": "LockedDoor",
-                        "Rotation": "Horizontal",
+                        "Rotation": "Vertical",
                         "Colour": "Red"
                     },
                     {
@@ -700,7 +700,7 @@
                         "row": 6,
                         "Tile Type": "InfoField",
                         "Rotation": "Horizontal",
-                        "InfoText": "Placeholder text"
+                        "InfoText": "COLLECT CHIPS TO GET INTO THE VENT. USE KEY CARDS TO OPEN DOORS"
                     },
                     {
                         "column": 9,
@@ -1003,7 +1003,7 @@
                         "column": 5,
                         "row": 9,
                         "Tile Type": "LockedDoor",
-                        "Rotation": "Horizontal",
+                        "Rotation": "Vertical",
                         "Colour": "Red"
                     },
                     {
@@ -1040,7 +1040,7 @@
                         "column": 11,
                         "row": 9,
                         "Tile Type": "LockedDoor",
-                        "Rotation": "Horizontal",
+                        "Rotation": "Vertical",
                         "Colour": "Blue"
                     },
                     {
@@ -1724,13 +1724,6 @@
         "playerY": 7,
         "timeLimit": 100,
         "Enemies": [
-            {
-                "startingX": 10,
-                "startingY": 5,
-                "AI Type": "PatternEnemy",
-                "Tick Speed": 1,
-                "Movement String": "PLACEHOLDER - USED FOR MOVEMENT OF PATTERNENEMY. FORMAT IS wasd eg: wassawdws"
-            }
         ]
     }
 }

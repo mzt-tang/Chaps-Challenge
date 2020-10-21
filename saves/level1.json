@@ -11,12 +11,6 @@
         ],
         "time remaining": 91,
         "Enemy locations": [
-            {
-                "startingX": 10,
-                "startingY": 5,
-                "currentX": 10,
-                "currentY": 5
-            }
         ]
     }
 }
