@@ -7,6 +7,7 @@ import RecordAndReplay.RecordAndReplay;
 
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 public class Game {
@@ -29,8 +30,13 @@ public class Game {
     }
 
     public void moveEnemy() {
-        //List<Integer> tickTiming = new ArrayList<>();
+        List<Integer> tickTiming = new ArrayList<>();
+        for(int i = 0; i < computerPlayers.size(); i++){
+            tickTiming.add(0);
+        }
+        int count = 0;
         for(AbstractActor c : computerPlayers) {
+            count++;
             c.move(player, board);
         }
     }
