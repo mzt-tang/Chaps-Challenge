@@ -122,8 +122,8 @@ public class LevelJSONMaker {
 										+ " COL: "
 										+ colIndex);
 			}
-			arrayObjectBuilder.add("row", rowIndex);
 			arrayObjectBuilder.add("column", colIndex);
+			arrayObjectBuilder.add("row", rowIndex);
 			arrayObjectBuilder.add("Tile Type", tileName);
 			if(tileInfo.length > 1) {
 				if(tileInfo[1].equals("0")) {

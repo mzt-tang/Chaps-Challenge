@@ -46,6 +46,9 @@ public class SaveJSONMaker {
    * @param jsonName -  The name of the JSON file to use.
    */
   public static void makeJSON(int remainingTime, Player player, ArrayList<AbstractActor> enemies, String jsonName, AbstractTile[][] tiles) {
+	JsonArrayBuilder keyArrayBuilder = Json.createArrayBuilder();
+	JsonArrayBuilder treasureArrayBuilder = Json.createArrayBuilder();
+	  
 	JsonArrayBuilder arrayBuilder = Json.createArrayBuilder();
 	boolean isActivated = false;
 	for(int i = 0; i < tiles.length; i++) {
@@ -53,30 +56,28 @@ public class SaveJSONMaker {
 		for(int j = 0; j < tiles[i].length; j++) {
 			isActivated = false;
 			AbstractTile currentTile = tiles[i][j];
-			if(currentTile instanceof ExitLock) {
-				ExitLock castTile = (ExitLock) currentTile;
-				//Truen if lock has been opened.
-				isActivated = castTile.interact(new Player(new Position(0, 0)));
-			}
-			else if(currentTile instanceof Treasure) {
-				Treasure castTile = (Treasure) currentTile;
-				isActivated = castTile.isPickedUp();
-			}
-			else if(currentTile instanceof LockedDoor) {
-				LockedDoor castTile = (LockedDoor) currentTile;
-				isActivated = !castTile.isLocked();
-			}
-			else if(currentTile instanceof Key) {
-				Key castTile = (Key) currentTile;
-				//TO DO!!! TILE NEEDS TO BE ACCESIBLE
-				isActivated = false;
-			}
-			
-			if(isActivated == true) {
+			//Set the tile as changed
+			if(currentTile.isChanged()) {
+				currentTile.setChangedTile();
 				arrayObjectBuilder.add("xPos", i);
 				arrayObjectBuilder.add("yPos", j);
 				arrayBuilder.add(arrayObjectBuilder);
+				
+				//If the object was a key, and is currently held by the player, save it to their hand
+				if(currentTile instanceof Key && player.getKeys().contains(currentTile)) {
+					JsonObjectBuilder keyArrayObjectBuilder = Json.createObjectBuilder();
+					keyArrayObjectBuilder.add("xPos", i);
+					keyArrayObjectBuilder.add("yPos", j);
+					keyArrayBuilder.add(keyArrayObjectBuilder);
+				}
+				else if(currentTile instanceof Treasure) {
+					JsonObjectBuilder treasureArrayObjectBuilder = Json.createObjectBuilder();
+					treasureArrayObjectBuilder.add("xPos", i);
+					treasureArrayObjectBuilder.add("yPos", j);
+					keyArrayBuilder.add(treasureArrayObjectBuilder);
+				}
 			}
+
 		}
 	}
 	
@@ -93,9 +94,13 @@ public class SaveJSONMaker {
 		enemyArrayBuilder.add(enemyArrayObject);
 	}
 	
+
+	
 	JsonObject levelInfo = Json.createObjectBuilder()
 			.add("playerX", player.getPos().getX())
 			.add("playerY", player.getPos().getY())
+			.add("Keys on hand", keyArrayBuilder.build())
+			.add("Treasure on hand", treasureArrayBuilder.build())
 			.add("time remaining", remainingTime)
 			.add("Enemy locations", enemyArrayBuilder.build())
 			.build();
