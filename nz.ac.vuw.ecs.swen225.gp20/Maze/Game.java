@@ -5,6 +5,7 @@ import Maze.BoardObjects.Actors.Player;
 import Maze.BoardObjects.Tiles.*;
 import RecordAndReplay.RecordAndReplay;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -28,6 +29,7 @@ public class Game {
     }
 
     public void moveEnemy() {
+        //List<Integer> tickTiming = new ArrayList<>();
         for(AbstractActor c : computerPlayers) {
             c.move(player, board);
         }
@@ -40,21 +42,6 @@ public class Game {
      *                 current position is interacting with/moving towards.
      */
     public void movePlayer(DIRECTION direction) {
-
-        /**
-        ////////TEST CODE
-        int count = 0;
-        for(AbstractActor a : computerPlayers) {
-            System.out.println("Enemy " + count + ": ");
-            a.move(player, board);
-            System.out.println(a.getPos());
-            //a.move(player, board);
-            //System.out.println(a.getPos());
-            count++;
-        }
-        //////
-         **/
-
 
         Position newPos;
         switch (direction) {
@@ -83,15 +70,6 @@ public class Game {
         assert (board.getMap()[newPos.getX()][newPos.getY()] != null)
                 : "Position at array is null. If you're here then something really bad happened...";
 
-        /**
-        //CHECK IF MOVING INTO ENEMY
-        for(AbstractActor enemy : computerPlayers) {
-            if(enemy.getPos().equals(newPos)){
-                enemy.interact(player);
-            }
-        }
-         **/
-
         //Interact with the square and move there if possible.
         AbstractTile moveToTile = board.getMap()[newPos.getX()][newPos.getY()];
         if(moveToTile.interact(player)) {
@@ -106,6 +84,19 @@ public class Game {
         if(moveToTile instanceof ExitPortal) {
             levelCompleted = true;
         }
+
+        ////////TEST CODE
+        int count = 0;
+        for(AbstractActor a : computerPlayers) {
+            System.out.println("Enemy " + count + ": ");
+            a.move(player, board);
+            System.out.println(a.getPos());
+            //a.move(player, board);
+            //System.out.println(a.getPos());
+            count++;
+        }
+        //////
+
     }
 
     private void unlockExitLock() {
