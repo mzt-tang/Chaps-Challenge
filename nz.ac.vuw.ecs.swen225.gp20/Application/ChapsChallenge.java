@@ -90,7 +90,7 @@ public class ChapsChallenge extends JFrame {
         // Initialize panels
         initPanels();
 
-        // Initialize hot keys
+        // Initialize hotkeys
         addHotKeys();
 
         // More window properties
@@ -109,7 +109,6 @@ public class ChapsChallenge extends JFrame {
         int verticalGap = 85;
         int horizontalGap = 65;
         basePanel.setBorder(new EmptyBorder(new Insets(verticalGap, horizontalGap, verticalGap, horizontalGap)));
-
 
 
         // Gameplay panel
@@ -317,10 +316,11 @@ public class ChapsChallenge extends JFrame {
 
     // ===========================================
     // Controlling Game Status
-    // ===========================================
+    // ===========================================r
 
     public void addHotKeys(){
-        KeyStroke exitGame = KeyStroke.getKeyStroke("control X");
+        System.out.println("Hotkeys added");
+        KeyStroke exitGame = KeyStroke.getKeyStroke(KeyEvent.VK_X, InputEvent.CTRL_DOWN_MASK);
         gameplayPanel.getInputMap().put(exitGame, new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
