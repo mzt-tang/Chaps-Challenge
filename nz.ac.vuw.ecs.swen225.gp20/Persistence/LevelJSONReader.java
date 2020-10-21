@@ -12,6 +12,7 @@ import javax.json.JsonReader;
 import javax.json.JsonValue;
 
 import Maze.Position;
+import Maze.BoardObjects.Actors.Player;
 import Maze.BoardObjects.Tiles.AbstractTile;
 import Maze.BoardObjects.Tiles.ExitLock;
 import Maze.BoardObjects.Tiles.ExitPortal;
@@ -137,7 +138,9 @@ public class LevelJSONReader {
 		
 	}
 	
-	returnLevel = new Level(maxTime, playerStart, tileArray, enemiesArrayList);
+	Player returnPlayer = new Player(playerStart);
+	
+	returnLevel = new Level(maxTime, returnPlayer, tileArray, enemiesArrayList);
 	return returnLevel;
 	
   

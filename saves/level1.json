@@ -5,6 +5,10 @@
     "Gameplay variables": {
         "playerX": 3,
         "playerY": 4,
+        "Keys on hand": [
+        ],
+        "Treasure on hand": [
+        ],
         "time remaining": 91,
         "Enemy locations": [
             {
