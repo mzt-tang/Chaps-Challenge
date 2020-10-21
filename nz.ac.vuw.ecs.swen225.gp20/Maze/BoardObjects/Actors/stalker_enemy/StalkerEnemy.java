@@ -3,14 +3,12 @@ package Maze.BoardObjects.Actors.stalker_enemy;
 import Maze.Board;
 import Maze.BoardObjects.Actors.AbstractActor;
 import Maze.BoardObjects.Actors.Player;
-import Maze.BoardObjects.Tiles.AbstractTile;
-import Maze.BoardObjects.Tiles.ExitLock;
-import Maze.BoardObjects.Tiles.LockedDoor;
-import Maze.BoardObjects.Tiles.Wall;
+import Maze.BoardObjects.Tiles.*;
 import Maze.Position;
 
 import java.awt.*;
 import java.util.*;
+import java.util.List;
 
 public class StalkerEnemy extends AbstractActor {
 
@@ -95,12 +93,27 @@ public class StalkerEnemy extends AbstractActor {
     }
 
     /**
-     * The enemy "kills" the player and sends them back to their starting position.
+     * The enemy "robs" the player and sends their keys/treasures back to their starting position.
      * @param player The player.
      */
     @Override
     public void interact(Player player) {
-        player.getPos().setPosition(player.getStartingPos());
+        if(!player.getKeys().isEmpty()){
+            List<Key> keys = player.getKeys();
+            Key key = keys.get(0);
+            keys.remove(key);
+            key.unChange();
+        } else if(!player.getTreasures().isEmpty()){
+            Set<Treasure> treasures = player.getTreasures();
+            Treasure treasure = null;
+            for(Treasure t: treasures){
+                treasure = t;
+                break;
+            }
+            assert treasure != null:"Treasure is null! Somehow the player owns this object!?";
+            treasures.remove(treasure);
+            treasure.unChange();
+        }
     }
 
     /**

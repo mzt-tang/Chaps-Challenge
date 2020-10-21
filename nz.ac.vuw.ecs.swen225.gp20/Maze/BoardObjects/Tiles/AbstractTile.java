@@ -44,6 +44,10 @@ public abstract class AbstractTile {
         changed = true;
     }
 
+    public void unChange() {
+        changed = false;
+    }
+
     public boolean isRotated() {
         return rotated;
     }

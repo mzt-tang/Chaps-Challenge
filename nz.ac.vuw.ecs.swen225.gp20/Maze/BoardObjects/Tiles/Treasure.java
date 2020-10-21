@@ -42,6 +42,13 @@ public class Treasure extends AbstractTile {
         currentImage = images.get("FloorTile");
     }
 
+    @Override
+    public void unChange() {
+        super.unChange();
+        pickedUp = false;
+        currentImage = images.get("Files");
+    }
+
     public boolean isPickedUp() {
         return pickedUp;
     }
