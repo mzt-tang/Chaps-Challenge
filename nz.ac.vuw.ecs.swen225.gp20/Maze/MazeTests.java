@@ -66,6 +66,34 @@ public class MazeTests {
         assert player.getPos().equals(new Position(3, 1));
     }
 
+    /**
+     * Testing multiple Keys and doors
+     */
+    @Test
+    public void test3(){
+        AbstractTile[][] map = makeMap();
+        map[2][1] = new LockedDoor(true, "Red");
+        map[3][1] = new Key("Red");
+        map[2][2] = new LockedDoor(true, "Blue");
+        map[3][2] = new Key("Blue");
+        map[2][3] = new LockedDoor(true, "Green");
+        map[3][3] = new Key("Green");
+
+        Player player = new Player(new Position(1, 1));
+        Set<AbstractActor> enemies = new HashSet<>();
+        Game game = new Game(new Board(map), player, enemies);
+
+        game.movePlayer(Game.DIRECTION.RIGHT);
+        game.movePlayer(Game.DIRECTION.RIGHT);
+        game.movePlayer(Game.DIRECTION.RIGHT);
+        assert player.getPos().equals(new Position(2, 1));
+
+        game.movePlayer(Game.DIRECTION.DOWN);
+        game.movePlayer(Game.DIRECTION.RIGHT);
+        game.movePlayer(Game.DIRECTION.UP);
+        assert player.getPos().equals(new Position(3, 1));
+    }
+
 
 
 
