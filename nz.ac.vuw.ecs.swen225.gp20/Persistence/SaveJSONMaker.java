@@ -57,28 +57,29 @@ public class SaveJSONMaker {
 		JsonObjectBuilder arrayObjectBuilder = Json.createObjectBuilder();
 		for(int j = 0; j < tiles[i].length; j++) {
 			isActivated = false;
-			AbstractTile currentTile = tiles[i][j];
-			//Set the tile as changed
-			if(currentTile.isChanged()) {
-				arrayObjectBuilder.add("xPos", i);
-				arrayObjectBuilder.add("yPos", j);
-				arrayBuilder.add(arrayObjectBuilder);
-				
-				//If the object was a key, and is currently held by the player, save it to their hand
-				if(currentTile instanceof Key && player.getKeys().contains(currentTile)) {
-					JsonObjectBuilder keyArrayObjectBuilder = Json.createObjectBuilder();
-					keyArrayObjectBuilder.add("xPos", i);
-					keyArrayObjectBuilder.add("yPos", j);
-					keyArrayBuilder.add(keyArrayObjectBuilder);
-				}
-				else if(currentTile instanceof Treasure) {
-					JsonObjectBuilder treasureArrayObjectBuilder = Json.createObjectBuilder();
-					treasureArrayObjectBuilder.add("xPos", i);
-					treasureArrayObjectBuilder.add("yPos", j);
-					keyArrayBuilder.add(treasureArrayObjectBuilder);
+			if(tiles[i][j] != null) {
+				AbstractTile currentTile = tiles[i][j];
+				//Set the tile as changed
+				if(currentTile.isChanged()) {
+					arrayObjectBuilder.add("xPos", i);
+					arrayObjectBuilder.add("yPos", j);
+					arrayBuilder.add(arrayObjectBuilder);
+					
+					//If the object was a key, and is currently held by the player, save it to their hand
+					if(currentTile instanceof Key && player.getKeys().contains(currentTile)) {
+						JsonObjectBuilder keyArrayObjectBuilder = Json.createObjectBuilder();
+						keyArrayObjectBuilder.add("xPos", i);
+						keyArrayObjectBuilder.add("yPos", j);
+						keyArrayBuilder.add(keyArrayObjectBuilder);
+					}
+					else if(currentTile instanceof Treasure) {
+						JsonObjectBuilder treasureArrayObjectBuilder = Json.createObjectBuilder();
+						treasureArrayObjectBuilder.add("xPos", i);
+						treasureArrayObjectBuilder.add("yPos", j);
+						keyArrayBuilder.add(treasureArrayObjectBuilder);
+					}
 				}
 			}
-
 		}
 	}
 	

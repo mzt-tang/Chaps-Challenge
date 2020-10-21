@@ -115,14 +115,6 @@ public class LevelJSONMaker {
 				playerY = rowIndex;
 				playerSet = true;
 			}
-			else {
-				arrayObjectBuilder.add("Rotation", "ERROR! value " 
-										+ tileInfo[0] 
-										+ " used! Can only use valid tile types! ROW: " 
-										+ rowIndex
-										+ " COL: "
-										+ colIndex);
-			}
 			arrayObjectBuilder.add("column", colIndex);
 			arrayObjectBuilder.add("row", rowIndex);
 			arrayObjectBuilder.add("Tile Type", tileName);
