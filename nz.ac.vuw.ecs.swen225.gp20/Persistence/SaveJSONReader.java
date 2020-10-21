@@ -53,7 +53,7 @@ public class SaveJSONReader {
 	
 	int startingTime = gameplayVariables.getInt("time remaining");
 	Position playerStart = new Position(gameplayVariables.getInt("playerX"), gameplayVariables.getInt("playerY"));
-	
+	loadedLevel.getPlayer().setPos(playerStart);
 	
 	
 	Iterator<JsonValue> tilesIterator = changedTiles.iterator();

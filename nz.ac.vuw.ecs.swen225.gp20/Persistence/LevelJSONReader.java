@@ -34,7 +34,6 @@ public class LevelJSONReader {
   public Level readJSON(String jsonName) {
 	Level returnLevel;
 	InputStream levelInputStream;
-	 System.out.println("Working Directory = " + System.getProperty("user.dir"));
 	try {
 		levelInputStream = new FileInputStream(jsonName);
 	} catch (FileNotFoundException e) {
@@ -132,7 +131,6 @@ public class LevelJSONReader {
 		JsonValue aiType = currentEnemyObject.get("AI Type");
 		int tickSpeed = currentEnemyObject.getInt("Tick Speed");
 		JsonValue movement = currentEnemyObject.get("Movement String");
-		System.out.println("AI type: " + aiType.toString()) ;
 		
 		Position aiStartPos = new Position(xStartPos, yStartPos);
 		
@@ -140,13 +138,14 @@ public class LevelJSONReader {
 		String movementString = movement.toString();
 		aiTypeString = aiTypeString.substring(1, aiTypeString.length()-1);
 		movementString = movementString.substring(1, movementString.length()-1);
-		
-		if(aiTypeString == "PatternEnemy") {
+
+		if(aiTypeString.equals("PatternEnemy")) {
 			currentEnemy = new PatternEnemy(aiStartPos, tickSpeed, movementString);
 			enemiesArrayList.add(currentEnemy);
 		}
-		else if(aiTypeString == "StalkerEnemy") {
+		else if(aiTypeString.equals("StalkerEnemy")) {
 			currentEnemy = new StalkerEnemy(aiStartPos, tickSpeed);
+			enemiesArrayList.add(currentEnemy);
 		}
 		
 	}

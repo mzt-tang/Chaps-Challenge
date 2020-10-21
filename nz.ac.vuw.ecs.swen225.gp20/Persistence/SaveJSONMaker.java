@@ -87,7 +87,9 @@ public class SaveJSONMaker {
 	
 	JsonArrayBuilder enemyArrayBuilder = Json.createArrayBuilder();
 	JsonObjectBuilder enemyArrayObject;
+	System.out.println(enemies.size());
 	for(int i = 0; i < enemies.size(); i++) {
+		System.out.println("reached here");
 		enemyArrayObject = Json.createObjectBuilder();
 		Position currentLoc = enemies.get(i).getPos();
 		Position startingLoc = enemies.get(i).getStartingPos();
@@ -95,7 +97,7 @@ public class SaveJSONMaker {
 		enemyArrayObject.add("startingY", startingLoc.getY());
 		enemyArrayObject.add("currentX", currentLoc.getX());
 		enemyArrayObject.add("currentY", currentLoc.getY());
-		enemyArrayBuilder.add(enemyArrayObject);
+		enemyArrayBuilder.add(enemyArrayObject.build());
 	}
 	
 

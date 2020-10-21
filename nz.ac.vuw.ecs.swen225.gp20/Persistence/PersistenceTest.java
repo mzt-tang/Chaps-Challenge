@@ -17,22 +17,28 @@ public class PersistenceTest {
 	    Persistence getJson = new Persistence();
 	    
 		Scanner sc= new Scanner(System.in);
-		System.out.println("Enter the level number you wish to output this as (1-9)");
+		System.out.println("Enter the level number you wish to work with (1-9)");
 		String levelNumberString = sc.nextLine();
-		sc.close();
+		
 		int levelNumber = StringToInt(levelNumberString);
 		if(levelNumber > 10 || levelNumber <= 0) {
 			System.out.println("Proper number please.");
 			return;
 		}
+		System.out.println("Enter SKIP if you don't want to convert level.csv into levels/level"+levelNumber+".json");
+		String skipString = sc.nextLine();
+		sc.close();
 		String levelString = "levels/level" + levelNumber + ".JSON";
-	    makeJSON.makeJSON(csvRead.readCSV("nz.ac.vuw.ecs.swen225.gp20/Persistence/level.csv"), levelString);
+		
+		if(skipString.equals("SKIP") == false) {
+			makeJSON.makeJSON(csvRead.readCSV("nz.ac.vuw.ecs.swen225.gp20/Persistence/level.csv"), levelString);
+		}
 	    
 	    Level testLevel = getJson.getLevel(levelNumber);    	        
-	    getJson.saveGame(91, testLevel.getPlayer(), testLevel.getEnemies(), 1, testLevel.getTileArray());    
-	    Level newLevel = Persistence.loadGame(1);
+	    getJson.saveGame(91, testLevel.getPlayer(), testLevel.getEnemies(), levelNumber, testLevel.getTileArray());    
+	    Level newLevel = Persistence.loadGame(levelNumber);
 	    if(newLevel.getEnemies().size()>0) {
-	    	System.out.println(newLevel.getEnemies().get(0).getPos());
+	    	System.out.println("Enemy count is > 0 " + newLevel.getEnemies().get(0).getPos());
 	    }
 	}
 	
