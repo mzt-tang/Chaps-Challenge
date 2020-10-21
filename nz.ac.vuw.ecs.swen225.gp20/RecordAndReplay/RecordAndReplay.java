@@ -156,6 +156,12 @@ public class RecordAndReplay<E> {
         replayer.setPlayerStartX(reader.getPlayerStartX());
         replayer.setPlayerStartY(reader.getPlayerStartY());
         replayer.setEnemies(reader.getEnemies());
+
+        replayer.prepRecordedChanges();
+    }
+
+    public void displayControlWindow(JFrame frame) {
+        replayer.controlsWindow(frame);
     }
 
     //=====GETTERS/SETTERS=====//

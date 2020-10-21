@@ -41,8 +41,8 @@ public class Replayer {
     public void controlsWindow(JFrame frame) {
         JDialog controlsWindow = new JDialog(frame);
         controlsWindow.setAlwaysOnTop(true);
-
     }
+
 
 
 
