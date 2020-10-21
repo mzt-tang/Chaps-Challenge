@@ -283,11 +283,11 @@ public class ChapsChallenge extends JFrame {
                     outOfTime();
                 }
                 timeRemaining--;
+
+
             }
         });
         timer.start();
-
-
 
         //info panel
         infoPanel.add(Box.createRigidArea(new Dimension(INFO_WIDTH, 100)));
@@ -330,15 +330,24 @@ public class ChapsChallenge extends JFrame {
         }
     }
 
-    public void pauseGame(){
+    public void pauseGame(Thread paintThread, Timer gameTimer){
         if (!isPaused) {
             isPaused = true;
+            try {
+                paintThread.wait();
+                gameTimer.wait();
+            }
+            catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         }
     }
 
-    public void resumeGame(){
+    public void resumeGame(Thread paintThread, Timer gameTimer){
         if (isPaused) {
             isPaused = false;
+            paintThread.notify();
+            gameTimer.notify();
         }
     }
 
