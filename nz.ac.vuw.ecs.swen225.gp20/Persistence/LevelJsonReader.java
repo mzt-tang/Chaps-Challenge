@@ -31,7 +31,7 @@ import javax.json.JsonValue;
  * @author Lukas Stanley
  *
  */
-public class LevelJSONReader {
+public class LevelJsonReader {
 
   /**
    * Loads a level JSON file and returns it as a Level class to be loaded by the maze.

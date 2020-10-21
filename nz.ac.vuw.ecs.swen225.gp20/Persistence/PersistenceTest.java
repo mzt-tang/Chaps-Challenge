@@ -38,7 +38,7 @@ public class PersistenceTest {
     String levelString = "levels/level" + levelNumber + ".JSON";
 
     if (skipString.equals("SKIP") == false) {
-      LevelJSONMaker.makeJson(
+      LevelJsonMaker.makeJson(
           csvRead.readCsv(
               "nz.ac.vuw.ecs.swen225.gp20/Persistence/level.csv"
           ), 

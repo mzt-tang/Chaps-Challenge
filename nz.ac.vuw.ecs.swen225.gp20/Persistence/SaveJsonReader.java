@@ -22,7 +22,7 @@ import javax.json.JsonValue;
  * @author Lukas Stanley
  *
  */
-public class SaveJSONReader {
+public class SaveJsonReader {
 
   /**
    * A method to read a save file in JSON format, 

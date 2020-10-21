@@ -24,7 +24,7 @@ import javax.json.stream.JsonGenerator;
  * @author Lukas Stanley
  *
  */
-public class LevelJSONMaker {
+public class LevelJsonMaker {
 
   /**
    * Makes a JSON file at the given location using a CSV file.

@@ -28,7 +28,7 @@ import javax.json.stream.JsonGenerator;
  * @author Lukas Stanley
  *
  */
-public class SaveJSONMaker {
+public class SaveJsonMaker {
 
   /**
    * A method that takes a multitude of parameters, 

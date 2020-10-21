@@ -24,7 +24,7 @@ public class Persistence {
    */
   public static Level getLevel(int levelNumber) {
     String levelString = "levels/level" + levelNumber + ".JSON";
-    LevelJSONReader readJson = new LevelJSONReader();
+    LevelJsonReader readJson = new LevelJsonReader();
     Level returnLevel = readJson.readJson(levelString);
     return returnLevel;
   }
@@ -47,7 +47,7 @@ public class Persistence {
       AbstractTile[][] tiles
   ) {
     String saveString = "saves/level" + levelNumber + ".JSON";
-    SaveJSONMaker.makeJson(remainingTime, player, enemies, saveString, tiles);
+    SaveJsonMaker.makeJson(remainingTime, player, enemies, saveString, tiles);
     return true;
   }
 
@@ -60,7 +60,7 @@ public class Persistence {
   public static Level loadGame(int levelNumber) {
     String saveString = "saves/level" + levelNumber + ".JSON";
     Level levelUnchanged = getLevel(levelNumber);
-    Level levelLoaded = SaveJSONReader.readJson(saveString, levelUnchanged);
+    Level levelLoaded = SaveJsonReader.readJson(saveString, levelUnchanged);
     // Can return as null
     return levelLoaded;
   }
