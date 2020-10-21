@@ -17,9 +17,9 @@ public class StalkerEnemy extends AbstractActor {
      */
     public StalkerEnemy(Position position, int tickRate) {
         super(position, tickRate);
-        images.put("Astronaut", Toolkit.getDefaultToolkit().getImage("Resources/actors/Astronaut.png"));
-        images.put("AstronautFlipped", Toolkit.getDefaultToolkit().getImage("Resources/actors/AstronautFlipped.png"));
-        currentImage = images.get("Astronaut");
+        images.put("Enemy2", Toolkit.getDefaultToolkit().getImage("Resources/actors/Enemy2.png"));
+        images.put("Enemy2Flipped", Toolkit.getDefaultToolkit().getImage("Resources/actors/Enemy2Flipped.png"));
+        currentImage = images.get("Enemy2");
     }
 
     /**
@@ -48,9 +48,9 @@ public class StalkerEnemy extends AbstractActor {
 
         //Changes the actor image direction
         if(newPos.getX() >= position.getX()){
-            currentImage = images.get("Astronaut");
+            currentImage = images.get("Enemy2");
         } else {
-            currentImage = images.get("AstronautFlipped");
+            currentImage = images.get("Enemy2Flipped");
         }
 
         position = newPos;
