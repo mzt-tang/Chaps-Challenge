@@ -43,6 +43,13 @@ public class Key extends AbstractTile {
         currentImage = images.get("FloorTile");
     }
 
+    @Override
+    public void unChange() {
+        super.unChange();
+        pickedUp = false;
+        currentImage = images.get("SwipeCard" + colour);
+    }
+
     public String getColour() {
         return colour;
     }

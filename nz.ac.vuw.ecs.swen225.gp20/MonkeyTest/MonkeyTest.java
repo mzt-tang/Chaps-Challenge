@@ -1,8 +1,9 @@
 package MonkeyTest;
 
 import javax.swing.JOptionPane;
-import org.junit.*;
-
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.RepeatedTest;
 
 import Maze.Board;
 import Persistence.Level;
@@ -24,48 +25,16 @@ public class MonkeyTest {
 	static TestSuite test;
 	static Level level;
 
-@BeforeClass
-	/**
-	 * @param args .
-	 */
-	public static void initialize() {
-
-
-		//runDialog();
-		//runLevelChooser();
+@BeforeEach
+  void initialize() {
 	level = Persistence.getLevel(1);
 	board = new Board(level.getTileArray());
 	i = 500000;
-		
-
-
-		System.out.println(i);
+	 test = new TestSuite(board);
 	}
 
-	/** private static void runLevelChooser() {
-		Object[] levels = {"Level 1", "Level 2"};
-		l = (String)JOptionPane.showInputDialog(null,"Choose a level to test","Level Chooser",JOptionPane.PLAIN_MESSAGE,null,levels,"Level 1");
-		if(l.equals("Level 1")) {board = new Board(Renderer.level1());}
-		else {} 
+	
 
-	} **/
-
-
-	/**private static void runDialog() {
-
-		Object[] options = {"Yes","No"};
-		int n = JOptionPane.showOptionDialog(null,
-				"Would you like to spec;ify the number of commands?\n" +	"The default is 100,000\n",	"MonkeyTest", JOptionPane.YES_NO_OPTION,JOptionPane.QUESTION_MESSAGE,null,options,options[0]);
-		if(n == 0){
-			try {
-				i = Integer.parseInt(JOptionPane.showInputDialog(null, "How many random commands to send?\n"));
-			} catch(Exception e) { JOptionPane.showMessageDialog(null, "You must input an integer");}
-		}
-		else { i = 100000;} **/
-
-	//}
-	@Test
-	public void testSuite() { test = new TestSuite(board);}
 	
 	@Test
 	
@@ -80,6 +49,13 @@ public class MonkeyTest {
 	@Test
 	public void runNumberTest() {while( k < i) {test.randomMovement(); k++;}} //Runs tests for k number of commands, regardless of time taken
 	
-
+	@RepeatedTest(15)
+	public void rapidTest() { // Similar to time test, designed to run a new game every 10 seconds to trial many different possible scenarios
+		long t = System.currentTimeMillis();
+		long end = t + 10000;
+		int count = 0;
+		while(System.currentTimeMillis() < end) {test.randomMovement(); count++;}
+	}
+	
 }
 
