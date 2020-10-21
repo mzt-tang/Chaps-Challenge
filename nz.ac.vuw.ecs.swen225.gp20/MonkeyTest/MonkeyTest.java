@@ -1,7 +1,6 @@
 package MonkeyTest;
 
 import javax.swing.JOptionPane;
-import Renderer.*;
 import org.junit.*;
 
 
@@ -36,7 +35,7 @@ public class MonkeyTest {
 		//runLevelChooser();
 	level = Persistence.getLevel(1);
 	board = new Board(level.getTileArray());
-	i = 100000;
+	i = 500000;
 		
 
 
@@ -56,7 +55,7 @@ public class MonkeyTest {
 
 		Object[] options = {"Yes","No"};
 		int n = JOptionPane.showOptionDialog(null,
-				"Would you like to specify the number of commands?\n" +	"The default is 100,000\n",	"MonkeyTest", JOptionPane.YES_NO_OPTION,JOptionPane.QUESTION_MESSAGE,null,options,options[0]);
+				"Would you like to spec;ify the number of commands?\n" +	"The default is 100,000\n",	"MonkeyTest", JOptionPane.YES_NO_OPTION,JOptionPane.QUESTION_MESSAGE,null,options,options[0]);
 		if(n == 0){
 			try {
 				i = Integer.parseInt(JOptionPane.showInputDialog(null, "How many random commands to send?\n"));
@@ -70,7 +69,16 @@ public class MonkeyTest {
 	
 	@Test
 	
-	public void runTests() {while(k < i) {test.randomMovement(); k++;}}
+	public void runTimeTest() { //Plays the game for 30 seconds, regardless of how many commands are sent
+		long t = System.currentTimeMillis();
+		long end = t + 30000;
+		int count = 0;
+		while(System.currentTimeMillis() < end) {test.randomMovement(); count++;}
+		System.out.println("DEBUG: Time Test performed " + count + " commands");
+		}
+	
+	@Test
+	public void runNumberTest() {while( k < i) {test.randomMovement(); k++;}} //Runs tests for k number of commands, regardless of time taken
 	
 
 }
