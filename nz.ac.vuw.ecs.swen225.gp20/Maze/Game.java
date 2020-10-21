@@ -19,6 +19,7 @@ public class Game {
     private Board board;
     private Player player;
     private Set<AbstractActor> computerPlayers;
+    private List<Integer> tickTiming = new ArrayList<>();
 
     private boolean levelCompleted = false;
 
@@ -27,14 +28,13 @@ public class Game {
         this.board = board;
         this.player = player;
         this.computerPlayers = computerPlayers;
+        for(int i = 0; i < this.computerPlayers.size(); i++){
+            tickTiming.add(0);
+        }
     }
 
     public void moveEnemies() {
-        List<Integer> tickTiming = new ArrayList<>();
-        for(int i = 0; i < computerPlayers.size(); i++){
-            tickTiming.add(0);
-        }
-
+        if(computerPlayers.isEmpty()) return;
         int count = 0;
         for(AbstractActor c : computerPlayers) {
             if(c.getTickRate() == tickTiming.get(count)){
@@ -96,6 +96,7 @@ public class Game {
             levelCompleted = true;
         }
 
+        /**
         ////////TEST CODE
         int count = 0;
         for(AbstractActor a : computerPlayers) {
@@ -107,6 +108,7 @@ public class Game {
             count++;
         }
         //////
+         **/
 
     }
 
