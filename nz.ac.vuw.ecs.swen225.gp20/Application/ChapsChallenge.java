@@ -22,6 +22,7 @@ import java.awt.Insets;
 import java.awt.event.*;
 import java.util.HashSet;
 import java.util.Set;
+import javax.swing.AbstractAction;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JFrame;
@@ -31,6 +32,7 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.KeyStroke;
 import javax.swing.Timer;
 import javax.swing.border.EmptyBorder;
 
@@ -85,17 +87,31 @@ public class ChapsChallenge extends JFrame {
         //Record & Replay
         recordAndReplayer = new RecordAndReplay();
 
-        //GUI
+        // Initialize panels
+        initPanels();
+
+        // Initialize hot keys
+        addHotKeys();
+
+        // More window properties
+        pack();
+        setLocationRelativeTo(null);
+        setResizable(false);
+        setVisible(true);
+    }
+
+    public void initPanels(){
+        //GUI base panel
         JPanel basePanel = new JPanel();
         basePanel.setBackground(Color.BLACK);
-
         basePanel.setLayout(new BoxLayout(basePanel, BoxLayout.X_AXIS));
 
         int verticalGap = 85;
         int horizontalGap = 65;
         basePanel.setBorder(new EmptyBorder(new Insets(verticalGap, horizontalGap, verticalGap, horizontalGap)));
 
-        //PANELS
+
+
         // Gameplay panel
         gameplayPanel = createGamePanel(new Renderer(game));
         addWindowListener(new WindowAdapter() {
@@ -113,12 +129,6 @@ public class ChapsChallenge extends JFrame {
         basePanel.add(infoPanel);
 
         add(basePanel);
-
-        // More window properties
-        pack();
-        setLocationRelativeTo(null);
-        setResizable(false);
-        setVisible(true);
     }
 
     /**
@@ -127,7 +137,6 @@ public class ChapsChallenge extends JFrame {
     public void initUI(){
         setTitle("Chap's Challenge: Among Us Edition");
         createMenuBar();
-        //test commit
 
         setDefaultCloseOperation(EXIT_ON_CLOSE);
     }
@@ -309,6 +318,16 @@ public class ChapsChallenge extends JFrame {
     // ===========================================
     // Controlling Game Status
     // ===========================================
+
+    public void addHotKeys(){
+        KeyStroke exitGame = KeyStroke.getKeyStroke("control X");
+        gameplayPanel.getInputMap().put(exitGame, new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                System.out.println("EXIT CALLED");
+            }
+        });
+    }
 
     /**
      * Ends the game when the game clock runs out of time.
