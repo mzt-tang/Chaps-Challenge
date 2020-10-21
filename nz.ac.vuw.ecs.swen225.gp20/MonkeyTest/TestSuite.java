@@ -2,6 +2,7 @@ package MonkeyTest;
 
 import java.util.HashSet;
 import java.util.Random;
+import java.util.Set;
 
 import org.junit.*;
 
@@ -9,7 +10,10 @@ import Application.ChapsChallenge;
 import Maze.Board;
 import Maze.Game;
 import Maze.Position;
+import Maze.BoardObjects.Actors.AbstractActor;
+import Maze.BoardObjects.Actors.PatternEnemy;
 import Maze.BoardObjects.Actors.Player;
+import Maze.BoardObjects.Actors.stalker_enemy.StalkerEnemy;
 
 
 
@@ -27,9 +31,13 @@ public class TestSuite {
 	 */
 	public TestSuite(Board board) {
 		// t = new ChapsChallenge();
-		// tester = t.getGame();
+		// tester = t.getGame();	
+		Set<AbstractActor> test = new HashSet<>();
+
+        StalkerEnemy enemy = new StalkerEnemy(new Position(10, 10), 1);
+        test.add(enemy);
 		
-		tester =  new Game(board, new Player(new Position(4, 4)), new HashSet<>()); //PLACEHOLDER, need to implement level loader
+		tester =  new Game(board, new Player(new Position(4, 4)), test); //PLACEHOLDER, need to implement level loader
 		
 	}
 	
