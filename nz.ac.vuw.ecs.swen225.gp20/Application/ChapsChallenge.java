@@ -224,7 +224,7 @@ public class ChapsChallenge extends JFrame {
                         break;
                 }
                 nextLevel(); //check if the player is on the vent
-                recordAndReplayer.storeRecorderBuffer();
+                //recordAndReplayer.storeRecorderBuffer();
             }
         });
 
@@ -295,8 +295,9 @@ public class ChapsChallenge extends JFrame {
         infoPanel.add(chipsLabel);
         infoPanel.add(Box.createRigidArea(new Dimension(INFO_WIDTH, 66)));
         infoPanel.add(inventoryLabel);
+        infoPanel.add(Box.createRigidArea(new Dimension(INFO_WIDTH, 10)));
         infoPanel.add(inventoryView);
-        infoPanel.add(Box.createRigidArea(new Dimension(INFO_WIDTH, 75)));
+        infoPanel.add(Box.createRigidArea(new Dimension(INFO_WIDTH, 55)));
 
         return infoPanel;
     }
