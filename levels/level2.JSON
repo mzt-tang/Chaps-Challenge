@@ -1556,14 +1556,14 @@
             {
                 "startingX": 3,
                 "startingY": 1,
-                "AI Type": "PLACEHOLDER - INSERT AI TYPE (EG: PatternEnemy, StalkerEnemy) INSERT RATE OF MOVEMENT BELOW",
+                "AI Type": "PatternEnemy",
                 "Tick Speed": 1,
-                "Movement String": "PLACEHOLDER - USED FOR MOVEMENT OF PATTERNENEMY. FORMAT IS wasd eg: wassawdws"
+                "Movement String": "dddddsssssaaaaawwwww"
             },
             {
                 "startingX": 8,
                 "startingY": 1,
-                "AI Type": "PLACEHOLDER - INSERT AI TYPE (EG: PatternEnemy, StalkerEnemy) INSERT RATE OF MOVEMENT BELOW",
+                "AI Type": "StalkerEnemy",
                 "Tick Speed": 1,
                 "Movement String": "PLACEHOLDER - USED FOR MOVEMENT OF PATTERNENEMY. FORMAT IS wasd eg: wassawdws"
             },
