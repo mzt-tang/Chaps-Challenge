@@ -51,6 +51,7 @@ public class ChapsChallenge extends JFrame {
     //Game
     private Game game;
     private boolean isPaused = false;
+    private Thread paintThread;
 
     //Informating stored for info panel
     private Timer timer;
@@ -201,7 +202,8 @@ public class ChapsChallenge extends JFrame {
                 }
             }
         };
-        new Thread(clockThread).start();
+        paintThread = new Thread(clockThread);
+        paintThread.start();
 
         //KeyListeners
         gamePanel.addKeyListener(new KeyAdapter() {
@@ -318,13 +320,79 @@ public class ChapsChallenge extends JFrame {
     // Controlling Game Status
     // ===========================================r
 
-    public void addHotKeys(){
-        System.out.println("Hotkeys added");
-        KeyStroke exitGame = KeyStroke.getKeyStroke(KeyEvent.VK_X, InputEvent.CTRL_DOWN_MASK);
-        gameplayPanel.getInputMap().put(exitGame, new AbstractAction() {
+    /**
+     * Adds different keybindings that controls the state of the game
+     */
+    public void addHotKeys() {
+        //CTRL + X: exit the game, the current game state will be lost, the next time the game is started, it will resume from the last unfinished level
+        KeyStroke exitGame = KeyStroke.getKeyStroke('X', InputEvent.CTRL_DOWN_MASK);
+        gameplayPanel.getInputMap().put(exitGame, "exit_game");
+        gameplayPanel.getActionMap().put("exit_game", new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
                 System.out.println("EXIT CALLED");
+            }
+        });
+
+        //CTRL + S: exit the game, saves the game state, game will resume next time the application will be started
+        KeyStroke saveGame = KeyStroke.getKeyStroke('S', InputEvent.CTRL_DOWN_MASK);
+        gameplayPanel.getInputMap().put(saveGame, "save_game");
+        gameplayPanel.getActionMap().put("save_game", new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                System.out.println("SAVE CALLED");
+            }
+        });
+
+        //CTRL + R: resume a saved game
+        KeyStroke resumeSavedGame = KeyStroke.getKeyStroke('R', InputEvent.CTRL_DOWN_MASK);
+        gameplayPanel.getInputMap().put(resumeSavedGame, "resume_saved_game");
+        gameplayPanel.getActionMap().put("resume_saved_game", new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                System.out.println("RESUME SAVED GAME");
+            }
+        });
+
+        //CTRL + P: start a new game at the last unfinished level
+        KeyStroke newGameLastLevel = KeyStroke.getKeyStroke('P', InputEvent.CTRL_DOWN_MASK);
+        gameplayPanel.getInputMap().put(newGameLastLevel, "new_game_last_level");
+        gameplayPanel.getActionMap().put("new_game_last_level", new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                System.out.println("NEW GAME LAST LEVEL");
+            }
+        });
+
+        //CTRL + 1: start a new game at level 1
+        KeyStroke newLevel1 = KeyStroke.getKeyStroke('1', InputEvent.CTRL_DOWN_MASK);
+        gameplayPanel.getInputMap().put(newLevel1, "new_game_level_1");
+        gameplayPanel.getActionMap().put("new_game_level_1", new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                System.out.println("NEW GAME LEVEL 1");
+            }
+        });
+
+        //SPACEBAR: pause the game and display a “game is paused” dialog
+        KeyStroke pauseGame = KeyStroke.getKeyStroke(KeyEvent.VK_SPACE, 0);
+        gameplayPanel.getInputMap().put(pauseGame, "pause");
+        gameplayPanel.getActionMap().put("pause", new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                System.out.println("PAUSE CALLED");
+                pauseGame();
+            }
+        });
+
+        //ESC: pause the game and display a “game is paused” dialog
+        KeyStroke resumeGame = KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0);
+        gameplayPanel.getInputMap().put(resumeGame, "resume");
+        gameplayPanel.getActionMap().put("resume", new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                System.out.println("RESUME CALLED");
+                resumeGame();
             }
         });
     }
@@ -337,6 +405,9 @@ public class ChapsChallenge extends JFrame {
         System.exit(0);
     }
 
+    /**
+     * Checks if the current level has been completed. If so, run the next level.
+     */
     public void nextLevel(){
         if (game.isLevelCompleted()) {
             int options = JOptionPane.showConfirmDialog(null, "Continue to next level?", "Level 1 Completed!",
@@ -349,12 +420,12 @@ public class ChapsChallenge extends JFrame {
         }
     }
 
-    public void pauseGame(Thread paintThread, Timer gameTimer){
+    public void pauseGame(){
         if (!isPaused) {
             isPaused = true;
             try {
                 paintThread.wait();
-                gameTimer.wait();
+                timer.wait();
             }
             catch (InterruptedException e) {
                 e.printStackTrace();
@@ -362,11 +433,11 @@ public class ChapsChallenge extends JFrame {
         }
     }
 
-    public void resumeGame(Thread paintThread, Timer gameTimer){
+    public void resumeGame(){
         if (isPaused) {
             isPaused = false;
             paintThread.notify();
-            gameTimer.notify();
+            timer.notify();
         }
     }
 
