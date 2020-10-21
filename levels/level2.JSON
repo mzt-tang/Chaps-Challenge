@@ -1557,29 +1557,29 @@
                 "startingX": 3,
                 "startingY": 1,
                 "AI Type": "PatternEnemy",
-                "Tick Speed": 1,
+                "Tick Speed": 8,
                 "Movement String": "dddddsssssaaaaawwwww"
             },
             {
                 "startingX": 8,
                 "startingY": 1,
-                "AI Type": "StalkerEnemy",
-                "Tick Speed": 1,
-                "Movement String": "PLACEHOLDER - USED FOR MOVEMENT OF PATTERNENEMY. FORMAT IS wasd eg: wassawdws"
+                "AI Type": "PatternEnemy",
+                "Tick Speed": 8,
+                "Movement String": "dddddsssssaaaaawwwww"
             },
             {
                 "startingX": 3,
                 "startingY": 6,
-                "AI Type": "PLACEHOLDER - INSERT AI TYPE (EG: PatternEnemy, StalkerEnemy) INSERT RATE OF MOVEMENT BELOW",
-                "Tick Speed": 1,
-                "Movement String": "PLACEHOLDER - USED FOR MOVEMENT OF PATTERNENEMY. FORMAT IS wasd eg: wassawdws"
+                "AI Type": "PatternEnemy",
+                "Tick Speed": 8,
+                "Movement String": "dddddsssssaaaaawwwww"
             },
             {
                 "startingX": 8,
                 "startingY": 6,
-                "AI Type": "PLACEHOLDER - INSERT AI TYPE (EG: PatternEnemy, StalkerEnemy) INSERT RATE OF MOVEMENT BELOW",
-                "Tick Speed": 1,
-                "Movement String": "PLACEHOLDER - USED FOR MOVEMENT OF PATTERNENEMY. FORMAT IS wasd eg: wassawdws"
+                "AI Type": "PatternEnemy",
+                "Tick Speed": 8,
+                "Movement String": "dddddsssssaaaaawwwww"
             }
         ]
     }
