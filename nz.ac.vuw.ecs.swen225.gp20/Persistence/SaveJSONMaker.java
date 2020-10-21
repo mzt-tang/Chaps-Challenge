@@ -60,7 +60,6 @@ public class SaveJSONMaker {
 			AbstractTile currentTile = tiles[i][j];
 			//Set the tile as changed
 			if(currentTile.isChanged()) {
-				currentTile.setChangedTile();
 				arrayObjectBuilder.add("xPos", i);
 				arrayObjectBuilder.add("yPos", j);
 				arrayBuilder.add(arrayObjectBuilder);
