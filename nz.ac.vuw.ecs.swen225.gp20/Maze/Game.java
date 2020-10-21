@@ -28,6 +28,7 @@ public class Game {
         this.board = board;
         this.player = player;
         this.computerPlayers = computerPlayers;
+
         for(int i = 0; i < this.computerPlayers.size(); i++){
             tickTiming.add(0);
         }
@@ -35,6 +36,7 @@ public class Game {
 
     public void moveEnemies() {
         if(computerPlayers.isEmpty()) return;
+
         int count = 0;
         for(AbstractActor c : computerPlayers) {
             if(c.getTickRate() == tickTiming.get(count)){
@@ -87,6 +89,8 @@ public class Game {
             //Unlock the exit lock if all treasures have been collected
             if (allTreasuresCollected()){
                 unlockExitLock();
+            } else {
+                lockExitLock();
             }
 
             player.getPos().move(direction);    //Move the player
@@ -110,6 +114,17 @@ public class Game {
         //////
          **/
 
+    }
+
+    private void lockExitLock(){
+        for (int i = 0; i < board.getMap().length; i++) {
+            for (int j = 0; j < board.getMap()[0].length; j++) {
+                if(board.getMap()[i][j] instanceof ExitLock){
+                    ExitLock tile = (ExitLock) board.getMap()[i][j];
+                    tile.unChange();
+                }
+            }
+        }
     }
 
     private void unlockExitLock() {
