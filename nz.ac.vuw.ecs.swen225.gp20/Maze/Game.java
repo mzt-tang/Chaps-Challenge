@@ -104,11 +104,6 @@ public class Game {
         if(moveToTile instanceof ExitPortal) {
             levelCompleted = true;
         }
-
-        ////////// TEST CODE
-        System.out.println("Player: ");
-        System.out.println(player.getPos());
-        ////////////////
     }
 
     private void unlockExitLock() {
