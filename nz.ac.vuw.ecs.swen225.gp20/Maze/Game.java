@@ -34,10 +34,15 @@ public class Game {
         for(int i = 0; i < computerPlayers.size(); i++){
             tickTiming.add(0);
         }
+
         int count = 0;
         for(AbstractActor c : computerPlayers) {
+            if(c.getTickRate() == tickTiming.get(count)){
+                c.move(player, board);
+                tickTiming.set(count, 0);
+            }
+            tickTiming.set(count, tickTiming.get(count)+1);
             count++;
-            c.move(player, board);
         }
     }
 
