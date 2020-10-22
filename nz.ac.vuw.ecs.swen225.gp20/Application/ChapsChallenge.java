@@ -199,6 +199,7 @@ public class ChapsChallenge extends JFrame {
                         } catch (InterruptedException e) {
                             e.printStackTrace();
                         }
+                        game.moveEnemies();
                         repaint();
                     }
                 }
@@ -332,6 +333,8 @@ public class ChapsChallenge extends JFrame {
     // ===========================================
 
     public void loadLevel(int level){
+        isPaused = false; //make sure the game starts in an un-paused state
+
         // Persistence and Levels module
         currentLevel =  Persistence.getLevel(level);
         timeRemaining = currentLevel.getTime();
@@ -442,6 +445,7 @@ public class ChapsChallenge extends JFrame {
      */
     public void nextLevel(){
         if (game.isLevelCompleted()) {
+            isPaused = true; //stop the game
             int options = JOptionPane.showConfirmDialog(null, "Continue to next level?", "Level 1 Completed!",
                     JOptionPane.YES_NO_OPTION);
             if (options == 0) {
