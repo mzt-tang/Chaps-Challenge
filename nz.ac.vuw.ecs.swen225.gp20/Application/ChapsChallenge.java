@@ -51,6 +51,7 @@ public class ChapsChallenge extends JFrame {
 
     //Game
     private Game game;
+    private Level currentLevel;
     private volatile boolean isPaused = false;
     private volatile Thread paintThread;
 
@@ -97,12 +98,8 @@ public class ChapsChallenge extends JFrame {
     }
 
     public void initModules(){
-        // Persistence and Levels module
-        Level currentLevel =  Persistence.getLevel(1);
-        timeRemaining = currentLevel.getTime();
-
-        // Maze module
-        game = new Game(new Board(currentLevel.getTileArray()), currentLevel.getPlayer(), new HashSet<>()); //FIXME: placeholder replace later
+        // Persistence and Maze module
+        loadLevel(1);
 
         // Renderer module
         renderer = new Renderer(game);
@@ -160,18 +157,34 @@ public class ChapsChallenge extends JFrame {
         JMenu gameMenu = new JMenu("Game");
 
         //selections
-        JMenuItem restartItem = new JMenuItem("Restart");
-        //restartItem.addActionListener((e) -> System.exit(0)); //TODO: add functionality
+        JMenuItem level1 = new JMenuItem("Level 1");
+        level1.addActionListener((e) -> loadLevel(1)); //TODO: add functionality
 
         JMenuItem saveItem = new JMenuItem("Save");
-        saveItem.addActionListener((e) -> recordAndReplayer.saveGameplay());
+        saveItem.addActionListener((e) -> System.out.println("save"));
+
+        JMenuItem loadSaved = new JMenuItem("Load Saved Game");
+        loadSaved.addActionListener((e) -> System.out.println("load"));
+
+        JMenuItem pauseItem = new JMenuItem("Pause");
+        pauseItem.addActionListener(e -> {
+            if (!isPaused) pauseResume();
+        });
+
+        JMenuItem resumeItem = new JMenuItem("Resume");
+        resumeItem.addActionListener(e -> {
+            if (isPaused) pauseResume();
+        });
 
         JMenuItem exitItem = new JMenuItem("Exit");
         exitItem.addActionListener((e) -> System.exit(0));
 
         //adding menu selections to the menu
-        gameMenu.add(restartItem);
         gameMenu.add(saveItem);
+        gameMenu.add(loadSaved);
+        gameMenu.add(level1);
+        gameMenu.add(pauseItem);
+        gameMenu.add(resumeItem);
         gameMenu.add(exitItem);
         menuBar.add(gameMenu);
 
@@ -338,6 +351,15 @@ public class ChapsChallenge extends JFrame {
     // Controlling Game Status
     // ===========================================
 
+    public void loadLevel(int level){
+        // Persistence and Levels module
+        currentLevel =  Persistence.getLevel(level);
+        timeRemaining = currentLevel.getTime();
+
+        // Maze module
+        game = new Game(new Board(currentLevel.getTileArray()), currentLevel.getPlayer(), currentLevel.getEnemies());
+    }
+
     /**
      * Adds different keybindings that controls the state of the game
      */
@@ -433,7 +455,7 @@ public class ChapsChallenge extends JFrame {
             int options = JOptionPane.showConfirmDialog(null, "Continue to next level?", "Level 1 Completed!",
                     JOptionPane.YES_NO_OPTION);
             if (options == 0) {
-                System.out.println("Level 2 called...");
+                loadLevel(2);
             } else {
                 System.exit(0);
             }
