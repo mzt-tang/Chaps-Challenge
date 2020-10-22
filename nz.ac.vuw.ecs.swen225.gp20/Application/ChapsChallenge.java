@@ -136,6 +136,9 @@ public class ChapsChallenge extends JFrame {
         JMenuItem level1 = new JMenuItem("Level 1");
         level1.addActionListener((e) -> loadLevel(1)); //TODO: add functionality
 
+        JMenuItem level2 = new JMenuItem("Level 2");
+        level2.addActionListener((e) -> loadLevel(2)); //TODO: add functionality
+
         JMenuItem saveItem = new JMenuItem("Save");
         saveItem.addActionListener((e) -> System.out.println("save"));
 
@@ -159,6 +162,7 @@ public class ChapsChallenge extends JFrame {
         gameMenu.add(saveItem);
         gameMenu.add(loadSaved);
         gameMenu.add(level1);
+        gameMenu.add(level2);
         gameMenu.add(pauseItem);
         gameMenu.add(resumeItem);
         gameMenu.add(exitItem);
@@ -328,6 +332,10 @@ public class ChapsChallenge extends JFrame {
 
     public void loadLevel(int level){
         isPaused = false; //make sure the game starts in an un-paused state
+        if (paintThread != null && timer != null){
+            paintThread.stop();
+            timer.stop();
+        }
 
         // Persistence and Levels module
         currentLevel =  Persistence.getLevel(level);
@@ -346,6 +354,11 @@ public class ChapsChallenge extends JFrame {
         this.getContentPane().removeAll();
         initPanels();
         addHotKeys();
+
+        //reset focus in case this method was called from the menu bar
+        gameplayPanel.setFocusable(true);
+        gameplayPanel.requestFocusInWindow();
+        gameplayPanel.requestFocus();
     }
 
     /**
