@@ -331,6 +331,7 @@ public class ChapsChallenge extends JFrame {
     // ===========================================
 
     public void loadLevel(int level){
+        levelCount = level;
         isPaused = false; //make sure the game starts in an un-paused state
         if (paintThread != null && timer != null){
             paintThread.stop();
