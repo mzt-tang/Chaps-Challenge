@@ -1,9 +1,6 @@
 package Application;
 
 import Maze.Board;
-import Maze.BoardObjects.Actors.AbstractActor;
-import Maze.BoardObjects.Actors.PatternEnemy;
-import Maze.BoardObjects.Actors.StalkerEnemy;
 import Maze.Game;
 import Maze.Position;
 import Persistence.Persistence;
@@ -65,16 +62,6 @@ public class ChapsChallenge extends JFrame {
      */
     public ChapsChallenge(){
         initUI();
-
-        /////// TEST CODE
-        Set<AbstractActor> test = new HashSet<>();
-
-        StalkerEnemy enemy = new StalkerEnemy(new Position(10, 10), 30);
-        test.add(enemy);
-
-        PatternEnemy enemy1 = new PatternEnemy(new Position(2, 9), 30, "dddsssaaawww");
-        test.add(enemy1);
-        //////
 
         // Initialize modules
         initModules();
