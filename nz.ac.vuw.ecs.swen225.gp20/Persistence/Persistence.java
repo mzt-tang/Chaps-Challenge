@@ -4,7 +4,6 @@ import Maze.BoardObjects.Actors.AbstractActor;
 import Maze.BoardObjects.Actors.Player;
 import Maze.BoardObjects.Tiles.AbstractTile;
 import java.io.File;
-import java.util.ArrayList;
 import java.util.Set;
 
 
@@ -62,7 +61,11 @@ public class Persistence {
     Level levelUnchanged = getLevel(levelNumber);
     Level levelLoaded = SaveJsonReader.readJson(saveString, levelUnchanged);
     // Can return as null
-    return levelLoaded;
+    if (levelLoaded != null) {
+      return levelLoaded;
+    } else {
+      return levelUnchanged;
+    }
   }
 
   /**
