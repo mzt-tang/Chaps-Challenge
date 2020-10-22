@@ -25,6 +25,7 @@ import java.util.Set;
 import javax.swing.AbstractAction;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
+import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JMenu;
@@ -50,15 +51,16 @@ public class ChapsChallenge extends JFrame {
 
     //Game
     private Game game;
-    private boolean isPaused = false;
-    private Thread paintThread;
+    private volatile boolean isPaused = false;
+    private volatile Thread paintThread;
 
     //Informating stored for info panel
-    private Timer timer;
+    private volatile Timer timer;
     private int timeRemaining;
     private InventoryView inventoryView;
 
-
+    //Other modules
+    private Renderer renderer;
     private RecordAndReplay recordAndReplayer;
 
     /**
@@ -77,16 +79,9 @@ public class ChapsChallenge extends JFrame {
         test.add(enemy1);
         //////
 
-        //Persistence and Levels
-        Persistence persistence = new Persistence();
-        Level currentLevel =  persistence.getLevel(1);
-        timeRemaining = currentLevel.getTime();
-
-        game = new Game(new Board(currentLevel.getTileArray()), new Player(currentLevel.getPlayerPos()), new HashSet<>()); //FIXME: placeholder replace later
-        inventoryView = new InventoryView(game.getPlayer());
-
-        //Record & Replay
-        recordAndReplayer = new RecordAndReplay();
+        // Initialize modules
+        initModules();
+        inventoryView = new InventoryView(game.getPlayer()); //adding inventory view (Application)
 
         // Initialize panels
         initPanels();
@@ -101,6 +96,22 @@ public class ChapsChallenge extends JFrame {
         setVisible(true);
     }
 
+    public void initModules(){
+        // Persistence and Levels module
+        Persistence persistence = new Persistence();
+        Level currentLevel =  persistence.getLevel(1);
+        timeRemaining = currentLevel.getTime();
+
+        // Maze module
+        game = new Game(new Board(currentLevel.getTileArray()), new Player(currentLevel.getPlayerPos()), new HashSet<>()); //FIXME: placeholder replace later
+
+        // Renderer module
+        renderer = new Renderer(game);
+
+        // Record & Replay module
+        recordAndReplayer = new RecordAndReplay();
+    }
+
     public void initPanels(){
         //GUI base panel
         JPanel basePanel = new JPanel();
@@ -113,7 +124,7 @@ public class ChapsChallenge extends JFrame {
 
 
         // Gameplay panel
-        gameplayPanel = createGamePanel(new Renderer(game));
+        gameplayPanel = createGamePanel();
         addWindowListener(new WindowAdapter() {
             @Override
             public void windowOpened(WindowEvent e) {
@@ -177,7 +188,7 @@ public class ChapsChallenge extends JFrame {
      * Gameplay of the game is displayed here.
      * @return Gameplay panel
      */
-    public JPanel createGamePanel(Renderer renderer){
+    public JPanel createGamePanel(){
         JPanel gamePanel = new JPanel();
         gamePanel.setBackground(Color.DARK_GRAY);
         gamePanel.add(renderer);
@@ -186,31 +197,28 @@ public class ChapsChallenge extends JFrame {
         gamePanel.requestFocus();
 
         //Star background on own thread
-        Runnable clockThread = new Runnable() {
+        paintThread = new Thread(new Runnable() {
             @Override
             public void run() {
-                while (true){
-                    try {
-                        Thread.sleep(1000/30); //30FPS
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
+                while (true) {
+                    if (!isPaused) {
+                        try {
+                            Thread.sleep(1000 / 30); //30FPS
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                        repaint();
                     }
-                    renderer.revalidate();
-                    renderer.repaint();
-                    inventoryView.revalidate();
-                    inventoryView.repaint();
                 }
             }
-        };
-        paintThread = new Thread(clockThread);
+        });
         paintThread.start();
 
         //KeyListeners
         gamePanel.addKeyListener(new KeyAdapter() {
             @Override
             public void keyPressed(KeyEvent e) {
-                //don't check for movement if CTRL key is pressed down (user might be using a hotkey)
-                if (!e.isControlDown()) {
+                if (!isPaused) {
                     //up
                     if (e.getKeyCode() == KeyEvent.VK_W || e.getKeyCode() == KeyEvent.VK_UP) {
                         System.out.println("Up");
@@ -237,7 +245,6 @@ public class ChapsChallenge extends JFrame {
                     } else {
                         //dead code
                     }
-
                     nextLevel(); //check if the player is on the vent
                     //recordAndReplayer.storeRecorderBuffer();
                 }
@@ -285,9 +292,6 @@ public class ChapsChallenge extends JFrame {
                 chipsLabel.setFont(new Font(chipsLabel.getName(), Font.PLAIN, fontSize));
                 chipsLabel.setText("CHIPS REMAINING: " + game.treasuresLeft());
                 chipsLabel.setForeground(Color.RED);
-//                if (game.treasuresLeft() == 0){
-//                    chipsLabel.setForeground(Color.GREEN);
-//                }
                 chipsLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
                 //Stopping the timer once it runs out of time
@@ -295,8 +299,9 @@ public class ChapsChallenge extends JFrame {
                     timer.stop();
                     outOfTime();
                 }
-                timeRemaining--;
-
+                if (!isPaused) {
+                    timeRemaining--;
+                }
 
             }
         });
@@ -318,10 +323,19 @@ public class ChapsChallenge extends JFrame {
         return infoPanel;
     }
 
+    @Override
+    public void repaint() {
+        super.repaint();
+        renderer.revalidate();
+        renderer.repaint();
+        inventoryView.revalidate();
+        inventoryView.repaint();
+    }
+
 
     // ===========================================
     // Controlling Game Status
-    // ===========================================r
+    // ===========================================
 
     /**
      * Adds different keybindings that controls the state of the game
@@ -384,7 +398,9 @@ public class ChapsChallenge extends JFrame {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
                 System.out.println("PAUSE CALLED");
-                pauseGame();
+                if (!isPaused) {
+                    pauseResume();
+                }
             }
         });
 
@@ -395,7 +411,7 @@ public class ChapsChallenge extends JFrame {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
                 System.out.println("RESUME CALLED");
-                resumeGame();
+                pauseResume();
             }
         });
     }
@@ -423,24 +439,17 @@ public class ChapsChallenge extends JFrame {
         }
     }
 
-    public void pauseGame(){
-        if (!isPaused) {
-            isPaused = true;
-            try {
-                paintThread.wait();
-                timer.wait();
-            }
-            catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        }
-    }
-
-    public void resumeGame(){
-        if (isPaused) {
-            isPaused = false;
-            paintThread.notify();
-            timer.notify();
+    /**
+     * Pauses and resumes the game
+     */
+    public void pauseResume(){
+        isPaused = !isPaused;
+        JOptionPane optionPane = new JOptionPane();
+        optionPane.setMessageType(JOptionPane.INFORMATION_MESSAGE);
+        optionPane.setMessage("Press ESC to unpause the game.");
+        JDialog dialog = optionPane.createDialog(null, "Game Paused");
+        if (isPaused){
+            dialog.setVisible(true);
         }
     }
 
