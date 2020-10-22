@@ -67,9 +67,6 @@ public class ChapsChallenge extends JFrame {
         // Initialize modules
         initModules();
 
-        // Initialize panels
-        initPanels();
-
         // Initialize hotkeys
         addHotKeys();
 
@@ -97,7 +94,6 @@ public class ChapsChallenge extends JFrame {
         int verticalGap = 85;
         int horizontalGap = 65;
         basePanel.setBorder(new EmptyBorder(new Insets(verticalGap, horizontalGap, verticalGap, horizontalGap)));
-
 
         // Gameplay panel
         gameplayPanel = createGamePanel();
@@ -323,8 +319,6 @@ public class ChapsChallenge extends JFrame {
         super.repaint();
         renderer.revalidate();
         renderer.repaint();
-        inventoryView.revalidate();
-        inventoryView.repaint();
     }
 
 
@@ -351,6 +345,7 @@ public class ChapsChallenge extends JFrame {
         //Reset this JFrame and reinitialize panels
         this.getContentPane().removeAll();
         initPanels();
+        addHotKeys();
     }
 
     /**
