@@ -219,34 +219,36 @@ public class ChapsChallenge extends JFrame {
             @Override
             public void keyPressed(KeyEvent e) {
                 if (!isPaused) {
-                    //up
-                    if (e.getKeyCode() == KeyEvent.VK_W || e.getKeyCode() == KeyEvent.VK_UP) {
-                        System.out.println("Up");
-                        movementRecordHelper(Game.DIRECTION.UP);
-                        game.movePlayer(Game.DIRECTION.UP);
+                    if (!e.isControlDown()) {
+                        //up
+                        if (e.getKeyCode() == KeyEvent.VK_W || e.getKeyCode() == KeyEvent.VK_UP) {
+                            System.out.println("Up");
+                            movementRecordHelper(Game.DIRECTION.UP);
+                            game.movePlayer(Game.DIRECTION.UP);
+                        }
+                        //left
+                        else if (e.getKeyCode() == KeyEvent.VK_A || e.getKeyCode() == KeyEvent.VK_LEFT) {
+                            System.out.println("Left");
+                            movementRecordHelper(Game.DIRECTION.LEFT);
+                            game.movePlayer(Game.DIRECTION.LEFT);
+                        }
+                        //down
+                        else if (e.getKeyCode() == KeyEvent.VK_S || e.getKeyCode() == KeyEvent.VK_DOWN) {
+                            System.out.println("Down");
+                            movementRecordHelper(Game.DIRECTION.DOWN);
+                            game.movePlayer(Game.DIRECTION.DOWN);
+                        }
+                        //right
+                        else if (e.getKeyCode() == KeyEvent.VK_D || e.getKeyCode() == KeyEvent.VK_RIGHT) {
+                            System.out.println("Right");
+                            movementRecordHelper(Game.DIRECTION.RIGHT);
+                            game.movePlayer(Game.DIRECTION.RIGHT);
+                        } else {
+                            //dead code
+                        }
+                        nextLevel(); //check if the player is on the vent
+                        //recordAndReplayer.storeRecorderBuffer();
                     }
-                    //left
-                    else if (e.getKeyCode() == KeyEvent.VK_A || e.getKeyCode() == KeyEvent.VK_LEFT) {
-                        System.out.println("Left");
-                        movementRecordHelper(Game.DIRECTION.LEFT);
-                        game.movePlayer(Game.DIRECTION.LEFT);
-                    }
-                    //down
-                    else if (e.getKeyCode() == KeyEvent.VK_S || e.getKeyCode() == KeyEvent.VK_DOWN) {
-                        System.out.println("Down");
-                        movementRecordHelper(Game.DIRECTION.DOWN);
-                        game.movePlayer(Game.DIRECTION.DOWN);
-                    }
-                    //right
-                    else if (e.getKeyCode() == KeyEvent.VK_D || e.getKeyCode() == KeyEvent.VK_RIGHT) {
-                        System.out.println("Right");
-                        movementRecordHelper(Game.DIRECTION.RIGHT);
-                        game.movePlayer(Game.DIRECTION.RIGHT);
-                    } else {
-                        //dead code
-                    }
-                    nextLevel(); //check if the player is on the vent
-                    //recordAndReplayer.storeRecorderBuffer();
                 }
             }
         });
