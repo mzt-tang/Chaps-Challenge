@@ -1,6 +1,7 @@
 package Maze;
 
 import Maze.BoardObjects.Actors.AbstractActor;
+import Maze.BoardObjects.Actors.PatternEnemy;
 import Maze.BoardObjects.Actors.Player;
 import Maze.BoardObjects.Tiles.*;
 import org.junit.Test;
@@ -11,10 +12,8 @@ import java.util.Set;
 public class MazeTests {
 
 
-    /**
-     *
-     * TILE / PLAYER INTERACTIONS
-     *
+    /*
+      TILE / PLAYER INTERACTIONS
      */
 
     /**
@@ -142,34 +141,69 @@ public class MazeTests {
         Player player = new Player(new Position(1, 1));
         Set<AbstractActor> enemies = new HashSet<>();
         Game game = new Game(new Board(map), player, enemies);
-
+        //Try to move into Exitlock
         game.movePlayer(Game.DIRECTION.RIGHT);
         assert player.getPos().equals(new Position(1, 1));
         assert !map[2][1].isChanged();
-
+        //Collect 1 treasure and try to move into exitlock
         game.movePlayer(Game.DIRECTION.DOWN);
         game.movePlayer(Game.DIRECTION.UP);
         game.movePlayer(Game.DIRECTION.RIGHT);
         assert player.getPos().equals(new Position(1, 1));
         assert !map[2][1].isChanged();
-
+        //Collect both treasures, exitlock should now unlock
         game.movePlayer(Game.DIRECTION.DOWN);
         game.movePlayer(Game.DIRECTION.DOWN);
         assert map[3][2].isChanged();
         assert map[2][1].isChanged();
-
+        //Check player can move through both exitlocks
         game.movePlayer(Game.DIRECTION.RIGHT);
         game.movePlayer(Game.DIRECTION.RIGHT);
         game.movePlayer(Game.DIRECTION.UP);
         game.movePlayer(Game.DIRECTION.UP);
         game.movePlayer(Game.DIRECTION.LEFT);
         assert player.getPos().equals(new Position(2, 1));
+    }
 
-        game.movePlayer(Game.DIRECTION.LEFT);
-        game.movePlayer(Game.DIRECTION.DOWN);
+    /**
+     * Testing DeathTiles.
+     */
+    @Test
+    public void test6(){
+        AbstractTile[][] map = makeMap();
+        map[3][1] = new DeathTile();
+
+        Player player = new Player(new Position(1, 1));
+        Set<AbstractActor> enemies = new HashSet<>();
+        Game game = new Game(new Board(map), player, enemies);
+        //Move into DeathTile, check that player respawned back at their starting point.
         game.movePlayer(Game.DIRECTION.RIGHT);
-        assert player.getPos().equals(new Position(3, 2));
-        //assert map[3][2].isChanged();
+        game.movePlayer(Game.DIRECTION.RIGHT);
+        assert player.getPos().equals(new Position(1, 1));
+    }
+
+    /*
+      ACTOR / PLAYER INTERACTIONS
+    */
+
+    /**
+     * Testing Pattern Enemies.
+     */
+    @Test
+    public void test7(){
+        AbstractTile[][] map = makeMap();
+        map[3][1] = new InfoField("test");
+
+        Player player = new Player(new Position(1, 1));
+        Set<AbstractActor> enemies = new HashSet<>();
+        PatternEnemy enemy = new PatternEnemy(new Position(2,1), 1, "ddddd");
+        enemies.add(enemy);
+        Game game = new Game(new Board(map), player, enemies);
+        //Testing enemy wall block
+        for(int i = 0; i < 5; i++){
+            game.moveEnemies();
+        }
+        assert enemy.getPos().equals(new Position(3, 1));
     }
 
 

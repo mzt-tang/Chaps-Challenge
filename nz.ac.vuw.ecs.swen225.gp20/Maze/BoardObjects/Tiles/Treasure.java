@@ -33,6 +33,10 @@ public class Treasure extends AbstractTile {
         return true;
     }
 
+    /**
+     * A method for setting the treasure to its pick up state.
+     * Used for loading save files.
+     */
     @Override
     public void setChangedTile() {
         super.setChangedTile();
