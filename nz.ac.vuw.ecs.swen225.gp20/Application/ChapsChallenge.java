@@ -10,6 +10,7 @@ import Renderer.Renderer;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.Insets;
 import java.awt.event.*;
@@ -134,15 +135,9 @@ public class ChapsChallenge extends JFrame {
         JMenu gameMenu = new JMenu("Game");
         JMenu levelMenu = new JMenu("Select Level");
 
-        //selections
-        JMenuItem level1 = new JMenuItem("Level 1");
-        level1.addActionListener((e) -> loadLevel(1));
-
-        JMenuItem level2 = new JMenuItem("Level 2");
-        level2.addActionListener((e) -> loadLevel(2));
-
-        JMenuItem level3 = new JMenuItem("Level 3");
-        level3.addActionListener((e) -> loadLevel(3));
+        //Game menu
+        JMenuItem helpItem = new JMenuItem("Help");
+        helpItem.addActionListener((e) -> EventQueue.invokeLater(HelpScreen::new));
 
         JMenuItem saveItem = new JMenuItem("Save");
         saveItem.addActionListener((e) -> {
@@ -192,7 +187,18 @@ public class ChapsChallenge extends JFrame {
         JMenuItem exitItem = new JMenuItem("Exit");
         exitItem.addActionListener((e) -> System.exit(0));
 
+        //Select level
+        JMenuItem level1 = new JMenuItem("Level 1");
+        level1.addActionListener((e) -> loadLevel(1));
+
+        JMenuItem level2 = new JMenuItem("Level 2");
+        level2.addActionListener((e) -> loadLevel(2));
+
+        JMenuItem level3 = new JMenuItem("Level 3");
+        level3.addActionListener((e) -> loadLevel(3));
+
         //adding menu selections to the menu
+        gameMenu.add(helpItem);
         gameMenu.add(saveItem);
         gameMenu.add(loadSaved);
         gameMenu.add(pauseItem);
