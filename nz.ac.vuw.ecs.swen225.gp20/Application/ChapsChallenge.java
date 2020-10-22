@@ -22,6 +22,7 @@ import java.awt.Insets;
 import java.awt.event.*;
 import java.util.HashSet;
 import java.util.Set;
+import javax.swing.AbstractAction;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JFrame;
@@ -31,6 +32,7 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.KeyStroke;
 import javax.swing.Timer;
 import javax.swing.border.EmptyBorder;
 
@@ -46,7 +48,10 @@ public class ChapsChallenge extends JFrame {
     private JPanel infoPanel;
     public static final int INFO_WIDTH = 240;
 
+    //Game
     private Game game;
+    private boolean isPaused = false;
+    private Thread paintThread;
 
     //Informating stored for info panel
     private Timer timer;
@@ -85,17 +90,30 @@ public class ChapsChallenge extends JFrame {
         //Record & Replay
         recordAndReplayer = new RecordAndReplay();
 
-        //GUI
+        // Initialize panels
+        initPanels();
+
+        // Initialize hotkeys
+        addHotKeys();
+
+        // More window properties
+        pack();
+        setLocationRelativeTo(null);
+        setResizable(false);
+        setVisible(true);
+    }
+
+    public void initPanels(){
+        //GUI base panel
         JPanel basePanel = new JPanel();
         basePanel.setBackground(Color.BLACK);
-
         basePanel.setLayout(new BoxLayout(basePanel, BoxLayout.X_AXIS));
 
         int verticalGap = 85;
         int horizontalGap = 65;
         basePanel.setBorder(new EmptyBorder(new Insets(verticalGap, horizontalGap, verticalGap, horizontalGap)));
 
-        //PANELS
+
         // Gameplay panel
         gameplayPanel = createGamePanel(new Renderer(game));
         addWindowListener(new WindowAdapter() {
@@ -113,12 +131,6 @@ public class ChapsChallenge extends JFrame {
         basePanel.add(infoPanel);
 
         add(basePanel);
-
-        // More window properties
-        pack();
-        setLocationRelativeTo(null);
-        setResizable(false);
-        setVisible(true);
     }
 
     /**
@@ -127,7 +139,6 @@ public class ChapsChallenge extends JFrame {
     public void initUI(){
         setTitle("Chap's Challenge: Among Us Edition");
         createMenuBar();
-        //test commit
 
         setDefaultCloseOperation(EXIT_ON_CLOSE);
     }
@@ -183,51 +194,55 @@ public class ChapsChallenge extends JFrame {
                 while (true){
                     try {
                         Thread.sleep(1000/30); //30FPS
-                        renderer.revalidate();
-                        renderer.repaint();
-                        inventoryView.revalidate();
-                        inventoryView.repaint();
-                        game.moveEnemies();
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
+                    renderer.revalidate();
+                    renderer.repaint();
+                    inventoryView.revalidate();
+                    inventoryView.repaint();
                 }
             }
         };
-        new Thread(clockThread).start();
+        paintThread = new Thread(clockThread);
+        paintThread.start();
 
         //KeyListeners
         gamePanel.addKeyListener(new KeyAdapter() {
             @Override
             public void keyPressed(KeyEvent e) {
-                switch (e.getKeyCode()){
-                    case KeyEvent.VK_W:
+                //don't check for movement if CTRL key is pressed down (user might be using a hotkey)
+                if (!e.isControlDown()) {
+                    //up
+                    if (e.getKeyCode() == KeyEvent.VK_W || e.getKeyCode() == KeyEvent.VK_UP) {
                         System.out.println("Up");
                         movementRecordHelper(Game.DIRECTION.UP);
                         game.movePlayer(Game.DIRECTION.UP);
-                        break;
-                    case KeyEvent.VK_A:
+                    }
+                    //left
+                    else if (e.getKeyCode() == KeyEvent.VK_A || e.getKeyCode() == KeyEvent.VK_LEFT) {
                         System.out.println("Left");
                         movementRecordHelper(Game.DIRECTION.LEFT);
                         game.movePlayer(Game.DIRECTION.LEFT);
-                        break;
-                    case KeyEvent.VK_S:
+                    }
+                    //down
+                    else if (e.getKeyCode() == KeyEvent.VK_S || e.getKeyCode() == KeyEvent.VK_DOWN) {
                         System.out.println("Down");
                         movementRecordHelper(Game.DIRECTION.DOWN);
                         game.movePlayer(Game.DIRECTION.DOWN);
-                        break;
-                    case KeyEvent.VK_D:
+                    }
+                    //right
+                    else if (e.getKeyCode() == KeyEvent.VK_D || e.getKeyCode() == KeyEvent.VK_RIGHT) {
                         System.out.println("Right");
                         movementRecordHelper(Game.DIRECTION.RIGHT);
                         game.movePlayer(Game.DIRECTION.RIGHT);
-                        break;
-                    default:
-                        //if player isn't moving add a println here
-//                        System.out.println("Key Pressed");
-                        break;
+                    } else {
+                        //dead code
+                    }
+
+                    nextLevel(); //check if the player is on the vent
+                    //recordAndReplayer.storeRecorderBuffer();
                 }
-                nextLevel(); //check if the player is on the vent
-                //recordAndReplayer.storeRecorderBuffer();
             }
         });
 
@@ -283,11 +298,11 @@ public class ChapsChallenge extends JFrame {
                     outOfTime();
                 }
                 timeRemaining--;
+
+
             }
         });
         timer.start();
-
-
 
         //info panel
         infoPanel.add(Box.createRigidArea(new Dimension(INFO_WIDTH, 100)));
@@ -308,7 +323,84 @@ public class ChapsChallenge extends JFrame {
 
     // ===========================================
     // Controlling Game Status
-    // ===========================================
+    // ===========================================r
+
+    /**
+     * Adds different keybindings that controls the state of the game
+     */
+    public void addHotKeys() {
+        //CTRL + X: exit the game, the current game state will be lost, the next time the game is started, it will resume from the last unfinished level
+        KeyStroke exitGame = KeyStroke.getKeyStroke('X', InputEvent.CTRL_DOWN_MASK);
+        gameplayPanel.getInputMap().put(exitGame, "exit_game");
+        gameplayPanel.getActionMap().put("exit_game", new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                System.out.println("EXIT CALLED");
+            }
+        });
+
+        //CTRL + S: exit the game, saves the game state, game will resume next time the application will be started
+        KeyStroke saveGame = KeyStroke.getKeyStroke('S', InputEvent.CTRL_DOWN_MASK);
+        gameplayPanel.getInputMap().put(saveGame, "save_game");
+        gameplayPanel.getActionMap().put("save_game", new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                System.out.println("SAVE CALLED");
+            }
+        });
+
+        //CTRL + R: resume a saved game
+        KeyStroke resumeSavedGame = KeyStroke.getKeyStroke('R', InputEvent.CTRL_DOWN_MASK);
+        gameplayPanel.getInputMap().put(resumeSavedGame, "resume_saved_game");
+        gameplayPanel.getActionMap().put("resume_saved_game", new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                System.out.println("RESUME SAVED GAME");
+            }
+        });
+
+        //CTRL + P: start a new game at the last unfinished level
+        KeyStroke newGameLastLevel = KeyStroke.getKeyStroke('P', InputEvent.CTRL_DOWN_MASK);
+        gameplayPanel.getInputMap().put(newGameLastLevel, "new_game_last_level");
+        gameplayPanel.getActionMap().put("new_game_last_level", new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                System.out.println("NEW GAME LAST LEVEL");
+            }
+        });
+
+        //CTRL + 1: start a new game at level 1
+        KeyStroke newLevel1 = KeyStroke.getKeyStroke('1', InputEvent.CTRL_DOWN_MASK);
+        gameplayPanel.getInputMap().put(newLevel1, "new_game_level_1");
+        gameplayPanel.getActionMap().put("new_game_level_1", new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                System.out.println("NEW GAME LEVEL 1");
+            }
+        });
+
+        //SPACEBAR: pause the game and display a “game is paused” dialog
+        KeyStroke pauseGame = KeyStroke.getKeyStroke(KeyEvent.VK_SPACE, 0);
+        gameplayPanel.getInputMap().put(pauseGame, "pause");
+        gameplayPanel.getActionMap().put("pause", new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                System.out.println("PAUSE CALLED");
+                pauseGame();
+            }
+        });
+
+        //ESC: pause the game and display a “game is paused” dialog
+        KeyStroke resumeGame = KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0);
+        gameplayPanel.getInputMap().put(resumeGame, "resume");
+        gameplayPanel.getActionMap().put("resume", new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                System.out.println("RESUME CALLED");
+                resumeGame();
+            }
+        });
+    }
 
     /**
      * Ends the game when the game clock runs out of time.
@@ -318,6 +410,9 @@ public class ChapsChallenge extends JFrame {
         System.exit(0);
     }
 
+    /**
+     * Checks if the current level has been completed. If so, run the next level.
+     */
     public void nextLevel(){
         if (game.isLevelCompleted()) {
             int options = JOptionPane.showConfirmDialog(null, "Continue to next level?", "Level 1 Completed!",
@@ -327,6 +422,27 @@ public class ChapsChallenge extends JFrame {
             } else {
                 System.exit(0);
             }
+        }
+    }
+
+    public void pauseGame(){
+        if (!isPaused) {
+            isPaused = true;
+            try {
+                paintThread.wait();
+                timer.wait();
+            }
+            catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public void resumeGame(){
+        if (isPaused) {
+            isPaused = false;
+            paintThread.notify();
+            timer.notify();
         }
     }
 
