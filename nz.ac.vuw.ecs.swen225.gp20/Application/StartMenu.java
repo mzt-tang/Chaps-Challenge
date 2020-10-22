@@ -1,5 +1,6 @@
 package Application;
 
+import Persistence.Level;
 import java.awt.EventQueue;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -22,10 +23,44 @@ public class StartMenu extends JFrame {
     private final int WINDOW_WIDTH = 950;
     private final int WINDOW_HEIGHT = 750;
 
+    public static int lastLevel = 1; //level 1 by default unless specified
+    private Level lastSavedLevel; //last saved level
+
+    private int startMode; // 0 = default, 1 = start from last level, 2 = start from saved level
+
     /**
      * Constructs the start menu
      */
     public StartMenu(){
+        this.startMode = 0;
+        initUI();
+        setVisible(true);
+    }
+
+    /**
+     * Constructs the start menu.
+     * When the start button is pressed, the game still start from the last unfinished level
+     *
+     * @param lastLevel The last unfinished level
+     */
+    public StartMenu(int lastLevel){
+        this.startMode = 1;
+        this.lastLevel = lastLevel;
+
+        initUI();
+        setVisible(true);
+    }
+
+    /**
+     * Constructs the start menu.
+     * When the start button is pressed, the game still start from the given saved level
+     *
+     * @param lastSavedLevel Last saved level
+     */
+    public StartMenu(Level lastSavedLevel){
+        this.startMode = 2;
+        this.lastSavedLevel = lastSavedLevel;
+
         initUI();
         setVisible(true);
     }
@@ -56,7 +91,20 @@ public class StartMenu extends JFrame {
                 if (x > 265 && x < 413 && y > 470 && y < 577){
                     //close the start menu and launch the game
                     dispose();
-                    EventQueue.invokeLater(ChapsChallenge::new);
+                    switch(startMode){
+                        case 0:
+                            EventQueue.invokeLater(() -> new ChapsChallenge(1));
+                            break;
+                        case 1:
+                            EventQueue.invokeLater(() -> new ChapsChallenge(lastLevel));
+                            break;
+                        case 2:
+                            EventQueue.invokeLater(() -> new ChapsChallenge(lastSavedLevel));
+                            break;
+                        default:
+                            System.out.println("error start mode = " + startMode);
+                            break;
+                    }
                 }
                 //help
                 if (x > 543 && x < 690 && y > 467 && y < 577){

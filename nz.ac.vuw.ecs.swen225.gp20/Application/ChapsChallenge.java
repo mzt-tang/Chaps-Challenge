@@ -61,9 +61,13 @@ public class ChapsChallenge extends JFrame {
     private RecordAndReplay recordAndReplayer;
 
     /**
-     * Game instance
+     * Construct a game instance from a given level count
+     *
+     * @param levelToPlay The level that first appears when the game is started
      */
-    public ChapsChallenge(){
+    public ChapsChallenge(int levelToPlay){
+        this.levelCount = levelToPlay;
+
         initUI();
 
         // Initialize modules
@@ -71,6 +75,31 @@ public class ChapsChallenge extends JFrame {
 
         // Initialize hotkeys
         addHotKeys();
+
+        // More window properties
+        pack();
+        setLocationRelativeTo(null);
+        setResizable(false);
+        setVisible(true);
+    }
+
+    /**
+     * Construct a game instance from a Level object
+     *
+     @param lastSavedLevel Load in from a level (optional argument, use null if not used)
+     */
+    public ChapsChallenge(Level lastSavedLevel){
+        this.currentLevel = lastSavedLevel;
+
+        initUI();
+
+        // Initialize modules
+        initModules();
+
+        // Initialize hotkeys
+        addHotKeys();
+
+        loadLevel(Persistence.loadGame(StartMenu.lastLevel), StartMenu.lastLevel);
 
         // More window properties
         pack();
@@ -141,37 +170,13 @@ public class ChapsChallenge extends JFrame {
 
         JMenuItem saveItem = new JMenuItem("Save");
         saveItem.addActionListener((e) -> {
-            //show a message dialog when the player saves the game
-            JOptionPane.showMessageDialog(null, "Saved current game at level " + levelCount + ".", "Game Saved!", JOptionPane.INFORMATION_MESSAGE);
-            Persistence.saveGame(timeRemaining, game.getPlayer(), currentLevel.getEnemies(), levelCount, currentLevel.getTileArray());
+            saveCurrentGame();
         });
 
         JMenuItem loadSaved = new JMenuItem("Load Saved Game");
         loadSaved.addActionListener((e) -> {
             //give the user a dropdown menu of which level to load their saved game from
-            String[] possibleValues = { "Level 1", "Level 2", "Level 3"};
-            Object selectedValue = JOptionPane.showInputDialog(null,
-                    "Choose a saved level to load (if it exists)", "Load Game",
-                    JOptionPane.INFORMATION_MESSAGE, null,
-                    possibleValues, possibleValues[0]);
-
-            if (selectedValue == null){
-                return; //dead code that prevents the NullPointerException
-            }
-            else if (selectedValue.equals("Level 1")){
-                loadLevel(Persistence.loadGame(1), 1);
-            }
-            else if (selectedValue.equals("Level 2")){
-                loadLevel(Persistence.loadGame(2), 2);
-            }
-            else if (selectedValue.equals("Level 3")){
-                loadLevel(Persistence.loadGame(3), 3);
-            }
-            else {
-                //we're not supposed to be here
-                System.out.println("Selected level not found: " + selectedValue.toString());
-            }
-
+            loadSavedGame();
         });
 
         JMenuItem pauseItem = new JMenuItem("Pause");
@@ -414,6 +419,7 @@ public class ChapsChallenge extends JFrame {
     /**
      * Loads a level specified by a Level object
      * @param level Level object
+     * @param levelCount The level number
      */
     public void loadLevel(Level level, int levelCount){
         this.levelCount = levelCount;
@@ -448,6 +454,43 @@ public class ChapsChallenge extends JFrame {
     }
 
     /**
+     * Prompts an option screen that lets the user load a saved level
+     */
+    public void loadSavedGame(){
+        String[] possibleValues = { "Level 1", "Level 2", "Level 3"};
+        Object selectedValue = JOptionPane.showInputDialog(null,
+                "Choose a saved level to load (if it exists)", "Load Game",
+                JOptionPane.INFORMATION_MESSAGE, null,
+                possibleValues, possibleValues[0]);
+
+        if (selectedValue == null){
+            return; //dead code that prevents the NullPointerException
+        }
+        else if (selectedValue.equals("Level 1")){
+            loadLevel(Persistence.loadGame(1), 1);
+        }
+        else if (selectedValue.equals("Level 2")){
+            loadLevel(Persistence.loadGame(2), 2);
+        }
+        else if (selectedValue.equals("Level 3")){
+            loadLevel(Persistence.loadGame(3), 3);
+        }
+        else {
+            //we're not supposed to be here
+            System.out.println("Selected level not found: " + selectedValue.toString());
+        }
+    }
+
+    /**
+     * Save the current game state and show a message dialog when the player saves the game
+     */
+    public void saveCurrentGame(){
+        JOptionPane.showMessageDialog(null, "Saved current game at level " + levelCount + ".", "Game Saved!", JOptionPane.INFORMATION_MESSAGE);
+        Persistence.saveGame(timeRemaining, game.getPlayer(), currentLevel.getEnemies(), levelCount, currentLevel.getTileArray());
+
+    }
+
+    /**
      * Adds different keybindings that controls the state of the game
      */
     public void addHotKeys() {
@@ -458,6 +501,8 @@ public class ChapsChallenge extends JFrame {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
                 System.out.println("EXIT CALLED");
+                dispose();
+                EventQueue.invokeLater(() -> new StartMenu(levelCount));
             }
         });
 
@@ -468,6 +513,10 @@ public class ChapsChallenge extends JFrame {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
                 System.out.println("SAVE CALLED");
+                saveCurrentGame();
+                dispose();
+                StartMenu.lastLevel = levelCount;
+                EventQueue.invokeLater(() -> new StartMenu(Persistence.loadGame(levelCount)));
             }
         });
 
@@ -478,6 +527,7 @@ public class ChapsChallenge extends JFrame {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
                 System.out.println("RESUME SAVED GAME");
+                loadSavedGame();
             }
         });
 
@@ -488,6 +538,7 @@ public class ChapsChallenge extends JFrame {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
                 System.out.println("NEW GAME LAST LEVEL");
+                loadLevel(StartMenu.lastLevel);
             }
         });
 
@@ -498,6 +549,7 @@ public class ChapsChallenge extends JFrame {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
                 System.out.println("NEW GAME LEVEL 1");
+                loadLevel(1);
             }
         });
 
