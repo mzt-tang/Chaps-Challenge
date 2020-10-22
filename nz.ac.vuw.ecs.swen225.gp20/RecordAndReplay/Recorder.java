@@ -1,12 +1,15 @@
 package RecordAndReplay;
 
+import Maze.BoardObjects.Actors.AbstractActor;
 import Maze.BoardObjects.Tiles.AbstractTile;
 import Maze.BoardObjects.Tiles.Key;
 import Maze.Game;
+import Maze.Position;
 import RecordAndReplay.Actions.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 /**
  * This handles all the recording that needs to take place in the game.
@@ -18,11 +21,14 @@ import java.util.List;
  *
  */
 public class Recorder {
-    private List<ArrayList<Action>> recordedChanges; //ArrayList chosen instead of stack, so you can go back and fourth n shit. ORDER IS IMPORTANT!!!
+    private List<Change> recordedChanges;
     private ArrayList<Action> changeBuffer;
+    private Position startingPosition;
+    private ArrayList<PosClone> preMoveEnemies = new ArrayList<PosClone>();
+    private ArrayList<PosClone> postMoveEnemies = new ArrayList<PosClone>();
 
     public Recorder() {
-        recordedChanges = new ArrayList<ArrayList<Action>>();
+        recordedChanges = new ArrayList<Change>();
         changeBuffer = new ArrayList<Action>();
     }
 
@@ -41,43 +47,109 @@ public class Recorder {
     }
 
     /** Records a creature movement and stores it in the buffer. */
-    /**public void captureCreatureMove() {
-        //FIRST, create
-
-        //Find's the creature at (x, y) and moves it in a direction.
+    public void captureEnemyPreMoves(Set<AbstractActor> enemies) {
+        //AbstractActor enemyClone;
+        for(AbstractActor e: enemies) {
+            //enemyClone = e;
+            PosClone p = new PosClone(e.getPos().getX(), e.getPos().getY());
+            preMoveEnemies.add(p);
+        }
     }
-    /** Record a tile's state changing. */
-    /**public void captureTileChange() {
-        //derp
-    }*/
-    //Add move as needed
+    public void captureEnemyPostMoves(Set<AbstractActor> enemies) {
+        for(AbstractActor e: enemies) {
+            PosClone p = new PosClone(e.getPos().getX(), e.getPos().getY());
+            postMoveEnemies.add(p);
+        }
+        for(int i = 0; i < preMoveEnemies.size(); i++) {
+            //===Calculate directions here===//
+            Game.DIRECTION direction = null;
+            //FIRST find the positions
+            PosClone preMovePos = preMoveEnemies.get(i);//.getPos();
+            int preMoveX = preMovePos.getX();
+            int preMoveY = preMovePos.getY();
+
+            PosClone postMovePos = postMoveEnemies.get(i);//.getPos();
+            int postMoveX = postMovePos.getX();
+            int postMoveY = postMovePos.getY();
+
+            //SECOND Brute force IF statements
+            if(postMoveX < preMoveX) {
+                direction = Game.DIRECTION.LEFT;
+                changeBuffer.add(new EnemyMove(preMoveX, preMoveY, direction));
+            } else if (preMoveX < postMoveX) {
+                direction = Game.DIRECTION.RIGHT;
+                changeBuffer.add(new EnemyMove(preMoveX, preMoveY, direction));
+            } else if (postMoveY < preMoveY) {
+                direction = Game.DIRECTION.UP;
+                changeBuffer.add(new EnemyMove(preMoveX, preMoveY, direction));
+            } else if (preMoveY < postMoveY) {
+                direction = Game.DIRECTION.DOWN;
+                changeBuffer.add(new EnemyMove(preMoveX, preMoveY, direction));
+            }
+        }
+        preMoveEnemies.clear();
+        postMoveEnemies.clear();
+    }
+
+    //Add moves as needed
     /** Clears the buffer, stores it into the recordedChanges array. */
-    public void storeBuffer() {
-        recordedChanges.add(changeBuffer);
+    public void storeBuffer(int timestamp) {
+        if(changeBuffer.size() != 0) {
+            Change c = new Change(changeBuffer, timestamp);
+
+            recordedChanges.add(c);
+            changeBuffer = new ArrayList<Action>();
+        }
+    }
+
+    /** Clears the buffer, does NOT add it into the recordedChanges array. */
+    public void deleteBuffer() {
         changeBuffer = new ArrayList<Action>();
     }
 
+    public void setStartingPosition(Position pos) {
+        startingPosition = pos;
+    }
+    public Position getStartingPosition() {
+        return startingPosition;
+    }
+
+    public List<Change> getRecordedChanges() { return recordedChanges; }
+
     /**
-     * Record a singular change. Ideally done if it's only ONE actor moving.
-     * eh, delete this later when you're certain...
+     * Private nested class object stores both the list of actions
+     * AND a time stamp to associate itself with.
      */
-    /*public <E> void recordChange(E action) {
-        //FIRST, find out what kinda move it is (REMINDER: you may need to create a method for every kinda move if the others refuse
-        //to implement an interface into their design.
-        Action a = new Action();
-        //Eugh, brute force...
-        if(action instanceof Maze.Game.DIRECTION) {
-            //SECOND, create an Action object using the input
+    public static class Change {
+        public final ArrayList<Action> actions;
+        public final int timestamp;
 
-            Maze.Game.DIRECTION direction = (Game.DIRECTION) action;
+        public Change(ArrayList<Action> actions, int timestamp) {
+            this.actions = actions;
+            this.timestamp = timestamp;
+        }
+    }
 
+    /**
+     * Private nested class object that stores the X and Y.
+     * Effectively the same thing as a "position" except it's a clone that copy's the primitive variables.
+     *
+     */
+    private class PosClone {
+        private int x;
+        private int y;
+
+        public PosClone(int x, int y) {
+            this.x = x;
+            this.y = y;
         }
 
-        //THIRD, add the singular action to it's own array
-        ArrayList<Action> addThis = new ArrayList<Action>();
-        addThis.add(a);
-        recordedChanges.add(addThis);
-    }*/
+        public int getX() {
+            return x;
+        }
 
-    public List<ArrayList<Action>> getRecordedChanges() { return recordedChanges; }
+        public int getY() {
+            return y;
+        }
+    }
 }

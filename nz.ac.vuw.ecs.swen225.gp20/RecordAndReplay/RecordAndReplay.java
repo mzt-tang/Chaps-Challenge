@@ -1,13 +1,18 @@
 package RecordAndReplay;
 
 import Maze.Board;
+import Maze.BoardObjects.Actors.AbstractActor;
 import Maze.BoardObjects.Tiles.AbstractTile;
 import Maze.BoardObjects.Tiles.Key;
 import Maze.Game;
 import Maze.Game.DIRECTION;
+import Maze.Position;
 
+import javax.swing.*;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Records gameplay.
@@ -24,19 +29,12 @@ import java.util.List;
  * + (ASSUMPTION) Player CANNOT undo or redo.
  *
  * ////////////////////////////////////////////////////////////////
- * Player can move using arrow keys only.
- * Then it checks if the player used item.
- * Then it checks if the player has interacted with any creatures or items.
- *
  * On a completely separate tick cycle, enemies will move on their own.
  * Every move, it checks if they have interacted with player.
  *
  * Multiple moves (aka changes) can happen at once.
  * Every change should be an array of changes.
  * The recording should be an array, of the array of changes.
- *
- * NOTE: each playermovement has a "direction" enum... might have to use.
- *       I don't think a creature can move yet...
  * ////////////////////////////////////////////////////////////////
  *
  * INDEX:
@@ -47,21 +45,27 @@ import java.util.List;
  * > GETTERS/SETTERS
  */
 public class RecordAndReplay<E> {
-    private Board board; //The board (level) that this record is associated with.//Change later...
+    private int level; //the Level the game is associated with. It's a string because that's how persistence works.
     private Recorder recorder;
     private Writer writer;
+    private Replayer replayer;
+    private Reader reader;
+    private boolean recordingSwitch;
+    private int startedRecording;
+    private ArrayList<AbstractActor> enemies;
 
     /**
-     * Creates a RecordAndReplay object associated with a board.
-     * Ideally created whenever a new level is loaded.
-     *
-     * NOTE: might have to delete later.
-     *
-     * @param board The Board object which this level is associated with
+     * Constructor with level parameter
+     * @param level The level number which is associated with the RecordAndReplayer
      */
-    public RecordAndReplay(Board board) {
-        this.board = board;
-        this.recorder = new Recorder();
+    public RecordAndReplay(int level, ArrayList<AbstractActor> enemies) {
+        recorder = new Recorder();
+        writer = new Writer();
+        replayer = new Replayer();
+        reader = new Reader();
+        recordingSwitch = false;
+        this.level = level;
+        this.enemies = enemies;
     }
 
     /**
@@ -69,42 +73,121 @@ public class RecordAndReplay<E> {
      */
     public RecordAndReplay() {
         recorder = new Recorder();
-        this.writer = new Writer();
+        writer = new Writer();
+        recordingSwitch = false;
     }
 
     //=====RECORDER=====//
-    //Effectively relays all the recorder's functions here. Doing this to save me from headache.
-
-    public void capturePlayerMove(Game.DIRECTION direction) {
-        recorder.capturePlayerMove(direction);
+    //Returns the current state of the switch, and also flips it.
+    public boolean getRecordingBoolean() {
+        return recordingSwitch;
+    }
+    public void setRecordingBoolean(Boolean s) {
+        recordingSwitch = s;
     }
 
+    //Set the starting position. I COULD have put it in the above method, but I dont wanna seem like a sociopath.
+    public void setStartingPosition(Position pos) {
+        recorder.setStartingPosition(pos);
+    }
+
+    //Effectively relays all the recorder's functions here. Doing this to save me from headache.
+    public void capturePlayerMove(DIRECTION direction) {
+        recorder.capturePlayerMove(direction);
+    }
     public void captureTileInteraction(AbstractTile tile) {
         recorder.captureTileInteraction(tile);
     }
 
+    //Finds ALL the enemies current positions.
+    public void captureEnemyPreMoves(Set<AbstractActor> enemies) {
+        recorder.captureEnemyPreMoves(enemies);
+    }
+
+    public void captureEnemyPostMoves(Set<AbstractActor> enemies) {
+        recorder.captureEnemyPostMoves(enemies);
+    }
+
+    //Note when recording started
+    public void setStartedRecording(int timestamp) {
+        startedRecording = timestamp;
+    }
+
     //DO THIS AT THE END OF ALL CAPTURES
-    public void storeRecorderBuffer() {
-        recorder.storeBuffer();
+    public void clearRecorderBuffer(int timestamp) {
+        //deletes the recording buffer if it shouldnt be recording.
+        if(recordingSwitch) recorder.storeBuffer(timestamp);
+        else recorder.deleteBuffer();
     }
 
     //=====SAVING=====//  AKA WRITING
     //All functions to do with creating a save via JSON is here.
     public void saveGameplay() {
-        writer.writeRecording(recorder.getRecordedChanges());
+        writer.writeRecording(recorder.getRecordedChanges(), recorder.getStartingPosition(), level, startedRecording, enemies);
     }
 
     //=====LOADING=====//
+    //All functions to do with loading the game
+    public boolean loadConfirmation(JFrame frame) {
+        int selection = JOptionPane.showConfirmDialog(frame, "WARNING: Loading a replay will quit out of your current game.\n" +
+                "Proceed?", "Load Replay Confirmation", JOptionPane.YES_NO_OPTION);
+        if(selection == 0) return true;
+        else return false;
+    }
+
+    /**
+     * Allows the player to select a save file and immediately loads it upon selection.
+     * @param frame The parent frame for the dialog box.
+     */
+    public void selectSaveFile(JFrame frame) {
+        JFileChooser jfc = new JFileChooser(System.getProperty("user.dir") + "/nz.ac.vuw.ecs.swen225.gp20/RecordAndReplay/Saves");
+
+        int returnValue = jfc.showOpenDialog(frame);
+        if(returnValue == JFileChooser.APPROVE_OPTION) {
+            File selectedSaveFile = jfc.getSelectedFile();
+
+            reader.readJson(selectedSaveFile);
+            prepReplayer();
+        }
+    }
 
     //=====PLAYING=====//
     //All functions to do with replaying, forward or backwards.
+    public void prepReplayer() {
+        replayer.setRecordedChanges(reader.getRecordedChanges());
+        replayer.setLevel(reader.getLevel());
+        replayer.setStartRecordingTimeStamp(reader.getStartRecordingTimeStamp());
+        replayer.setPlayerStartX(reader.getPlayerStartX());
+        replayer.setPlayerStartY(reader.getPlayerStartY());
+        replayer.setEnemies(reader.getEnemies());
+
+        replayer.prepRecordedChanges();
+    }
+
+    public void displayControlWindow() {
+        replayer.controlsWindow();
+    }
 
     //=====GETTERS/SETTERS=====//
-    public Board getBoard() {
-        return board;
-    }
-    public void setBoard(Board board) {
-        this.board = board;
+
+    /**
+     * Set the name of the json file this recorded session will be associated with.
+     * @param level
+     */
+    public void setLevelName(int level) {
+        this.level = level;
     }
 
+    /**
+     * Set the arraylist of enemies that exist in this game.
+     * Only useful for the writing module
+     * @param enemies The set of enemies
+     */
+    public void setEnemies(Set<AbstractActor> enemies) {
+        ArrayList<AbstractActor> e = new ArrayList<AbstractActor>();
+        for(AbstractActor a : enemies) {
+            e.add(a);
+        }
+        this.enemies = e;
+    }
 }
