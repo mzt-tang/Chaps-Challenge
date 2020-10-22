@@ -1,62 +1,56 @@
 package Renderer;
 
-import Application.ChapsChallenge;
 import Maze.BoardObjects.Actors.AbstractActor;
 import Maze.BoardObjects.Actors.Player;
 import Maze.BoardObjects.Tiles.*;
+import Maze.Game;
 import Maze.Position;
 
 import javax.swing.*;
 import java.awt.*;
 import java.io.File;
+import java.io.IOException;
 import java.util.*;
 import java.util.List;
 
 /**
  * This is responsible for displaying the Maze on the screen
- * including all it's tiles, animations and sound effects
+ * including all it's tiles, animations and sound effects.
  * @author Chris (ID: 300498017)
  */
 public class Renderer extends JComponent {
-    public static final int FOCUS_SIZE = 9; //The grid size of the board shown, which is 9x9 tiles
     public static final int IMAGE_SIZE = 60;
     public static final int CANVAS_SIZE = 540; //Size in pixels, 9 x 60px images
 
-    private final Map<String, Image> images;
     private final Set<Star> stars;
 
-    private AudioPlayer audioPlayer;
+    private final Game game;
+    private final AudioPlayer audioPlayer;
 
     private int tick = 0;
-    private boolean playerFlipped = false;
     private Position playerPrevPos;
-
-    private ChapsChallenge application;
 
     public enum DIRECTION {
         UP, DOWN, LEFT, RIGHT, NULL
     }
 
     /**
-     * Creates a new renderer canvas
+     * Creates a new renderer canvas.
+     * @param game The game (Maze module)
      */
-    public Renderer(ChapsChallenge application){ //TODO: change this to maze
-        images = new HashMap<>();
+    public Renderer(Game game){
         stars = new HashSet<>();
         audioPlayer = new AudioPlayer();
-        this.application = application;
-        playerPrevPos = application.getGame().getPlayer().getPos();
-
-        //Really compact way of loading all the images into memory
-        //It iterates through all the files in a folder and maps the file names to the loaded images
-        //TODO: Move image loading to player and delete this
-        File[] files = new File(System.getProperty("user.dir") + "/Resources/actors").listFiles();
-        for (File file : files){
-            images.put(file.getName().substring(0,file.getName().length()-4), //removes .png extension
-                    Toolkit.getDefaultToolkit().getImage(file.getPath()));
-        }
-
+        this.game = game;
+        playerPrevPos = game.getPlayer().getPos();
         setPreferredSize(new Dimension(CANVAS_SIZE, CANVAS_SIZE));
+
+        GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+        try {
+            ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, new File("Resources/fonts/VCR_OSD_MONO_1.001.ttf")));
+        } catch (FontFormatException | IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -68,65 +62,44 @@ public class Renderer extends JComponent {
         g2.setColor(Color.BLACK);
         g2.fillRect(0, 0, getWidth(), getHeight());
 
-        //Gets the board and player from the maze module via the application module
-        AbstractTile[][] board = application.getGame().getBoard().getMap();
-
-        Player player = application.getGame().getPlayer();
+        //Get all the necessary data from the Maze module (a Game object)
+        AbstractTile[][] board = game.getBoard().getMap();
+        Player player = game.getPlayer();
         int playerX = player.getPos().getX();
         int playerY = player.getPos().getY();
 
-        //Orient the player
-        DIRECTION direction = DIRECTION.NULL;
-        if (playerX < playerPrevPos.getX()){
-            playerFlipped = true;
-            direction = DIRECTION.LEFT;
-        }
-        if (playerX > playerPrevPos.getX()){
-            playerFlipped = false;
-            direction = DIRECTION.RIGHT;
-        }
-        if (playerY < playerPrevPos.getY()){
-            direction = DIRECTION.UP;
-        }
-        if (playerY > playerPrevPos.getY()){
-            direction = DIRECTION.DOWN;
-        }
+        DIRECTION orientation = getPlayerOrientation(playerX, playerY);
 
         //Add a star
         if (tick % 5 == 0) {
-            stars.add(new Star(0, (int) (Math.random() * CANVAS_SIZE), (int) (Math.random() * 5 + 5), (int) (Math.random() * 5 + 5)));
+            Random random = new Random(); //Spotbugs told me this was more efficient that Math.random() then converting to int
+            stars.add(new Star(0, random.nextInt(CANVAS_SIZE), random.nextInt(5) + 5, random.nextInt(5) + 5));
         }
 
-        drawStars(g2, direction);
-
-        //Draw all tiles in the focus area
-        for (int y = -4; y <= 4; y++) {
-            for (int x = -4; x <= 4; x++) {
-                //If in board bounds
-                if (playerX + x >= 0 && playerY + y >= 0 && playerX + x < board.length && playerY + y < board[0].length){
-                    g2.drawImage(board[playerX + x][playerY + y].getCurrentImage(),
-                            (x+4) * IMAGE_SIZE, (y+4) * IMAGE_SIZE, this);
-                }
-            }
+        //Play audio
+        if (orientation != DIRECTION.NULL){
+            audioPlayer.playSound("Step" + (int)(Math.random()*2 + 1));
         }
+        audioPlayer.playTileSound(board[playerX][playerY], game);
 
-        //Draw player on the centre of the screen
-        if (playerFlipped) {
-            g2.drawImage(images.get("AstronautFlipped"), 4 * IMAGE_SIZE, 4 * IMAGE_SIZE, this);
-        } else {
-            g2.drawImage(images.get("Astronaut"), 4 * IMAGE_SIZE, 4 * IMAGE_SIZE, this);
-        }
+        //Draw stuff
+        drawStars(g2, orientation);
+        drawFocusArea(playerX, playerY, board, g2);
+        g2.drawImage(player.getCurrentImage(), 4 * IMAGE_SIZE, 4 * IMAGE_SIZE, this); //Draw player
+        drawEnemies(playerX, playerY, game, g2);
+        drawInfoText(playerX, playerY, board, g2);
+
+        //Store player's previous position for the next frame
         playerPrevPos = player.getPos().getPositionCopy();
-
         tick++;
     }
 
     /**
-     * Draws all the stars on the screen
+     * Draws all the stars on the screen.
      * @param g2 Paint graphic
+     * @param direction Direction that the player has moved this frame
      */
-    public void drawStars(Graphics2D g2, DIRECTION direction){
-        System.out.println("Player moved" + direction);
+    private void drawStars(Graphics2D g2, DIRECTION direction){
         List<Star> toRemove = new ArrayList<>();
         for (Star star : stars){
             if (direction != DIRECTION.NULL){
@@ -140,10 +113,116 @@ public class Renderer extends JComponent {
         stars.removeAll(toRemove);
     }
 
-
+    /**
+     * Compared the players last position with it's current position
+     * to figure out with direction it moved.
+     * @param playerX Player x position
+     * @param playerY Player y position
+     * @return The direction the player has moved
+     */
+    private DIRECTION getPlayerOrientation(int playerX, int playerY){
+        DIRECTION direction = DIRECTION.NULL;
+        if (playerX < playerPrevPos.getX()){
+            direction = DIRECTION.LEFT;
+        }
+        if (playerX > playerPrevPos.getX()){
+            direction = DIRECTION.RIGHT;
+        }
+        if (playerY < playerPrevPos.getY()){
+            direction = DIRECTION.UP;
+        }
+        if (playerY > playerPrevPos.getY()){
+            direction = DIRECTION.DOWN;
+        }
+        return direction;
+    }
 
     /**
-     * Returns a test board which is 9x9 and has every tile image that exists on it
+     * Draws all the tiles on the focus area.
+     * @param playerX Player x position
+     * @param playerY Player y position
+     * @param board The game board
+     * @param g2 Paint graphic
+     */
+    private void drawFocusArea(int playerX, int playerY, AbstractTile[][] board, Graphics2D g2){
+        for (int y = -4; y <= 4; y++) {
+            for (int x = -4; x <= 4; x++) {
+                //If in board bounds
+                if (playerX + x >= 0 && playerY + y >= 0 && playerX + x < board.length && playerY + y < board[0].length
+                    && board[playerX + x][playerY + y] != null){
+                    g2.drawImage(board[playerX + x][playerY + y].getCurrentImage(),
+                            (x+4) * IMAGE_SIZE, (y+4) * IMAGE_SIZE, this);
+                }
+            }
+        }
+    }
+
+    /**
+     * Draws all the enemies on the focus area.
+     * @param playerX Player x position
+     * @param playerY Player y position
+     * @param game The game
+     * @param g2 Paint graphic
+     */
+    private void drawEnemies(int playerX, int playerY, Game game, Graphics2D g2){
+        if (game.getComputerPlayers() == null) return;
+        for (AbstractActor actor : game.getComputerPlayers()){
+            Position pos = actor.getPos();
+            //Calculates the position of the enemy relative to the player
+            int relX = pos.getX() - playerX;
+            int relY = pos.getY() - playerY;
+            g2.drawImage(actor.getCurrentImage(), (relX + 4) * IMAGE_SIZE, (relY + 4) * IMAGE_SIZE, this);
+        }
+    }
+
+    /**
+     * Draws the info text on an info field if the player is on one.
+     * @param playerX Player x position
+     * @param playerY Player y position
+     * @param board The game board
+     * @param g2 Paint graphic
+     */
+    private void drawInfoText(int playerX, int playerY, AbstractTile[][] board, Graphics2D g2){
+        if (board[playerX][playerY] instanceof InfoField){
+            InfoField infoField = (InfoField) board[playerX][playerY];
+            g2.setFont(new Font("VCR OSD Mono", Font.BOLD, 45));
+            g2.setColor(Color.WHITE);
+            drawWrappedText(infoField.getInfoText(), g2, 50, 150, 500);
+        }
+    }
+
+    /**
+     * Draws wrapped text within a certain box width.
+     * @param text Text to be displayed
+     * @param g2 Paint graphic
+     * @param startX Left pos of the text box
+     * @param startY Y pos of the base of the first line
+     * @param boxWidth Width of the box to wrap the text in
+     */
+    private void drawWrappedText(String text, Graphics2D g2, int startX, int startY, int boxWidth){
+        FontMetrics metrics = g2.getFontMetrics();
+        int textHeight = metrics.getHeight();
+        int y = startY;
+        Scanner scan = new Scanner(text);
+        String line = "";
+
+        while (scan.hasNext()){
+            String word = scan.next() + " ";
+
+            if (metrics.stringWidth(line + word) < boxWidth){
+                line += word;
+            } else {
+                g2.drawString(line, startX, y);
+                y += textHeight;
+                line = "";
+                line += word;
+            }
+        }
+        g2.drawString(line, startX, y);
+    }
+
+    /**
+     * Returns a test board which is 9x9 and has every tile image that exists on it.
      * @return the board (AbstractTile 2D array)
      */
     public static AbstractTile[][] testBoard(){
@@ -175,7 +254,7 @@ public class Renderer extends JComponent {
     }
 
     /**
-     * Level 1 in code form, may not be final
+     * Level 1 in code form, may not be final.
      * @return the 15x15 board (AbstractTile 2D array)
      */
     public static AbstractTile[][] level1(){
@@ -189,9 +268,10 @@ public class Renderer extends JComponent {
                 }
             }
         }
+        board[0][0] = null;
         board[13][1] = new ExitPortal();
-        board[12][1] = new ExitLock(false);
-        board[13][2] = new ExitLock(true);
+        board[12][1] = new ExitLock(true);
+        board[13][2] = new ExitLock(false);
         board[12][2] = new Wall();
         board[6][6] = new Key("Blue");
         board[1][7] = new LockedDoor(false, "Blue");
@@ -203,17 +283,7 @@ public class Renderer extends JComponent {
         board[1][13] = new Treasure();
         board[13][13] = new Treasure();
         board[8][1] = new Treasure();
+        board[5][4] = new InfoField("COLLECT CHIPS TO GET PAST THE CHIP SOCKET. USE KEYS TO OPEN DOORS");
         return board;
-    }
-
-    //This is just to test sound works
-    public static void main(String[] args) {
-        AudioPlayer audioPlayer = new AudioPlayer();
-        audioPlayer.playSound("SwipeGood");
-        JOptionPane.showMessageDialog(null, "Press for next sound");
-        audioPlayer.playSound("SwipeGood");
-        JOptionPane.showMessageDialog(null, "Press for next sound");
-        audioPlayer.playSound("DoorOpen");
-        JOptionPane.showMessageDialog(null, "This is just so the program doesn't end immediately");
     }
 }

@@ -1,7 +1,6 @@
 package Maze.BoardObjects.Tiles;
 
 import Maze.BoardObjects.Actors.Player;
-import Maze.Position;
 
 import java.awt.*;
 
@@ -16,6 +15,5 @@ public class ExitPortal extends AbstractTile {
     public boolean interact(Player player) {
         return true;
     }
-
 
 }

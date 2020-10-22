@@ -1,13 +1,12 @@
 package Maze.BoardObjects.Tiles;
 
 import Maze.BoardObjects.Actors.Player;
-import Maze.Position;
 
 import java.awt.*;
 
 public class LockedDoor extends AbstractTile {
 
-    private String colour;
+    private final String colour;
     private boolean locked = true;
 
 
@@ -37,14 +36,24 @@ public class LockedDoor extends AbstractTile {
      */
     @Override
     public boolean interact(Player player) {
-        if(!player.hasKey(colour) && locked){
+        if(!player.hasKey(colour) && locked){ //If the door's locked and player doesn't have key
             return false;
-        } else {
+        } else if(!locked){ //If the door is unlocked
+            return true;
+        } else { //Unlock the door.
             locked = false;
             currentImage = images.get("FloorTile");
             player.getKeys().remove(player.getKey(colour));
+            changed = true;
             return true;
         }
+    }
+
+    @Override
+    public void setChangedTile() {
+        super.setChangedTile();
+        locked = false;
+        currentImage = images.get("FloorTile");
     }
 
     public String getDoorColour() {

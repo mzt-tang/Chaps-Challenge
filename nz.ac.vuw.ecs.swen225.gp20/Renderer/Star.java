@@ -1,13 +1,11 @@
 package Renderer;
 
-import Maze.Game;
-
 import java.awt.*;
 
 /**
  * Represents a star to be drawn in the space background of
  * the rendering window.
- * @author Chris
+ * @author Chris (ID: 300498017)
  */
 public class Star {
     private double x, y;
@@ -47,13 +45,15 @@ public class Star {
     public void playerMoved(Renderer.DIRECTION direction){
         switch (direction){
             case UP:
-                y += Renderer.IMAGE_SIZE/2; break;
+                y += Renderer.IMAGE_SIZE/2.0; break;
             case DOWN:
-                y -= Renderer.IMAGE_SIZE/2; break;
+                y -= Renderer.IMAGE_SIZE/2.0; break;
             case LEFT:
-                x += Renderer.IMAGE_SIZE/2; break;
+                x += Renderer.IMAGE_SIZE/2.0; break;
             case RIGHT:
-                x -= Renderer.IMAGE_SIZE/2; break;
+                x -= Renderer.IMAGE_SIZE/2.0; break;
+            default:
+
         }
     }
 
@@ -63,6 +63,6 @@ public class Star {
      */
     public void draw(Graphics2D g2){
         g2.setColor(Color.WHITE);
-        g2.fillOval((int)(x-size/2), (int)(y-size/2), size, size);
+        g2.fillOval((int)x, (int)y, size, size);
     }
 }
