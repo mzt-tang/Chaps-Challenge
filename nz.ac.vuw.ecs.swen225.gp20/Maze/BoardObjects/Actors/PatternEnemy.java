@@ -15,6 +15,12 @@ public class PatternEnemy extends AbstractActor{
     private final char[] route;
     private int routePos = 0;
 
+    /**
+     * THe constructor of the pattern enemy
+     * @param position The starting position of the enemy
+     * @param tickRate The tick rate of the enemy. Determines how fast the enemy is.
+     * @param routeStr The route of the enemy. Follows this string route.
+     */
     public PatternEnemy(Position position, int tickRate, String routeStr) {
         super(position, tickRate);
         this.route = routeStr.toCharArray();
@@ -81,6 +87,9 @@ public class PatternEnemy extends AbstractActor{
         player.getPos().setPosition(player.getStartingPos());
     }
 
+    /**
+     * Moves the route position of the route to the next iteration.
+     */
     private void nextRPos(){
         if(routePos >= route.length - 1) routePos = 0;
         else routePos++;

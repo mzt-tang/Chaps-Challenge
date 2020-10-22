@@ -4,7 +4,14 @@ import Maze.BoardObjects.Actors.Player;
 
 import java.awt.*;
 
+/**
+ * The wall tile of the game. block the player from walking to places
+ */
 public class Wall extends AbstractTile {
+
+    /**
+     * The Constructor for wall tiles.
+     */
     public Wall() {
         super(false);
         images.put("WallTile", Toolkit.getDefaultToolkit().getImage("Resources/tiles/WallTile.jpeg"));

@@ -10,6 +10,9 @@ import org.junit.Test;
 import java.util.HashSet;
 import java.util.Set;
 
+/**
+ * THe maze module JUnit tests.
+ */
 public class MazeTests {
 
 
@@ -329,15 +332,12 @@ public class MazeTests {
     }
 
 
-
-
-
-
-
-
-
-
-
+    /**
+     * Makes a tile map of 5 by 5.
+     * With wall tiles of the edges and
+     * free tile on the inside.
+     * @return Returns a basic 5 by 5 tile map.
+     */
     private AbstractTile[][] makeMap(){
         AbstractTile[][] map = new AbstractTile[5][5];
         //Wall tile borders

@@ -13,7 +13,8 @@ public class ExitLock extends AbstractTile {
     private boolean locked = true;
 
     /**
-     * .
+     * The Exitlock tile constructor.
+     * @param setVertical Sets the tile image to vertical if true
      */
     public ExitLock(boolean setVertical) {
         super(setVertical);
@@ -48,6 +49,9 @@ public class ExitLock extends AbstractTile {
         else currentImage = images.get("ExitLockHorizontal");
     }
 
+    /**
+     * Unlocks the exit lock
+     */
     public void unlock(){
         locked = false;
         currentImage = images.get("FloorTile");

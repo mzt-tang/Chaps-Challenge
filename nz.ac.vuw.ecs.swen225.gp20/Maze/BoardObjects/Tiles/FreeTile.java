@@ -9,7 +9,9 @@ import java.awt.*;
  */
 public class FreeTile extends AbstractTile {
 
-
+    /**
+     * The constructor of the free tile.
+     */
     public FreeTile() {
         super(false);
         images.put("FloorTile", Toolkit.getDefaultToolkit().getImage("Resources/tiles/FloorTile.jpeg"));

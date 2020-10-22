@@ -4,12 +4,16 @@ import Maze.BoardObjects.Actors.Player;
 
 import java.awt.*;
 
+/**
+ * The treasure tile of the game. ALl treasures tiles must be picked
+ * up before the exit locks unlock.
+ */
 public class Treasure extends AbstractTile {
 
     private boolean pickedUp = false;
 
     /**
-     * .
+     * .The constructor for the treasures.
      */
     public Treasure() {
         super(false);
@@ -51,6 +55,10 @@ public class Treasure extends AbstractTile {
         currentImage = images.get("Files");
     }
 
+    /**
+     * Returns whether or not the treasure has been picked up.
+     * @return Returns true if the treasure has been picked up.
+     */
     public boolean isPickedUp() {
         return pickedUp;
     }
