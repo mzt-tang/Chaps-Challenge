@@ -98,12 +98,11 @@ public class ChapsChallenge extends JFrame {
 
     public void initModules(){
         // Persistence and Levels module
-        Persistence persistence = new Persistence();
-        Level currentLevel =  persistence.getLevel(1);
+        Level currentLevel =  Persistence.getLevel(1);
         timeRemaining = currentLevel.getTime();
 
         // Maze module
-        game = new Game(new Board(currentLevel.getTileArray()), new Player(currentLevel.getPlayerPos()), new HashSet<>()); //FIXME: placeholder replace later
+        game = new Game(new Board(currentLevel.getTileArray()), currentLevel.getPlayer(), new HashSet<>()); //FIXME: placeholder replace later
 
         // Renderer module
         renderer = new Renderer(game);
