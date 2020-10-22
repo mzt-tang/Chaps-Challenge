@@ -27,7 +27,7 @@ public class StalkerEnemy extends AbstractActor {
      */
     @Override
     public void move(Player player, Board board) {
-        if(!player.getKeys().isEmpty() && !player.getTreasures().isEmpty()){
+        if(player.getKeys().isEmpty() && player.getTreasures().isEmpty()){
             return;
         }
 
