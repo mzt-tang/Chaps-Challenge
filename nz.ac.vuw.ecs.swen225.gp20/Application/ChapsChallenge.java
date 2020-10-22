@@ -210,6 +210,7 @@ public class ChapsChallenge extends JFrame {
     }
 
 
+
     // ===========================================
     // JPanels
     // ===========================================
@@ -513,8 +514,10 @@ public class ChapsChallenge extends JFrame {
         gameplayPanel.getActionMap().put("resume", new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-                System.out.println("RESUME CALLED");
-                pauseResume();
+                if (isPaused) {
+                    System.out.println("RESUME CALLED");
+                    pauseResume();
+                }
             }
         });
     }
@@ -536,7 +539,7 @@ public class ChapsChallenge extends JFrame {
 
             //if the final level hasn't been reached
             if (levelCount != maxLevel) {
-                int options = JOptionPane.showConfirmDialog(null, "Continue to next level?", "Level " + currentLevel + " Completed!",
+                int options = JOptionPane.showConfirmDialog(null, "Continue to next level?", "Level " + levelCount + " Completed!",
                                 JOptionPane.YES_NO_OPTION);
                 if (options == 0) {
                     levelCount++;
@@ -554,15 +557,25 @@ public class ChapsChallenge extends JFrame {
     }
 
     /**
-     * Pauses and resumes the game
+     * Pauses/resumes the game
      */
     public void pauseResume(){
+        //request focus again as it may have been lost from using the menu bar
+        gameplayPanel.requestFocusInWindow();
+        gameplayPanel.requestFocus();
+
         isPaused = !isPaused;
-        JOptionPane optionPane = new JOptionPane();
-        optionPane.setMessageType(JOptionPane.INFORMATION_MESSAGE);
-        optionPane.setMessage("Press ESC to unpause the game.");
-        JDialog dialog = optionPane.createDialog(null, "Game Paused");
-        if (isPaused){
+        if (isPaused) {
+            JOptionPane optionPane = new JOptionPane();
+            optionPane.setMessageType(JOptionPane.INFORMATION_MESSAGE);
+            optionPane.setMessage("Press ESC to unpause the game.");
+            JDialog dialog = optionPane.createDialog(null, "Game Paused");
+            dialog.addWindowListener(new WindowAdapter() {
+                @Override
+                public void windowClosed(WindowEvent e) {
+                    isPaused = false;
+                }
+            });
             dialog.setVisible(true);
         }
     }
