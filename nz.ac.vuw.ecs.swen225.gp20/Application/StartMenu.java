@@ -1,18 +1,15 @@
 package Application;
 
-import java.awt.BorderLayout;
-import java.awt.Component;
-import java.awt.Dimension;
 import java.awt.EventQueue;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import javax.swing.Box;
-import javax.swing.BoxLayout;
-import javax.swing.JButton;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
 import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.SwingConstants;
-import javax.swing.border.Border;
+import javax.swing.JLabel;
 
 /**
  * Start menu of the game.
@@ -25,39 +22,52 @@ public class StartMenu extends JFrame {
     private final int WINDOW_WIDTH = 950;
     private final int WINDOW_HEIGHT = 750;
 
+    /**
+     * Constructs the start menu
+     */
     public StartMenu(){
         initUI();
-
         setVisible(true);
     }
 
+
     /**
-     * Initializes window properties
+     * Initializes window properties and sets the clickable areas
      */
     public void initUI(){
         setTitle("Chap's Challenge: Among Us Edition");
         setSize(WINDOW_WIDTH, WINDOW_HEIGHT);
 
-        JPanel mainPanel = new JPanel();
-        mainPanel.setLayout(new BorderLayout());
+        //Load and add the image to the JFrame
+        try {
+            BufferedImage image = ImageIO.read(new File("Resources/StartMenu.jpeg"));
+            JLabel menuScreen = new JLabel(new ImageIcon(image));
+            this.add(menuScreen);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
-        JButton startButton = new JButton("Start");
-        startButton.setHorizontalAlignment(SwingConstants.CENTER);
-        startButton.addActionListener(e -> {
-            //close the start menu and launch the game
-            dispose();
-            EventQueue.invokeLater(ChapsChallenge::new);
+        this.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                int x = e.getX();
+                int y = e.getY();
+                //start
+                if (x > 265 && x < 413 && y > 470 && y < 577){
+                    //close the start menu and launch the game
+                    dispose();
+                    EventQueue.invokeLater(ChapsChallenge::new);
+                }
+                //help
+                if (x > 543 && x < 690 && y > 467 && y < 577){
+                    System.out.println("HELP CLICKED");
+                }
+            }
         });
 
-
-        mainPanel.add(startButton, BorderLayout.CENTER);
-
-        add(mainPanel, BorderLayout.CENTER);
         setResizable(false);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
     }
-
-
 
 }
