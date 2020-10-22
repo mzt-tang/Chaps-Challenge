@@ -138,28 +138,28 @@ public class StalkerEnemy extends AbstractActor {
         if(position.getX() != 0) {
             AbstractTile left = map[position.getX() - 1][position.getY()];
             //If the tile isn't a wall, or a exit lock or locked door.
-            if(!(left instanceof Wall) && !(left instanceof ExitLock) && !(left instanceof LockedDoor && ((LockedDoor) left).isLocked()) ) {
+            if(!(left instanceof Wall) && !(left instanceof LockedDoor && ((LockedDoor) left).isLocked()) ) {
                 neighbours.add(left);
             }
         }
 
         if(position.getX() != map.length-1) {
             AbstractTile right = map[position.getX() + 1][position.getY()];
-            if(!(right instanceof Wall) && !(right instanceof ExitLock) && !(right instanceof LockedDoor && ((LockedDoor) right).isLocked()) ) {
+            if(!(right instanceof Wall) && !(right instanceof LockedDoor && ((LockedDoor) right).isLocked()) ) {
                 neighbours.add(right);
             }
         }
 
         if(position.getY() != 0) {
             AbstractTile up = map[position.getX()][position.getY() - 1];
-            if(!(up instanceof Wall) && !(up instanceof ExitLock) && !(up instanceof LockedDoor && ((LockedDoor) up).isLocked()) ) {
+            if(!(up instanceof Wall) && !(up instanceof LockedDoor && ((LockedDoor) up).isLocked()) ) {
                 neighbours.add(up);
             }
         }
 
         if(position.getY() != map[position.getX()].length - 1) {
             AbstractTile down = map[position.getX()][position.getY() + 1];
-            if(!(down instanceof Wall) && !(down instanceof ExitLock) && !(down instanceof LockedDoor && ((LockedDoor) down).isLocked()) ) {
+            if(!(down instanceof Wall) && !(down instanceof LockedDoor && ((LockedDoor) down).isLocked()) ) {
                 neighbours.add(down);
             }
         }

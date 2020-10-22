@@ -3,6 +3,7 @@ package Maze;
 import Maze.BoardObjects.Actors.AbstractActor;
 import Maze.BoardObjects.Actors.PatternEnemy;
 import Maze.BoardObjects.Actors.Player;
+import Maze.BoardObjects.Actors.StalkerEnemy;
 import Maze.BoardObjects.Tiles.*;
 import org.junit.Test;
 
@@ -198,7 +199,7 @@ public class MazeTests {
         PatternEnemy enemy = new PatternEnemy(new Position(2,1), 0, "dasw");
         enemies.add(enemy);
         Game game = new Game(new Board(map), player, enemies);
-        //Testing enemy wall block
+        //Move enemy
         for(int i = 0; i < 4; i++){
             game.moveEnemies();
         }
@@ -206,22 +207,125 @@ public class MazeTests {
     }
 
     /**
-     * Testing Pattern Enemies
+     * Testing Pattern enemy block interactions
      */
     @Test
     public void test8(){
         AbstractTile[][] map = makeMap();
+        map[3][2] = new LockedDoor(false, "Red");
 
         Player player = new Player(new Position(1, 1));
         Set<AbstractActor> enemies = new HashSet<>();
-        PatternEnemy enemy = new PatternEnemy(new Position(2,1), 0, "ddddd");
+        PatternEnemy enemy = new PatternEnemy(new Position(2,1), 0, "ddddss");
         enemies.add(enemy);
         Game game = new Game(new Board(map), player, enemies);
-        //Testing enemy wall block
-        for(int i = 0; i < 5; i++){
+        //Testing enemy wall and locked door block
+        for(int i = 0; i < 6; i++){
             game.moveEnemies();
         }
         assert enemy.getPos().equals(new Position(3, 1));
+    }
+
+    /**
+     * Testing Pattern enemy "kills" the player and respawn them back to the start
+     */
+    @Test
+    public void test9(){
+        AbstractTile[][] map = makeMap();
+
+        Player player = new Player(new Position(1, 1));
+        Set<AbstractActor> enemies = new HashSet<>();
+        PatternEnemy enemy = new PatternEnemy(new Position(2,1), 0, "ssa");
+        enemies.add(enemy);
+        Game game = new Game(new Board(map), player, enemies);
+
+        game.movePlayer(Game.DIRECTION.DOWN);
+        game.movePlayer(Game.DIRECTION.DOWN);
+        //Testing enemy wall block
+        for(int i = 0; i < 3; i++){
+            assert player.getPos().equals(new Position(1,3)); //Check the player isn't moved
+            game.moveEnemies();
+        }
+        assert enemy.getPos().equals(new Position(1, 3)); //Check enemy has moved
+        assert player.getPos().equals(player.getStartingPos()); //Check player has moved
+    }
+
+    /**
+     * Testing Stalker Enemy not moving when player has no items
+     */
+    @Test
+    public void test10(){
+        AbstractTile[][] map = makeMap();
+
+        Player player = new Player(new Position(1, 1));
+        Set<AbstractActor> enemies = new HashSet<>();
+        StalkerEnemy enemy = new StalkerEnemy(new Position(3,3), 0);
+        enemies.add(enemy);
+        Game game = new Game(new Board(map), player, enemies);
+
+        //Testing enemy not moving
+        for(int i = 0; i < 6; i++){
+            game.moveEnemies();
+        }
+        assert enemy.getPos().equals(new Position(3, 3)); //Check enemy has not moved
+    }
+
+    /**
+     * Testing Stalker Enemy robbing the player
+     */
+    @Test
+    public void test11(){
+        AbstractTile[][] map = makeMap();
+        Key key = new Key("Red");
+        map[1][2] = key;
+
+        Player player = new Player(new Position(1, 1));
+        Set<AbstractActor> enemies = new HashSet<>();
+        StalkerEnemy enemy = new StalkerEnemy(new Position(3,3), 0);
+        enemies.add(enemy);
+        Game game = new Game(new Board(map), player, enemies);
+
+        game.movePlayer(Game.DIRECTION.DOWN);
+        game.movePlayer(Game.DIRECTION.DOWN);
+        assert !player.getKeys().isEmpty();
+        assert key.isChanged();
+
+        game.moveEnemies();
+        assert enemy.getPos().equals(new Position(2, 3)); //Check enemy has moved
+        game.moveEnemies();
+        assert enemy.getPos().equals(new Position(3, 3)); //Check enemy has moved back
+        assert player.getKeys().isEmpty();
+        assert !key.isChanged();
+    }
+
+    /**
+     * Testing Stalker Enemy not moving behind doors.
+     */
+    @Test
+    public void test12(){
+        AbstractTile[][] map = makeMap();
+        Treasure treasure = new Treasure();
+        ExitLock exitLock1 = new ExitLock(true);
+        ExitLock exitLock2 = new ExitLock(true);
+        ExitLock exitLock3 = new ExitLock(true);
+        map[2][1] = exitLock1;
+        map[2][2] = exitLock2;
+        map[2][3] = exitLock3;
+        map[1][2] = treasure;
+
+        Player player = new Player(new Position(1, 1));
+        Set<AbstractActor> enemies = new HashSet<>();
+        StalkerEnemy enemy = new StalkerEnemy(new Position(3,3), 0);
+        enemies.add(enemy);
+        Game game = new Game(new Board(map), player, enemies);
+
+        game.moveEnemies(); //Shouldn't move
+        assert enemy.getPos().equals(enemy.getStartingPos());
+        game.movePlayer(Game.DIRECTION.DOWN); //Collect treasure
+        game.movePlayer(Game.DIRECTION.DOWN); //Move down
+        assert exitLock1.isChanged() && exitLock2.isChanged() && exitLock3.isChanged();
+        game.moveEnemies(); //Stalker should now move
+        assert !enemy.getPos().equals(enemy.getStartingPos());
     }
 
 
@@ -252,13 +356,6 @@ public class MazeTests {
                 map[i][j] = new FreeTile();
             }
         }
-
-        /**
-        map[3][1] = new InfoField("test");
-        map[4][1] = new Key("Red");
-        map[4][2] = new LockedDoor(false, "Red");
-         **/
-
         return map;
     }
 }

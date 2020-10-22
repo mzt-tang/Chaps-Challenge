@@ -56,10 +56,6 @@ public class LockedDoor extends AbstractTile {
         currentImage = images.get("FloorTile");
     }
 
-    public String getDoorColour() {
-        return colour;
-    }
-
     public boolean isLocked() {
         return locked;
     }

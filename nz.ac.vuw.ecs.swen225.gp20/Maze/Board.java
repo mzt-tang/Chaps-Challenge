@@ -10,10 +10,6 @@ public class Board {
         this.map = tileMap;
     }
 
-    public AbstractTile[][] getUnmodMap(){
-        return map;
-    }
-
     public AbstractTile[][] getMap(){
         return map;
     }

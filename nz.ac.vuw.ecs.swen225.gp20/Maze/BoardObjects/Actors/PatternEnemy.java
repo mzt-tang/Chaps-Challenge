@@ -61,7 +61,7 @@ public class PatternEnemy extends AbstractActor{
 
         //Don't move the actor into a wall or locked door.
         //Move the enemy to the new position
-        if (!(tile instanceof Wall) && (!(tile instanceof LockedDoor) || ((LockedDoor) tile).isLocked())) {
+        if (!(tile instanceof Wall) && !((tile instanceof LockedDoor) && ((LockedDoor) tile).isLocked())) {
             //Interact with the player if positions are the same.
             if(player.getPos().equals(this.position) || player.getPos().equals(newPos)) {
                 interact(player);
