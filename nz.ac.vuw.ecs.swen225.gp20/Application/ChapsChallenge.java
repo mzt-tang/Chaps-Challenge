@@ -45,6 +45,7 @@ public class ChapsChallenge extends JFrame {
     //Game
     private Game game;
     private Level currentLevel;
+    private int levelCount = 1;
     private volatile boolean isPaused = false;
     private volatile Thread paintThread;
 
@@ -65,7 +66,6 @@ public class ChapsChallenge extends JFrame {
 
         // Initialize modules
         initModules();
-        inventoryView = new InventoryView(game.getPlayer()); //adding inventory view (Application)
 
         // Initialize panels
         initPanels();
@@ -81,11 +81,8 @@ public class ChapsChallenge extends JFrame {
     }
 
     public void initModules(){
-        // Persistence and Maze module
-        loadLevel(1);
-
-        // Renderer module
-        renderer = new Renderer(game);
+        // Persistence, Maze and Renderer module
+        loadLevel(levelCount);
 
         // Record & Replay module
         recordAndReplayer = new RecordAndReplay();
@@ -202,6 +199,7 @@ public class ChapsChallenge extends JFrame {
                         } catch (InterruptedException e) {
                             e.printStackTrace();
                         }
+                        game.moveEnemies();
                         repaint();
                     }
                 }
@@ -263,7 +261,7 @@ public class ChapsChallenge extends JFrame {
         int fontSize = 16;
 
         //Current level label
-        JLabel levelLabel = new JLabel("LEVEL X");
+        JLabel levelLabel = new JLabel("LEVEL " + levelCount);
         levelLabel.setFont(new Font(levelLabel.getName(), Font.PLAIN, fontSize));
         levelLabel.setForeground(Color.RED);
         levelLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -335,12 +333,24 @@ public class ChapsChallenge extends JFrame {
     // ===========================================
 
     public void loadLevel(int level){
+        isPaused = false; //make sure the game starts in an un-paused state
+
         // Persistence and Levels module
         currentLevel =  Persistence.getLevel(level);
         timeRemaining = currentLevel.getTime();
 
         // Maze module
         game = new Game(new Board(currentLevel.getTileArray()), currentLevel.getPlayer(), currentLevel.getEnemies());
+
+        // Initialize the player inventory
+        inventoryView = new InventoryView(game.getPlayer()); //adding inventory view (Application)
+
+        // Renderer module
+        renderer = new Renderer(game);
+
+        //Reset this JFrame and reinitialize panels
+        this.getContentPane().removeAll();
+        initPanels();
     }
 
     /**
@@ -435,10 +445,12 @@ public class ChapsChallenge extends JFrame {
      */
     public void nextLevel(){
         if (game.isLevelCompleted()) {
+            isPaused = true; //stop the game
             int options = JOptionPane.showConfirmDialog(null, "Continue to next level?", "Level 1 Completed!",
                     JOptionPane.YES_NO_OPTION);
             if (options == 0) {
-                loadLevel(2);
+                levelCount++;
+                loadLevel(levelCount);
             } else {
                 System.exit(0);
             }
