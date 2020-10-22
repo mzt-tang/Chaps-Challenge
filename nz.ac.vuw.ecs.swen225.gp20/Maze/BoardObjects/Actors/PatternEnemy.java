@@ -9,6 +9,7 @@ import java.awt.*;
 
 /**
  * An actor that follows a specific pattern/route defined by it's constructor parameter.
+ * @author michael tang 300490290
  */
 public class PatternEnemy extends AbstractActor{
 

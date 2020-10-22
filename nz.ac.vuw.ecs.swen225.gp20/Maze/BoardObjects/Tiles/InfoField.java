@@ -7,6 +7,7 @@ import java.awt.*;
 /**
  * The information tile. Basically a free tile that contains a
  * string that informs the player of something about the game.
+ * @author michael tang 300490290
  */
 public class InfoField extends AbstractTile {
 

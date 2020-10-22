@@ -10,6 +10,7 @@ import java.util.List;
 
 /**
  * The stalker enemy which chases the player and steals their treasures/keys.
+ * @author michael tang 300490290
  */
 public class StalkerEnemy extends AbstractActor {
 

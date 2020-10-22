@@ -8,6 +8,7 @@ import java.awt.*;
 
 /**
  * The instant death tile on the board, if the player falls on this tile they respawn to their starting point.
+ * @author michael tang 300490290
  */
 public class DeathTile extends AbstractTile {
 

@@ -10,6 +10,7 @@ import java.util.Set;
 
 /**
  * The Game class, which stores all of the game's information and player movement logic.
+ * @author michael tang 300490290
  */
 public class Game {
 

@@ -4,6 +4,7 @@ import Maze.BoardObjects.Tiles.AbstractTile;
 
 /**
  * A fringe used for pathfinding of the stalker enemy.
+ * @author michael tang 300490290
  */
 public class Fringe {
 

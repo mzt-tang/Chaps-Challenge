@@ -12,6 +12,7 @@ import java.util.Set;
 
 /**
  * THe maze module JUnit tests.
+ * @author michael tang 300490290
  */
 public class MazeTest {
 

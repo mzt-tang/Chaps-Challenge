@@ -12,6 +12,7 @@ import java.util.List;
 
 /**
  * The actor that the player is controlling.
+ * @author michael tang 300490290
  */
 public class Player extends AbstractActor{
 

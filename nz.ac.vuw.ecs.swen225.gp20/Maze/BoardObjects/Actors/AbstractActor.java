@@ -9,6 +9,7 @@ import java.util.Map;
 
 /**
  * A abstract class that represents any movable objects on the board.
+ * @author michael tang 300490290
  */
 public abstract class AbstractActor {
 

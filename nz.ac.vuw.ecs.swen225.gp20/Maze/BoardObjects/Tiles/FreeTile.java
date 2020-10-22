@@ -6,6 +6,7 @@ import java.awt.*;
 
 /**
  * The "empty" tile on the board, any actor can move freely onto this tile.
+ * @author michael tang 300490290
  */
 public class FreeTile extends AbstractTile {
 
