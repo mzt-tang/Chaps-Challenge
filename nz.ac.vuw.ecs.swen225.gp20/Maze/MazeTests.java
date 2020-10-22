@@ -187,16 +187,34 @@ public class MazeTests {
     */
 
     /**
-     * Testing Pattern Enemies.
+     * Testing Pattern Enemy movement
      */
     @Test
     public void test7(){
         AbstractTile[][] map = makeMap();
-        map[3][1] = new InfoField("test");
 
         Player player = new Player(new Position(1, 1));
         Set<AbstractActor> enemies = new HashSet<>();
-        PatternEnemy enemy = new PatternEnemy(new Position(2,1), 1, "ddddd");
+        PatternEnemy enemy = new PatternEnemy(new Position(2,1), 0, "dasw");
+        enemies.add(enemy);
+        Game game = new Game(new Board(map), player, enemies);
+        //Testing enemy wall block
+        for(int i = 0; i < 4; i++){
+            game.moveEnemies();
+        }
+        assert enemy.getPos().equals(new Position(2, 1));
+    }
+
+    /**
+     * Testing Pattern Enemies
+     */
+    @Test
+    public void test8(){
+        AbstractTile[][] map = makeMap();
+
+        Player player = new Player(new Position(1, 1));
+        Set<AbstractActor> enemies = new HashSet<>();
+        PatternEnemy enemy = new PatternEnemy(new Position(2,1), 0, "ddddd");
         enemies.add(enemy);
         Game game = new Game(new Board(map), player, enemies);
         //Testing enemy wall block

@@ -40,8 +40,9 @@ public class Game {
             if(c.getTickRate() == tickTiming.get(count)){
                 c.move(player, board);
                 tickTiming.set(count, 0);
+            } else {
+                tickTiming.set(count, tickTiming.get(count)+1);
             }
-            tickTiming.set(count, tickTiming.get(count)+1);
             count++;
         }
     }
