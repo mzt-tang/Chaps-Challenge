@@ -146,7 +146,7 @@ public class ChapsChallenge extends JFrame {
         loadSaved.addActionListener((e) -> {
             String[] possibleValues = { "Level 1", "Level 2"};
             Object selectedValue = JOptionPane.showInputDialog(null,
-                    "Choose a saved level to load", "Load Game",
+                    "Choose a saved level to load (if it exists)", "Load Game",
                     JOptionPane.INFORMATION_MESSAGE, null,
                     possibleValues, possibleValues[0]);
 
@@ -158,7 +158,7 @@ public class ChapsChallenge extends JFrame {
             }
             else {
                 //we're not supposed to be here
-                System.out.println("Selected level not found = " + selectedValue.toString());
+                System.out.println("Selected level not found: " + selectedValue.toString());
             }
 
         });
@@ -385,7 +385,7 @@ public class ChapsChallenge extends JFrame {
     }
 
     /**
-     * Loads a level specified by a Level objeect
+     * Loads a level specified by a Level object
      * @param level Level object
      */
     public void loadLevel(Level level, int levelCount){
