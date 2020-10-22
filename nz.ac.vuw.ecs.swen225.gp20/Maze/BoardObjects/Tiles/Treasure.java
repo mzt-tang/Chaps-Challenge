@@ -1,8 +1,6 @@
 package Maze.BoardObjects.Tiles;
 
-import Maze.BoardObjects.Actors.AbstractActor;
 import Maze.BoardObjects.Actors.Player;
-import Maze.Position;
 
 import java.awt.*;
 
@@ -40,6 +38,13 @@ public class Treasure extends AbstractTile {
         super.setChangedTile();
         pickedUp = true;
         currentImage = images.get("FloorTile");
+    }
+
+    @Override
+    public void unChange() {
+        super.unChange();
+        pickedUp = false;
+        currentImage = images.get("Files");
     }
 
     public boolean isPickedUp() {

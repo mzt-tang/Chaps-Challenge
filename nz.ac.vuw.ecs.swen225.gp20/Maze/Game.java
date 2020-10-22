@@ -3,9 +3,9 @@ package Maze;
 import Maze.BoardObjects.Actors.AbstractActor;
 import Maze.BoardObjects.Actors.Player;
 import Maze.BoardObjects.Tiles.*;
-import RecordAndReplay.RecordAndReplay;
 
-import java.util.HashSet;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 public class Game {
@@ -17,6 +17,7 @@ public class Game {
     private Board board;
     private Player player;
     private Set<AbstractActor> computerPlayers;
+    private List<Integer> tickTiming = new ArrayList<>();
 
     private boolean levelCompleted = false;
 
@@ -25,11 +26,23 @@ public class Game {
         this.board = board;
         this.player = player;
         this.computerPlayers = computerPlayers;
+
+        for(int i = 0; i < this.computerPlayers.size(); i++){
+            tickTiming.add(0);
+        }
     }
 
-    public void moveEnemy() {
+    public void moveEnemies() {
+        if(computerPlayers.isEmpty()) return;
+
+        int count = 0;
         for(AbstractActor c : computerPlayers) {
-            c.move(player, board);
+            if(c.getTickRate() == tickTiming.get(count)){
+                c.move(player, board);
+                tickTiming.set(count, 0);
+            }
+            tickTiming.set(count, tickTiming.get(count)+1);
+            count++;
         }
     }
 
@@ -40,19 +53,6 @@ public class Game {
      *                 current position is interacting with/moving towards.
      */
     public void movePlayer(DIRECTION direction) {
-
-        ////////TEST CODE
-        int count = 0;
-        for(AbstractActor a : computerPlayers) {
-            System.out.println("Enemy " + count + ": ");
-            a.move(player, board);
-            System.out.println(a.getPos());
-            //a.move(player, board);
-            //System.out.println(a.getPos());
-            count++;
-        }
-        //////
-
 
         Position newPos;
         switch (direction) {
@@ -81,21 +81,14 @@ public class Game {
         assert (board.getMap()[newPos.getX()][newPos.getY()] != null)
                 : "Position at array is null. If you're here then something really bad happened...";
 
-        /**
-        //CHECK IF MOVING INTO ENEMY
-        for(AbstractActor enemy : computerPlayers) {
-            if(enemy.getPos().equals(newPos)){
-                enemy.interact(player);
-            }
-        }
-         **/
-
         //Interact with the square and move there if possible.
         AbstractTile moveToTile = board.getMap()[newPos.getX()][newPos.getY()];
         if(moveToTile.interact(player)) {
             //Unlock the exit lock if all treasures have been collected
             if (allTreasuresCollected()){
                 unlockExitLock();
+            } else {
+                lockExitLock();
             }
 
             player.getPos().move(direction);    //Move the player
@@ -103,6 +96,32 @@ public class Game {
 
         if(moveToTile instanceof ExitPortal) {
             levelCompleted = true;
+        }
+
+        /**
+        ////////TEST CODE
+        int count = 0;
+        for(AbstractActor a : computerPlayers) {
+            System.out.println("Enemy " + count + ": ");
+            a.move(player, board);
+            System.out.println(a.getPos());
+            //a.move(player, board);
+            //System.out.println(a.getPos());
+            count++;
+        }
+        //////
+         **/
+
+    }
+
+    private void lockExitLock(){
+        for (int i = 0; i < board.getMap().length; i++) {
+            for (int j = 0; j < board.getMap()[0].length; j++) {
+                if(board.getMap()[i][j] instanceof ExitLock){
+                    ExitLock tile = (ExitLock) board.getMap()[i][j];
+                    tile.unChange();
+                }
+            }
         }
     }
 
