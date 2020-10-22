@@ -2,17 +2,20 @@ package RecordAndReplay;
 
 import Maze.Board;
 import Maze.BoardObjects.Actors.AbstractActor;
+import Maze.BoardObjects.Actors.Player;
 import Maze.BoardObjects.Tiles.AbstractTile;
 import Maze.BoardObjects.Tiles.Key;
+import Maze.BoardObjects.Tiles.Treasure;
 import Maze.Game;
 import Maze.Game.DIRECTION;
 import Maze.Position;
+import Persistence.*;
 
 import javax.swing.*;
 import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 /**
  * Records gameplay.
@@ -58,14 +61,18 @@ public class RecordAndReplay<E> {
      * Constructor with level parameter
      * @param level The level number which is associated with the RecordAndReplayer
      */
-    public RecordAndReplay(int level, ArrayList<AbstractActor> enemies) {
+    public RecordAndReplay(int level, Set<AbstractActor> enemies) {
         recorder = new Recorder();
         writer = new Writer();
         replayer = new Replayer();
         reader = new Reader();
         recordingSwitch = false;
         this.level = level;
-        this.enemies = enemies;
+        this.enemies = new ArrayList<AbstractActor>();
+
+        for(AbstractActor e : enemies) {
+            this.enemies.add(e);
+        }
     }
 
     /**
@@ -74,6 +81,8 @@ public class RecordAndReplay<E> {
     public RecordAndReplay() {
         recorder = new Recorder();
         writer = new Writer();
+        replayer = new Replayer();
+        reader = new Reader();
         recordingSwitch = false;
     }
 
@@ -122,8 +131,15 @@ public class RecordAndReplay<E> {
 
     //=====SAVING=====//  AKA WRITING
     //All functions to do with creating a save via JSON is here.
-    public void saveGameplay() {
-        writer.writeRecording(recorder.getRecordedChanges(), recorder.getStartingPosition(), level, startedRecording, enemies);
+    public void saveGameplay(int remainingTime, Player player, Set<AbstractActor> enemies, AbstractTile[][] tiles) {
+        ArrayList<AbstractActor> enemyList = new ArrayList<AbstractActor>();
+        for(AbstractActor e : enemies) {
+            enemyList.add(e);
+        }
+
+        Persistence.saveGame(remainingTime, player, enemies, level, tiles);
+
+        writer.writeRecording(recorder.getRecordedChanges(), recorder.getStartingPosition(), level, startedRecording, enemyList);
     }
 
     //=====LOADING=====//
@@ -160,8 +176,10 @@ public class RecordAndReplay<E> {
         replayer.setPlayerStartX(reader.getPlayerStartX());
         replayer.setPlayerStartY(reader.getPlayerStartY());
         replayer.setEnemies(reader.getEnemies());
+        replayer.setLoadState(reader.getLevel());
 
         replayer.prepRecordedChanges();
+        replayer.loadToStart();
     }
 
     public void displayControlWindow() {

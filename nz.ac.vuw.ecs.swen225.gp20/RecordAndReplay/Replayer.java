@@ -1,6 +1,9 @@
 package RecordAndReplay;
 
+import Application.ChapsChallenge;
 import Maze.BoardObjects.Actors.AbstractActor;
+import Maze.Game;
+import Persistence.Persistence;
 import RecordAndReplay.Actions.Action;
 
 import javax.swing.*;
@@ -25,8 +28,11 @@ public class Replayer {
     private int playerStartY;
     private ArrayList<AbstractActor> enemies; //ONLY USED FOR ENEMY LOCATIONS
 
+    private int loadStateLocation;
+
     private boolean pause = false;
     private boolean doubleSpeed = false;
+    private int location = 0; //The location in the playback
 
     ArrayList<Change> prepedChanges = new ArrayList<Change>();
 
@@ -49,22 +55,36 @@ public class Replayer {
         Icon prevIcon = new ImageIcon(System.getProperty("user.dir") + "/Resources/replayButtons/prev.png");
         Icon playIcon = new ImageIcon(System.getProperty("user.dir") + "/Resources/replayButtons/play.png");
         Icon pauseIcon = new ImageIcon(System.getProperty("user.dir") + "/Resources/replayButtons/pause.png");
-        Icon forwardIcon = new ImageIcon(System.getProperty("user.dir") + "/Resources/replayButtons/next.png");
+        Icon nextIcon = new ImageIcon(System.getProperty("user.dir") + "/Resources/replayButtons/next.png");
         Icon doubleSpeedIcon = new ImageIcon(System.getProperty("user.dir") + "/Resources/replayButtons/doubleSpeed.png");
+        Icon doubleSpeedActiveIcon = new ImageIcon(System.getProperty("user.dir") + "/Resources/replayButtons/doubleSpeedActive.png");
 
         JButton prev = new JButton(prevIcon);
         JButton play = new JButton(playIcon);
-        JButton forward = new JButton(forwardIcon);
+        JButton next = new JButton(nextIcon);
         JButton doubleSpeed = new JButton(doubleSpeedIcon);
+
+        prev.addActionListener(e -> {
+            prevButton();
+        });
+        play.addActionListener(e -> {
+            pausePlayButton(play, playIcon, pauseIcon);
+        });
+        next.addActionListener(e -> {
+            nextButton();
+        });
+        doubleSpeed.addActionListener(e -> {
+            doubleSpeedButton(doubleSpeed, doubleSpeedIcon, doubleSpeedActiveIcon);
+        });
 
         prev.setPreferredSize(new Dimension(50, 50));
         play.setPreferredSize(new Dimension(50, 50));
-        forward.setPreferredSize(new Dimension(50, 50));
+        next.setPreferredSize(new Dimension(50, 50));
         doubleSpeed.setPreferredSize(new Dimension(50, 50));
 
         mainPanel.add(prev);
         mainPanel.add(play);
-        mainPanel.add(forward);
+        mainPanel.add(next);
         mainPanel.add(doubleSpeed);
 
         controlWindow.add(mainPanel);
@@ -73,10 +93,86 @@ public class Replayer {
         controlWindow.setLocation(500, 300);
         controlWindow.pack();
 
+        controlWindow.setFocusable(false);
         controlWindow.setVisible(true);
     }
 
+    //Button functions
+    public void prevButton() {
+        if(location > 0 && pause) {
+            location--;
+            System.out.println("Location: " + location);
+            int timeStamp = prepedChanges.get(location).timestamp;
+            ArrayList<Action> actions = prepedChanges.get(location).actions;
+            if(actions != null) {
+                for (int i = 0; i < actions.size(); i++) {
+                    //Do stuff in here using Chaps Challenge's helper methods
+                    System.out.println("action: " + actions.get(i));
 
+                }
+            }
+            //Change the time remaining
+        } else {
+            System.out.println("min");
+        }
+    }
+
+    public void nextButton() {
+        if(location < prepedChanges.size()-1 && pause) {
+            location++;
+            System.out.println("Location: " + location);
+            int timeStamp = prepedChanges.get(location).timestamp;
+            ArrayList<Action> actions = prepedChanges.get(location).actions;
+            if(actions != null) {
+                for (int i = 0; i < actions.size(); i++) {
+                    //Do stuff in here using Chaps Challenge's helper methods
+                    System.out.println("action: " + actions.get(i));
+
+                }
+            }
+            //Change the time remaining
+        } else {
+            System.out.println("max");
+        }
+    }
+
+    public void pausePlayButton(JButton button, Icon playIcon, Icon pauseIcon) {
+        pause = !pause;
+        if(pause) {
+            button.setIcon(pauseIcon);
+            System.out.println("paused");
+        } else {
+            button.setIcon(playIcon);
+            System.out.println("play");
+        }
+    }
+
+    public void doubleSpeedButton(JButton button, Icon dSpeedIcon, Icon dSpeedActiveIcon) {
+        doubleSpeed = !doubleSpeed;
+        if(doubleSpeed) {
+            button.setIcon(dSpeedActiveIcon);
+        } else {
+            button.setIcon(dSpeedIcon);
+        }
+    }
+
+    //apply an action every time a tick happens
+    public void tick() {
+        if(location < prepedChanges.size()-1) {
+            nextButton();
+        } else {
+            pause = true;
+            System.out.println("END OF TAPE");
+        }
+    }
+
+    public void doubleTickSpeed(boolean t) {
+        doubleSpeed = t;
+    }
+
+    public void loadToStart() {
+        Persistence.loadGame(loadStateLocation);
+    }
 
 
     /** PREPS **/
@@ -141,6 +237,10 @@ public class Replayer {
 
     public void setEnemies(ArrayList<AbstractActor> enemies) {
         this.enemies = enemies;
+    }
+
+    public void setLoadState(int loadStateLocation) {
+        this.loadStateLocation = loadStateLocation;
     }
 
     /** NESTED CLASSES **/
