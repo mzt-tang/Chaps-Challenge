@@ -51,7 +51,7 @@ public class SaveJsonMaker {
       AbstractTile[][] tiles
   ) {
     JsonArrayBuilder keyArrayBuilder = Json.createArrayBuilder();
-    
+    JsonArrayBuilder treasureArrayBuilder = Json.createArrayBuilder();
 
     JsonArrayBuilder arrayBuilder = Json.createArrayBuilder();
     for (int i = 0; i < tiles.length; i++) {
@@ -76,7 +76,7 @@ public class SaveJsonMaker {
               JsonObjectBuilder treasureArrayObjectBuilder = Json.createObjectBuilder();
               treasureArrayObjectBuilder.add("xPos", i);
               treasureArrayObjectBuilder.add("yPos", j);
-              keyArrayBuilder.add(treasureArrayObjectBuilder);
+              treasureArrayBuilder.add(treasureArrayObjectBuilder);
             }
           }
         }
@@ -98,7 +98,6 @@ public class SaveJsonMaker {
       enemyArrayBuilder.add(enemyArrayObject.build());
     }
     
-    JsonArrayBuilder treasureArrayBuilder = Json.createArrayBuilder();
     JsonObject levelInfo = Json.createObjectBuilder().add("playerX", player.getPos().getX())
         .add("playerY", player.getPos().getY()).add("Keys on hand", keyArrayBuilder.build())
         .add("Treasure on hand", treasureArrayBuilder.build()).add("time remaining", remainingTime)
