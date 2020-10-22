@@ -3,7 +3,7 @@ package Persistence;
 import Maze.BoardObjects.Actors.AbstractActor;
 import Maze.BoardObjects.Actors.PatternEnemy;
 import Maze.BoardObjects.Actors.Player;
-import Maze.BoardObjects.Actors.stalker_enemy.StalkerEnemy;
+import Maze.BoardObjects.Actors.StalkerEnemy;
 import Maze.BoardObjects.Tiles.AbstractTile;
 import Maze.BoardObjects.Tiles.ExitLock;
 import Maze.BoardObjects.Tiles.ExitPortal;
