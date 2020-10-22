@@ -387,10 +387,7 @@ public class ChapsChallenge extends JFrame {
     public void loadLevel(int level){
         levelCount = level;
         isPaused = false; //make sure the game starts in an un-paused state
-        if (paintThread != null && timer != null){
-            paintThread.stop();
-            timer.stop();
-        }
+        killThreads();
 
         // Persistence and Levels module
         currentLevel =  Persistence.getLevel(level);
@@ -482,12 +479,21 @@ public class ChapsChallenge extends JFrame {
     }
 
     /**
+     * Stops all the running threads. Useful for when exiting the game back to start menu.
+     */
+    public void killThreads(){
+        if (paintThread != null && timer != null){
+            paintThread.stop();
+            timer.stop();
+        }
+    }
+
+    /**
      * Save the current game state and show a message dialog when the player saves the game
      */
     public void saveCurrentGame(){
         JOptionPane.showMessageDialog(null, "Saved current game at level " + levelCount + ".", "Game Saved!", JOptionPane.INFORMATION_MESSAGE);
         Persistence.saveGame(timeRemaining, game.getPlayer(), currentLevel.getEnemies(), levelCount, currentLevel.getTileArray());
-
     }
 
     /**
@@ -501,6 +507,7 @@ public class ChapsChallenge extends JFrame {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
                 System.out.println("EXIT CALLED");
+                killThreads();
                 dispose();
                 EventQueue.invokeLater(() -> new StartMenu(levelCount));
             }
@@ -514,6 +521,7 @@ public class ChapsChallenge extends JFrame {
             public void actionPerformed(ActionEvent actionEvent) {
                 System.out.println("SAVE CALLED");
                 saveCurrentGame();
+                killThreads();
                 dispose();
                 StartMenu.lastLevel = levelCount;
                 EventQueue.invokeLater(() -> new StartMenu(Persistence.loadGame(levelCount)));
