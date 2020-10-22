@@ -72,10 +72,10 @@ public class ChapsChallenge extends JFrame {
         /////// TEST CODE
         Set<AbstractActor> test = new HashSet<>();
 
-        StalkerEnemy enemy = new StalkerEnemy(new Position(10, 10), 1);
+        StalkerEnemy enemy = new StalkerEnemy(new Position(10, 10), 30);
         test.add(enemy);
 
-        PatternEnemy enemy1 = new PatternEnemy(new Position(2, 9), 1, "dddsssaaawww");
+        PatternEnemy enemy1 = new PatternEnemy(new Position(2, 9), 30, "dddsssaaawww");
         test.add(enemy1);
         //////
 

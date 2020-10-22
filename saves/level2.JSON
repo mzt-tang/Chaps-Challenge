@@ -3,8 +3,8 @@
     "Changed Tiles": [
     ],
     "Gameplay variables": {
-        "playerX": 8,
-        "playerY": 7,
+        "playerX": 1,
+        "playerY": 1,
         "Keys on hand": [
         ],
         "Treasure on hand": [
