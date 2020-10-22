@@ -60,7 +60,7 @@ public class StartMenu extends JFrame {
                 }
                 //help
                 if (x > 543 && x < 690 && y > 467 && y < 577){
-                    System.out.println("HELP CLICKED");
+                    EventQueue.invokeLater(HelpScreen::new);
                 }
             }
         });
