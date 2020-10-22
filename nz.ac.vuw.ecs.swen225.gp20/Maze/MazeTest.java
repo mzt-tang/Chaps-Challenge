@@ -13,7 +13,7 @@ import java.util.Set;
 /**
  * THe maze module JUnit tests.
  */
-public class MazeTests {
+public class MazeTest {
 
 
     /*
