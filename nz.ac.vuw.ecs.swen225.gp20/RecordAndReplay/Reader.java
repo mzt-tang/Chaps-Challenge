@@ -1,12 +1,15 @@
 package RecordAndReplay;
 
+import Maze.BoardObjects.Actors.AbstractActor;
+import Maze.BoardObjects.Actors.PatternEnemy;
 import Maze.Game;
 import Maze.Position;
-import Persistence.EnemyBlueprint;
 import RecordAndReplay.Actions.Action;
+import RecordAndReplay.Actions.EnemyMove;
 import RecordAndReplay.Actions.PlayerMove;
 
 import javax.json.*;
+import javax.print.DocFlavor;
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -41,13 +44,14 @@ public class Reader {
     private int startRecordingTimeStamp;
     private int playerStartX;
     private int playerStartY;
-    private ArrayList<EnemyBlueprint> enemies; //ONLY USED FOR ENEMY LOCATIONS
+    private ArrayList<Position> enemyStartPositions = new ArrayList<>(); //ONLY USED FOR ENEMY LOCATIONS
+    private int levelLocation;
 
     public Reader() {
         //empty constructor
     }
 
-    public void readJson(File file) throws Exception {
+    public void readJson(File file) {
         InputStream inputStream = null;
         try {
             inputStream = new FileInputStream(file);
@@ -61,7 +65,14 @@ public class Reader {
         JsonObject playerPos = obj.getJsonObject("playerPos");
         playerStartX = playerPos.getInt("startX");
         playerStartY = playerPos.getInt("startY");
-        //Insert something to do with enemies HERE
+
+        JsonObject enemyStartPos = obj.getJsonObject("enemies");
+        for(int i = 0; i < enemyStartPos.size(); i++) {
+            JsonObject pos = enemyStartPos.getJsonObject("" + i);
+            Position p = new Position(pos.getInt("startX"), pos.getInt("startY"));
+            System.out.println(i + ": x=" + p.getX() + "| y=" + p.getY());
+            enemyStartPositions.add(p);
+        }
 
         //CHANGE ARRAY!!!
         int noChanges = obj.getInt("noChanges");
@@ -79,34 +90,49 @@ public class Reader {
                 JsonObject jsonAction = changeList.getJsonObject("" + j);
 
                 //SECOND check type (brute force)
-                Action action = null;
+                Action action;
                 if(jsonAction.get("PlayerMove") != null) {
-                    System.out.println(jsonAction.get("PlayerMove").toString());
-                    if(("" + jsonAction.get("PlayerMove")).equals("UP")) {
+                    if(jsonAction.get("PlayerMove").equals(Json.createValue("UP"))) {
                         action = new PlayerMove(Game.DIRECTION.UP);
-                    } else if(("" + jsonAction.get("PlayerMove")).equals("DOWN")) {
+                        actions.add(action);
+                    } else if(jsonAction.get("PlayerMove").equals(Json.createValue("DOWN"))) {
                         action = new PlayerMove(Game.DIRECTION.DOWN);
-                    } else if(("" + jsonAction.get("PlayerMove")).equals("LEFT")) {
+                        actions.add(action);
+                    } else if(jsonAction.get("PlayerMove").equals(Json.createValue("LEFT"))) {
                         action = new PlayerMove(Game.DIRECTION.LEFT);
-                    } else if(("" + jsonAction.get("PlayerMove")).equals("RIGHT")) {
+                        actions.add(action);
+                    } else if(jsonAction.get("PlayerMove").equals(Json.createValue("RIGHT"))) {
                         action = new PlayerMove(Game.DIRECTION.RIGHT);
+                        actions.add(action);
                     } else {
                         //should NEVER get to this point.
-                        throw new Exception("PlayerMove has no direction value.");
                     }
-                } /*else if(jsonAction.get("PlayerTileInteract") != null) {
-                    System.out.println(jsonAction.get("PlayerTileInteract").toString());  // Might not even be nessercary
-                }*/
-                //Add to array of actions
-                actions.add(action);
+                    //Add to array of actions
+                } else if(jsonAction.get("EnemyMove") != null) {
+                    int x = jsonAction.getInt("x");
+                    int y = jsonAction.getInt("y");
+                    if(jsonAction.get("EnemyMove").equals(Json.createValue("UP"))) {
+                        action = new EnemyMove(x, y, Game.DIRECTION.UP);
+                        actions.add(action);
+                    } else if(jsonAction.get("EnemyMove").equals(Json.createValue("DOWN"))) {
+                        action = new EnemyMove(x, y, Game.DIRECTION.DOWN);
+                        actions.add(action);
+                    } else if(jsonAction.get("EnemyMove").equals(Json.createValue("LEFT"))) {
+                        action = new EnemyMove(x, y, Game.DIRECTION.LEFT);
+                        actions.add(action);
+                    } else if(jsonAction.get("EnemyMove").equals(Json.createValue("RIGHT"))) {
+                        action = new EnemyMove(x, y, Game.DIRECTION.RIGHT);
+                        actions.add(action);
+                    } else {
+                        //should NEVER get to this point.
+                    }
+                }
             }
-
-            //Use array of actions and time stamp to create a "change" object
             Recorder.Change c = new Recorder.Change(actions, timeStamp);
             recordedChanges.add(c);
-
-            //Recorder.Change c = new Recorder.Change();
         }
+
+        levelLocation = obj.getInt("loadState");
     }
 
     /** GETTERS **/
@@ -125,10 +151,8 @@ public class Reader {
     public int getPlayerStartY() {
         return playerStartY;
     }
-    public ArrayList<EnemyBlueprint> getEnemies() {
-        return enemies;
+    public ArrayList<Position> getEnemies() {
+        return enemyStartPositions;
     }
-
-
-    /** HELPER METHODS **/
+    public int getLevelLocation() { return levelLocation; }
 }

@@ -40,7 +40,7 @@ public class Renderer extends JComponent {
      */
     public Renderer(Game game){
         stars = new HashSet<>();
-        audioPlayer = new AudioPlayer();
+        audioPlayer = new AudioPlayer(game);
         this.game = game;
         playerPrevPos = game.getPlayer().getPos();
         setPreferredSize(new Dimension(CANVAS_SIZE, CANVAS_SIZE));
@@ -72,7 +72,7 @@ public class Renderer extends JComponent {
 
         //Add a star
         if (tick % 5 == 0) {
-            Random random = new Random(); //Spotbugs told me this was more efficient that Math.random() then converting to int
+            Random random = new Random(); //Spotbugs told me this was more efficient than Math.random() then converting to int
             stars.add(new Star(0, random.nextInt(CANVAS_SIZE), random.nextInt(5) + 5, random.nextInt(5) + 5));
         }
 
@@ -80,7 +80,7 @@ public class Renderer extends JComponent {
         if (orientation != DIRECTION.NULL){
             audioPlayer.playSound("Step" + (int)(Math.random()*2 + 1));
         }
-        audioPlayer.playTileSound(board[playerX][playerY], game);
+        audioPlayer.playTileSound(board[playerX][playerY]);
 
         //Draw stuff
         drawStars(g2, orientation);
@@ -148,7 +148,8 @@ public class Renderer extends JComponent {
         for (int y = -4; y <= 4; y++) {
             for (int x = -4; x <= 4; x++) {
                 //If in board bounds
-                if (playerX + x >= 0 && playerY + y >= 0 && playerX + x < board.length && playerY + y < board[0].length){
+                if (playerX + x >= 0 && playerY + y >= 0 && playerX + x < board.length && playerY + y < board[0].length
+                    && board[playerX + x][playerY + y] != null){
                     g2.drawImage(board[playerX + x][playerY + y].getCurrentImage(),
                             (x+4) * IMAGE_SIZE, (y+4) * IMAGE_SIZE, this);
                 }
@@ -267,9 +268,10 @@ public class Renderer extends JComponent {
                 }
             }
         }
+        board[0][0] = null;
         board[13][1] = new ExitPortal();
-        board[12][1] = new ExitLock(false);
-        board[13][2] = new ExitLock(true);
+        board[12][1] = new ExitLock(true);
+        board[13][2] = new ExitLock(false);
         board[12][2] = new Wall();
         board[6][6] = new Key("Blue");
         board[1][7] = new LockedDoor(false, "Blue");

@@ -1,8 +1,11 @@
 package RecordAndReplay;
 
+import Maze.Board;
+import Maze.BoardObjects.Actors.AbstractActor;
+import Maze.BoardObjects.Actors.Player;
+import Maze.BoardObjects.Tiles.Key;
 import Maze.Position;
-import Persistence.EnemyBlueprint;
-import Persistence.Level;
+import Persistence.Persistence;
 import RecordAndReplay.Actions.Action;
 import RecordAndReplay.Actions.EnemyMove;
 import RecordAndReplay.Actions.PlayerMove;
@@ -28,7 +31,7 @@ public class Writer {
     /**
      * WRITES EVERYTHING IN JSON
      */
-    public void writeRecording(List<Recorder.Change> gameplay, Position pos, int level, int startRecordingTimeStamp, ArrayList<EnemyBlueprint> enemies) {
+    public void writeRecording(List<Recorder.Change> gameplay, Position pos, int level, int startRecordingTimeStamp, ArrayList<AbstractActor> enemies) {
         //All actions that take place, in Json.
         JsonObjectBuilder gameplayInJson = Json.createObjectBuilder();
 
@@ -46,14 +49,16 @@ public class Writer {
         //THIRD: Note down all the posistions of any enemies inside the level.
         int enemyCounter = 0;
         JsonObjectBuilder arrayOfEnemies = Json.createObjectBuilder();
-        for(EnemyBlueprint e : enemies) {
-            if(e == null) continue;
+        for(AbstractActor e : enemies) {
+            //if(e == null) continue;
             JsonObjectBuilder hostile = Json.createObjectBuilder();
-            hostile.add("EnemyNo", enemyCounter++);
+            System.out.println("x: " + e.getPos().getX());
+            System.out.println("y: " + e.getPos().getY());
+
             hostile.add("startX", e.getPos().getX());
             hostile.add("startY", e.getPos().getY());
 
-            arrayOfEnemies.add("" + enemyCounter, hostile);
+            arrayOfEnemies.add("" + enemyCounter++, hostile);
         }
 
         gameplayInJson.add("enemies", arrayOfEnemies);
@@ -90,24 +95,28 @@ public class Writer {
                             break;
                     }
                 }
-                //PLAYER INTERACTION
-                else if(a instanceof PlayerTileInteraction) {
-                    action.add("PlayerTileInteract", ((PlayerTileInteraction) a).getTileName());
-                }
                 //ENEMY MOVE
                 else if(a instanceof EnemyMove) {
                     switch (((EnemyMove) a).getDirection()) {
                         case UP:
-                            action.add("EnemyMove", ((EnemyMove) a).getX() + ":" + ((EnemyMove) a).getY() + "UP");
+                            action.add("EnemyMove", "UP");
+                            action.add("x", ((EnemyMove) a).getX());
+                            action.add("y", ((EnemyMove) a).getY());
                             break;
                         case DOWN:
-                            action.add("EnemyMove", ((EnemyMove) a).getX() + ":" + ((EnemyMove) a).getY() + "DOWN");
+                            action.add("EnemyMove", "DOWN");
+                            action.add("x", ((EnemyMove) a).getX());
+                            action.add("y", ((EnemyMove) a).getY());
                             break;
                         case LEFT:
-                            action.add("EnemyMove", ((EnemyMove) a).getX() + ":" + ((EnemyMove) a).getY() + "LEFT");
+                            action.add("EnemyMove", "LEFT");
+                            action.add("x", ((EnemyMove) a).getX());
+                            action.add("y", ((EnemyMove) a).getY());
                             break;
                         case RIGHT:
-                            action.add("EnemyMove", ((EnemyMove) a).getX() + ":" + ((EnemyMove) a).getY() + "RIGHT");
+                            action.add("EnemyMove", "RIGHT");
+                            action.add("x", ((EnemyMove) a).getX());
+                            action.add("y", ((EnemyMove) a).getY());
                             break;
                     }
                 }
@@ -116,8 +125,9 @@ public class Writer {
             changesCounter++;
             gameplayInJson.add("change" + changesCounter, changes);
         }
-        System.out.println("Changes: " + changesCounter);
         gameplayInJson.add("noChanges", changesCounter);
+
+        gameplayInJson.add("loadState", level);
 
         //Write to file
         try {
@@ -125,7 +135,7 @@ public class Writer {
             DateFormat dtf = new SimpleDateFormat("yyyyMMddHHmmss");
             String saveFileName = dtf.format(date) + "savedReplay.JSON";
 
-            OutputStream os = new FileOutputStream("nz.ac.vuw.ecs.swen225.gp20/RecordAndReplay/Saves/" + saveFileName);
+            OutputStream os = new FileOutputStream("SavedReplay/" + saveFileName);
             JsonWriter jsonWriter = Json.createWriter(os);
             jsonWriter.writeObject(gameplayInJson.build());
             jsonWriter.close();

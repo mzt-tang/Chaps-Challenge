@@ -7,21 +7,23 @@ import java.awt.*;
 /**
  * The lock to the room containing the exit portal,
  * unlocked when the player collects all of the treasures.
+ * @author michael tang 300490290
  */
 public class ExitLock extends AbstractTile {
 
     private boolean locked = true;
 
     /**
-     * .
+     * The Exitlock tile constructor.
+     * @param setVertical Sets the tile image to vertical if true
      */
     public ExitLock(boolean setVertical) {
         super(setVertical);
         images.put("ExitLockHorizontal", Toolkit.getDefaultToolkit().getImage("Resources/tiles/ExitLockHorizontal.jpeg"));
         images.put("ExitLockVertical", Toolkit.getDefaultToolkit().getImage("Resources/tiles/ExitLockVertical.jpeg"));
         images.put("FloorTile", Toolkit.getDefaultToolkit().getImage("Resources/tiles/FloorTile.jpeg"));
-        if(rotated) currentImage = images.get("ExitLockHorizontal");
-        else currentImage = images.get("ExitLockVertical");
+        if(rotated) currentImage = images.get("ExitLockVertical");
+        else currentImage = images.get("ExitLockHorizontal");
     }
 
     /**
@@ -44,10 +46,13 @@ public class ExitLock extends AbstractTile {
     public void unChange() {
         super.unChange();
         locked = true;
-        if(rotated) currentImage = images.get("ExitLockHorizontal");
-        else currentImage = images.get("ExitLockVertical");
+        if(rotated) currentImage = images.get("ExitLockVertical");
+        else currentImage = images.get("ExitLockHorizontal");
     }
 
+    /**
+     * Unlocks the exit lock
+     */
     public void unlock(){
         locked = false;
         currentImage = images.get("FloorTile");
