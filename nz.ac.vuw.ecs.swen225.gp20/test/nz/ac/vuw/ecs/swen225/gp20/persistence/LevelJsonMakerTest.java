@@ -39,6 +39,7 @@ public class LevelJsonMakerTest {
     
     //Turn the array into a JSON file, then load the JSON file into a level.
     Level testResult = makeJsonUtility(testArray);
+    assert (testResult.getEnemies().stream().allMatch(enemy -> enemy.equals(enemy)));
     assertEquals(FreeTile.class, testResult.getTileArray()[0][0].getClass());
   }
   

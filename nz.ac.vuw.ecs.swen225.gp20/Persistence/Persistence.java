@@ -4,6 +4,7 @@ import Maze.BoardObjects.Actors.AbstractActor;
 import Maze.BoardObjects.Actors.Player;
 import Maze.BoardObjects.Tiles.AbstractTile;
 import java.io.File;
+import java.io.IOException;
 import java.util.Set;
 
 
@@ -73,14 +74,15 @@ public class Persistence {
   public static boolean eraseSave(int levelNumber) {
     String saveString = "saves/level" + levelNumber + ".JSON";
     try {
-      File f = new File(saveString); // file to be delete
+      File f = new File(saveString); //file to be delete  
       if (f.delete()) {
         return true;
       } else {
+        System.out.println("Delete operation failed");
         return false;
       }
     } catch (Exception e) {
-      System.out.println(e);
+      e.printStackTrace();
       return false;
     }
   }

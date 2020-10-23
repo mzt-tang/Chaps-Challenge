@@ -7,6 +7,7 @@ import Maze.BoardObjects.Tiles.Treasure;
 import Maze.Position;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -134,6 +135,16 @@ public class SaveJsonReader {
         tileArray,
         loadedLevel.getEnemies()
     );
+    
+    //Close readers/streams.
+    try {
+      levelInputStream.close();
+    } catch (IOException e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
+    }
+    saveReader.close();
+    
     return returnLevel;
 
   }
