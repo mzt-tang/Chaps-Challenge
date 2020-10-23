@@ -5,6 +5,7 @@ import Maze.BoardObjects.Tiles.AbstractTile;
 import Maze.BoardObjects.Tiles.Key;
 import Maze.BoardObjects.Tiles.Treasure;
 import Maze.Position;
+import com.google.common.base.Preconditions;
 
 import java.awt.*;
 import java.util.*;
@@ -67,7 +68,7 @@ public class Player extends AbstractActor{
      * @param key The key to be picked up
      */
     public void pickupKey(Key key){
-        key.interact(this); //Makes sure the player interacts with that tile.
+        Preconditions.checkNotNull(key, "Key must not be null").interact(this); //Makes sure the player interacts with that tile.
         getKeys().add(key); //Adds the key to the player.
     }
 
@@ -102,7 +103,7 @@ public class Player extends AbstractActor{
      * @param treasure The treasure to be picked up.
      */
     public void pickupTreasure(Treasure treasure){
-        treasure.interact(this); //Makes sure the player interacts with that tile
+        Preconditions.checkNotNull(treasure, "Treasure must not be null").interact(this); //Makes sure the player interacts with that tile
         getTreasures().add(treasure); //Adds the treasure to the player
     }
 
@@ -113,7 +114,7 @@ public class Player extends AbstractActor{
      */
     @Override
     public void move(Player player, Board board) {
-
+        assert false : "Player move should never be called upon";
     }
 
     /**
@@ -121,6 +122,7 @@ public class Player extends AbstractActor{
      * @param player .
      */
     public void interact(Player player) {
+        assert false : "Player interact should never be called upon";
     }
 
     /**

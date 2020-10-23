@@ -15,7 +15,7 @@ import Persistence.Persistence;
  * @author Admin
  *
  */
-public class SaveJsonReaderTest {
+public class SaveJsonTest {
 
   /**
    * Try to read Level 1's save. Creates the save first with treasure.
@@ -124,7 +124,7 @@ public class SaveJsonReaderTest {
   }
   
   /**
-   * Try to read Level 1's save after deleting it.
+   * Try to read Level 1's save after deleting it, should equal null.
    */
   @Test
   public void testReadJson3() {
@@ -145,9 +145,8 @@ public class SaveJsonReaderTest {
     
     //try to load the save
     Level testResult = Persistence.loadGame(1);
-    
-    //The return value is not meant to be null.
-    assert (testResult != null);
+    //The return value is meant to be null, to indicate the save could not be loaded.
+    assertEquals(testResult, null);
   }
   
 

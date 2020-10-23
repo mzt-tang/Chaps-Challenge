@@ -1,6 +1,7 @@
 package Maze.BoardObjects.Tiles;
 
 import Maze.BoardObjects.Actors.Player;
+import com.google.common.base.Preconditions;
 
 import java.awt.*;
 
@@ -32,7 +33,7 @@ public class Treasure extends AbstractTile {
     @Override
     public boolean interact(Player player) {
         pickedUp = true;
-        player.getTreasures().add(this);
+        Preconditions.checkNotNull(player, "Player must not be null").getTreasures().add(this);
         currentImage = images.get("FloorTile");
         changed = true;
         return true;

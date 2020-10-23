@@ -1,6 +1,7 @@
 package Persistence;
 
 import Maze.BoardObjects.Actors.AbstractActor;
+import Maze.BoardObjects.Actors.PatternEnemy;
 import Maze.BoardObjects.Actors.Player;
 import Maze.BoardObjects.Tiles.AbstractTile;
 import Maze.BoardObjects.Tiles.Key;
@@ -95,6 +96,10 @@ public class SaveJsonMaker {
       enemyArrayObject.add("startingY", startingLoc.getY());
       enemyArrayObject.add("currentX", currentLoc.getX());
       enemyArrayObject.add("currentY", currentLoc.getY());
+      if(enemy instanceof PatternEnemy) {
+    	  PatternEnemy patternEnemy = (PatternEnemy) enemy;
+    	  enemyArrayObject.add("routeLastPosition", patternEnemy.getRoutePos());
+      }
       enemyArrayBuilder.add(enemyArrayObject.build());
     }
     

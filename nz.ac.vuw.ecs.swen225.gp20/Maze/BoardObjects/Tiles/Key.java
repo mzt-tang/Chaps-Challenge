@@ -1,6 +1,7 @@
 package Maze.BoardObjects.Tiles;
 
 import Maze.BoardObjects.Actors.Player;
+import com.google.common.base.Preconditions;
 
 import java.awt.*;
 
@@ -38,6 +39,7 @@ public class Key extends AbstractTile {
      */
     @Override
     public boolean interact(Player player) {
+        Preconditions.checkArgument(player != null, "Player must not be null");
         if(!pickedUp) {
             player.getKeys().add(this);
             pickedUp = true;

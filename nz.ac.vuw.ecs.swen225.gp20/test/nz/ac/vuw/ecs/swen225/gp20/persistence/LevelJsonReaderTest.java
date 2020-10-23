@@ -24,7 +24,7 @@ public class LevelJsonReaderTest {
   @Test
   public void testMakeJson1() {
     Level testResult = Persistence.getLevel(1);
-    assertEquals(InfoField.class, testResult.getTileArray()[8][6].getClass());
+    assertEquals(InfoField.class, testResult.getTileArray()[7][5].getClass());
   }
 
   /**

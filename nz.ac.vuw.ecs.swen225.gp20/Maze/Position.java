@@ -1,5 +1,7 @@
 package Maze;
 
+import com.google.common.base.Preconditions;
+
 import java.util.Objects;
 
 /**
@@ -28,6 +30,7 @@ public class Position {
      * @param direction The direction to move to.
      */
     public Position(Position position, Game.DIRECTION direction) {
+        Preconditions.checkArgument(position != null, "Position must not be null");
         switch (direction) {
             case UP:
                 this.x = position.getX();

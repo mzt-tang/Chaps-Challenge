@@ -4,8 +4,10 @@ import Maze.Board;
 import Maze.BoardObjects.Tiles.*;
 import Maze.Game;
 import Maze.Position;
+import com.google.common.base.Preconditions;
 
 import java.awt.*;
+import java.lang.reflect.Array;
 
 /**
  * An actor that follows a specific pattern/route defined by it's constructor parameter.
@@ -25,6 +27,12 @@ public class PatternEnemy extends AbstractActor{
     public PatternEnemy(Position position, int tickRate, String routeStr) {
         super(position, tickRate);
         this.route = routeStr.toCharArray();
+        for(int i = 0; i < this.route.length; i++){
+            Preconditions.checkArgument(this.route[i] == 'w' ||
+                    this.route[i] == 'a' ||
+                    this.route[i] == 's' ||
+                    this.route[i] == 'd', "String must only contain w,a,s,d");
+        }
         images.put("Enemy1", Toolkit.getDefaultToolkit().getImage("Resources/actors/Enemy1.png"));
         images.put("Enemy1Flipped", Toolkit.getDefaultToolkit().getImage("Resources/actors/Enemy1Flipped.png"));
         currentImage = images.get("Enemy1");
@@ -52,7 +60,7 @@ public class PatternEnemy extends AbstractActor{
                 currentImage = images.get("Enemy1"); //Changes the actor image direction
                 break;
             default:
-                throw new IllegalStateException("Unexpected direction: " + direction);
+                throw new IllegalStateException("Unexpected direction/letter: " + direction);
         }
 
         assert (newPos.getX() >= 0 &&
@@ -96,4 +104,11 @@ public class PatternEnemy extends AbstractActor{
         else routePos++;
     }
 
+    public int getRoutePos() {
+        return routePos;
+    }
+
+    public void setRoutePos(int routePos) {
+        this.routePos = routePos;
+    }
 }

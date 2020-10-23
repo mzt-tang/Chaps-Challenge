@@ -1,6 +1,7 @@
 package Maze.BoardObjects.Tiles;
 
 import Maze.BoardObjects.Actors.Player;
+import com.google.common.base.Preconditions;
 
 import java.awt.*;
 
@@ -46,6 +47,7 @@ public class LockedDoor extends AbstractTile {
      */
     @Override
     public boolean interact(Player player) {
+        Preconditions.checkArgument(player != null, "Player must not be null");
         if(!player.hasKey(colour) && locked){ //If the door's locked and player doesn't have key
             return false;
         } else if(!locked){ //If the door is unlocked

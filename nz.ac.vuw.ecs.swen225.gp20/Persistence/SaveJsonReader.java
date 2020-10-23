@@ -1,12 +1,14 @@
 package Persistence;
 
 import Maze.BoardObjects.Actors.AbstractActor;
+import Maze.BoardObjects.Actors.PatternEnemy;
 import Maze.BoardObjects.Tiles.AbstractTile;
 import Maze.BoardObjects.Tiles.Key;
 import Maze.BoardObjects.Tiles.Treasure;
 import Maze.Position;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -84,11 +86,15 @@ public class SaveJsonReader {
       Position startingPos = new Position(startingX, startingY);
 
       AbstractActor currentEnemy = findEnemy(startingPos, loadedLevel.getEnemies());
-
       if (currentEnemy == null) {
         System.out.println("ORIGINAL ENEMY NOT FOUND");
       } else {
         currentEnemy.setPos(newPos);
+        if(currentEnemy instanceof PatternEnemy) {
+          int routePos = currentEnemyJson.getInt("routeLastPosition");
+      	  PatternEnemy currentPatternEnemy = (PatternEnemy) currentEnemy;
+      	  currentPatternEnemy.setRoutePos(routePos);
+        }
       }
     }
    
@@ -134,6 +140,16 @@ public class SaveJsonReader {
         tileArray,
         loadedLevel.getEnemies()
     );
+    
+    //Close readers/streams.
+    try {
+      levelInputStream.close();
+    } catch (IOException e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
+    }
+    saveReader.close();
+    
     return returnLevel;
 
   }
