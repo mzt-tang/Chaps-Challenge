@@ -327,7 +327,7 @@ public class ChapsChallenge extends JFrame {
                 timeLabel.setFont(new Font("VCR OSD Mono", Font.BOLD, fontSize));
                 timeLabel.setText("TIME REMAINING: \n" + timeRemaining);
                 //set it to red when it's half-time
-                if (timeRemaining <= currentLevel.getTime()/2) {
+                if (timeRemaining <= Persistence.getLevel(levelCount).getTime()/2) {
                     timeLabel.setForeground(Color.RED);
                 }
                 else {
