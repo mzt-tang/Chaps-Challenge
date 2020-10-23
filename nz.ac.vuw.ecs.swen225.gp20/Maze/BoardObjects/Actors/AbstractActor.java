@@ -7,6 +7,8 @@ import java.awt.*;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.google.common.base.Preconditions;
+
 /**
  * A abstract class that represents any movable objects on the board.
  * @author michael tang 300490290

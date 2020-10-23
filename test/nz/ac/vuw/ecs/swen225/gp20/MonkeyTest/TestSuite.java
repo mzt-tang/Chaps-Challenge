@@ -30,7 +30,7 @@ public class TestSuite {
 	/**
 	 * A method to generate non-intelligent random input, each movement has an equal chance of being called each iteration
 	 */
-	@Test public void randomMovement() {				
+ public void randomMovement() {				
 		Random ran = new Random();
 		float num = ran.nextFloat();
 
@@ -43,9 +43,6 @@ public class TestSuite {
 	/**
 	 * A method to generate intelligent input, will move the player towards a predefined goal
 	 */
-	@Test public void intelligentMovement() { 
-
-	}
 
 
 
