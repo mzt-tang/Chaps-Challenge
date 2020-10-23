@@ -664,7 +664,9 @@ public class ChapsChallenge extends JFrame {
             //player completes final level
             else {
                 JOptionPane.showMessageDialog(null, "You have successfully completed all levels!", "Game Completed", JOptionPane.INFORMATION_MESSAGE);
-                System.exit(0);
+                killThreads();
+                dispose();
+                EventQueue.invokeLater(StartMenu::new);
             }
         }
     }
