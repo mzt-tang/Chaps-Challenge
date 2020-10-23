@@ -7,6 +7,7 @@ import java.awt.*;
 /**
  * The lock to the room containing the exit portal,
  * unlocked when the player collects all of the treasures.
+ * @author michael tang 300490290
  */
 public class ExitLock extends AbstractTile {
 

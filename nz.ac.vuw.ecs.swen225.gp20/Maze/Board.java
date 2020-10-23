@@ -4,6 +4,7 @@ import Maze.BoardObjects.Tiles.AbstractTile;
 
 /**
  * The Board class containing the map array of tiles.
+ * @author michael tang 300490290
  */
 public class Board {
 

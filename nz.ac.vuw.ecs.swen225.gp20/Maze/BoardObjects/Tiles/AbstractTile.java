@@ -10,6 +10,7 @@ import java.util.Map;
  * An implementation of the Tile interface,
  * all other tiles object will use the methods
  * within this abstract class.
+ * @author michael tang 300490290
  */
 public abstract class AbstractTile {
 

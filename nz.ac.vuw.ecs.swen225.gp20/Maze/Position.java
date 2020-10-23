@@ -5,6 +5,7 @@ import java.util.Objects;
 /**
  * A class containing a x and y position
  * used for any board objects
+ * @author michael tang 300490290
  */
 public class Position {
     private int x, y;

@@ -6,6 +6,7 @@ import java.awt.*;
 
 /**
  * The exit portal, which indicates the end goal of a stage
+ * @author michael tang 300490290
  */
 public class ExitPortal extends AbstractTile {
     /**

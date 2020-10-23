@@ -7,6 +7,7 @@ import java.awt.*;
 /**
  * The treasure tile of the game. ALl treasures tiles must be picked
  * up before the exit locks unlock.
+ * @author michael tang 300490290
  */
 public class Treasure extends AbstractTile {
 

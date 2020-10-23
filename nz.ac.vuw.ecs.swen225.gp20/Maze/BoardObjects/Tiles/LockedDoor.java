@@ -7,6 +7,7 @@ import java.awt.*;
 /**
  * The locked door tile of the game
  * Unlocked with the matching key colour.
+ * @author michael tang 300490290
  */
 public class LockedDoor extends AbstractTile {
 

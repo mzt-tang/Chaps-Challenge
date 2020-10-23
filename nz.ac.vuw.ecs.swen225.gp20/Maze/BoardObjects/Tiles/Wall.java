@@ -6,6 +6,7 @@ import java.awt.*;
 
 /**
  * The wall tile of the game. block the player from walking to places
+ * @author michael tang 300490290
  */
 public class Wall extends AbstractTile {
 
