@@ -23,7 +23,7 @@ public class StartMenu extends JFrame {
     private final int WINDOW_WIDTH = 950;
     private final int WINDOW_HEIGHT = 750;
 
-    public static int lastLevel = 1; //level 1 by default unless specified
+    protected static int lastLevel = 1; //level 1 by default unless specified
     private Level lastSavedLevel; //last saved level
 
     private int startMode; // 0 = default, 1 = start from last level, 2 = start from saved level

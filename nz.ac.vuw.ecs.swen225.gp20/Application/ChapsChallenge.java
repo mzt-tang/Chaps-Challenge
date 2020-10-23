@@ -265,25 +265,21 @@ public class ChapsChallenge extends JFrame {
                     if (!e.isControlDown()) {
                         //up
                         if (e.getKeyCode() == KeyEvent.VK_W || e.getKeyCode() == KeyEvent.VK_UP) {
-                            System.out.println("Up");
                             movementRecordHelper(Game.DIRECTION.UP);
                             game.movePlayer(Game.DIRECTION.UP);
                         }
                         //left
                         else if (e.getKeyCode() == KeyEvent.VK_A || e.getKeyCode() == KeyEvent.VK_LEFT) {
-                            System.out.println("Left");
                             movementRecordHelper(Game.DIRECTION.LEFT);
                             game.movePlayer(Game.DIRECTION.LEFT);
                         }
                         //down
                         else if (e.getKeyCode() == KeyEvent.VK_S || e.getKeyCode() == KeyEvent.VK_DOWN) {
-                            System.out.println("Down");
                             movementRecordHelper(Game.DIRECTION.DOWN);
                             game.movePlayer(Game.DIRECTION.DOWN);
                         }
                         //right
                         else if (e.getKeyCode() == KeyEvent.VK_D || e.getKeyCode() == KeyEvent.VK_RIGHT) {
-                            System.out.println("Right");
                             movementRecordHelper(Game.DIRECTION.RIGHT);
                             game.movePlayer(Game.DIRECTION.RIGHT);
                         } else {
@@ -634,7 +630,7 @@ public class ChapsChallenge extends JFrame {
         if (isPaused) {
             JOptionPane optionPane = new JOptionPane();
             optionPane.setMessageType(JOptionPane.INFORMATION_MESSAGE);
-            optionPane.setMessage("Press ESC to unpause the game.");
+            optionPane.setMessage("Press esc to resume the game.");
             JDialog dialog = optionPane.createDialog(null, "Game Paused");
             dialog.addWindowListener(new WindowAdapter() {
                 @Override
@@ -656,22 +652,6 @@ public class ChapsChallenge extends JFrame {
      */
     public Game getGame() {
         return game;
-    }
-
-    /**
-     * Getter for gameplay panel
-     * @return gameplayPanel
-     */
-    public JPanel getGameplayPanel() {
-        return gameplayPanel;
-    }
-
-    /**
-     * Getter for info panel
-     * @return infoPanel
-     */
-    public JPanel getInfoPanel() {
-        return infoPanel;
     }
 
     /**
