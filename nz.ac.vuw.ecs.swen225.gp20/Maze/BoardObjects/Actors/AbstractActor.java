@@ -2,11 +2,12 @@ package Maze.BoardObjects.Actors;
 
 import Maze.Board;
 import Maze.Position;
-import com.google.common.base.Preconditions;
 
 import java.awt.*;
 import java.util.HashMap;
 import java.util.Map;
+
+import com.google.common.base.Preconditions;
 
 /**
  * A abstract class that represents any movable objects on the board.

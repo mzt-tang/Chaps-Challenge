@@ -4,6 +4,8 @@ import Maze.Game;
 
 /**
  * The action type of the player moving.
+ *
+ * @author Jeremiah Choi 300474835
  */
 public class PlayerMove extends Action {
     private Game.DIRECTION direction;

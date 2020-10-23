@@ -15,6 +15,8 @@ import java.util.Set;
 
 /**
  * This handles all the recording that needs to take place in the game.
+ *
+ * @author Jeremiah Choi 300474835
  */
 public class Recorder {
     private List<Change> recordedChanges;

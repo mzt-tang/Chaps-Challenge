@@ -4,7 +4,8 @@ import Maze.BoardObjects.Tiles.*;
 
 /**
  * The action type of the player interacting with a tile.
- * NOTE: DEPRECIATED.
+ *
+ * @author Jeremiah Choi 300474835
  */
 public class PlayerTileInteraction extends Action {
     private AbstractTile tile;

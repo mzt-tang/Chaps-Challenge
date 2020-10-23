@@ -1,6 +1,5 @@
 package Maze;
 
-import com.google.common.base.Preconditions;
 import Maze.BoardObjects.Actors.AbstractActor;
 import Maze.BoardObjects.Actors.Player;
 import Maze.BoardObjects.Tiles.*;
@@ -8,6 +7,8 @@ import Maze.BoardObjects.Tiles.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
+
+import com.google.common.base.Preconditions;
 
 /**
  * The Game class, which stores all of the game's information and player movement logic.
