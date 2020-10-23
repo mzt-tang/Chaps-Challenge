@@ -1896,14 +1896,14 @@
                 "startingX": 1,
                 "startingY": 7,
                 "AI Type": "StalkerEnemy",
-                "Tick Speed": 10,
+                "Tick Speed": 15,
                 "Movement String": "PLACEHOLDER - USED FOR MOVEMENT OF PATTERNENEMY. FORMAT IS wasd eg: wassawdws"
             },
             {
                 "startingX": 38,
                 "startingY": 7,
                 "AI Type": "StalkerEnemy",
-                "Tick Speed": 10,
+                "Tick Speed": 15,
                 "Movement String": "PLACEHOLDER - USED FOR MOVEMENT OF PATTERNENEMY. FORMAT IS wasd eg: wassawdws"
             }
         ]
