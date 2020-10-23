@@ -1,15 +1,10 @@
 package RecordAndReplay;
 
-import Maze.Board;
 import Maze.BoardObjects.Actors.AbstractActor;
-import Maze.BoardObjects.Actors.Player;
-import Maze.BoardObjects.Tiles.Key;
 import Maze.Position;
-import Persistence.Persistence;
 import RecordAndReplay.Actions.Action;
 import RecordAndReplay.Actions.EnemyMove;
 import RecordAndReplay.Actions.PlayerMove;
-import RecordAndReplay.Actions.PlayerTileInteraction;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -23,13 +18,13 @@ import java.util.List;
 import javax.json.*;
 
 /**
- * ONLY ACCESSED THROUGH RecordAndReplay.java
+ * The writer object is responsible for writing all recorded data into a JSON file.
  */
 public class Writer {
     public Writer() {}
 
     /**
-     * WRITES EVERYTHING IN JSON
+     * Write everything needed to replay to a json file.
      */
     public void writeRecording(List<Recorder.Change> gameplay, Position pos, int level, int startRecordingTimeStamp, ArrayList<AbstractActor> enemies) {
         //All actions that take place, in Json.

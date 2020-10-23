@@ -3,6 +3,7 @@ package Maze.BoardObjects.Actors;
 import Maze.Board;
 import Maze.BoardObjects.Tiles.*;
 import Maze.Position;
+import com.google.common.base.Preconditions;
 
 import java.awt.*;
 import java.util.*;
@@ -33,6 +34,8 @@ public class StalkerEnemy extends AbstractActor {
      */
     @Override
     public void move(Player player, Board board) {
+        Preconditions.checkNotNull(player, "Player must not be null");
+        Preconditions.checkNotNull(board, "board must not be null");
         if(player.getKeys().isEmpty() && player.getTreasures().isEmpty()){
             return;
         }
@@ -72,6 +75,8 @@ public class StalkerEnemy extends AbstractActor {
      * @return Returns a Fringe that contains previous Fringes leading back to this (from the player)
      */
     private Fringe findPath(Player player, Board board) {
+        Preconditions.checkNotNull(player, "Player must not be null");
+        Preconditions.checkNotNull(board, "board must not be null");
         Queue<Fringe> fringeQueue = new ArrayDeque<>(); //A Queue to search through all the tiles
         fringeQueue.offer(new Fringe(board.getMap()[position.getX()][position.getY()], null));  //Give the
         // actor's current position to find to the player
@@ -107,6 +112,7 @@ public class StalkerEnemy extends AbstractActor {
      */
     @Override
     public void interact(Player player) {
+        Preconditions.checkNotNull(player, "Player must not be null");
         if(!player.getKeys().isEmpty()){
             List<Key> keys = player.getKeys();
             Key key = keys.get(0);
@@ -133,6 +139,8 @@ public class StalkerEnemy extends AbstractActor {
      *         can set up the rules of where this actor can and can't go
      */
     private Set<AbstractTile> findNeighbours(AbstractTile tile, Board board) {
+        Preconditions.checkNotNull(board, "board must not be null");
+        Preconditions.checkNotNull(tile, "tile must not be null");
         AbstractTile[][] map = board.getMap();
         Position position = board.findPosInBoard(tile);
 

@@ -2,6 +2,7 @@ package Maze.BoardObjects.Tiles;
 
 import Maze.BoardObjects.Actors.Player;
 import Maze.Position;
+import com.google.common.base.Preconditions;
 
 import java.awt.*;
 
@@ -31,7 +32,7 @@ public class DeathTile extends AbstractTile {
      */
     @Override
     public boolean interact(Player player) {
-        Position pos = player.getPos();
+        Position pos = Preconditions.checkNotNull(player, "Player must not be null").getPos();
         pos.setPosition(player.getStartingPos());
         return false;
     }

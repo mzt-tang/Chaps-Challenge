@@ -1,5 +1,6 @@
 package Maze;
 
+import com.google.common.base.Preconditions;
 import Maze.BoardObjects.Actors.AbstractActor;
 import Maze.BoardObjects.Actors.Player;
 import Maze.BoardObjects.Tiles.*;
@@ -34,10 +35,9 @@ public class Game {
      * @param computerPlayers The enemies of the game.
      */
     public Game(Board board, Player player, Set<AbstractActor> computerPlayers) {
-        //GUI calls the persistence and sends the Game object the necessary files
-        this.board = board;
-        this.player = player;
-        this.computerPlayers = computerPlayers;
+        this.board = Preconditions.checkNotNull(board, "Board must not be null");
+        this.player = Preconditions.checkNotNull(player, "Player must not be null");
+        this.computerPlayers = Preconditions.checkNotNull(computerPlayers, "ComputerPlayer must not be null");
 
         for(int i = 0; i < this.computerPlayers.size(); i++){
             tickTiming.add(0);

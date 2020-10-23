@@ -1,6 +1,7 @@
 package Maze.BoardObjects.Tiles;
 
 import Maze.BoardObjects.Actors.Player;
+import com.google.common.base.Preconditions;
 
 import java.awt.*;
 
@@ -21,6 +22,7 @@ public class Key extends AbstractTile {
      */
     public Key(String colour) {
         super(false);
+        Preconditions.checkArgument(colour == "Red" || colour == "Green" || colour == "Blue", "Colour must be Red, Green or Blue");
         this.colour = colour;
         images.put("SwipeCardBlue", Toolkit.getDefaultToolkit().getImage("Resources/tiles/SwipeCardBlue.jpeg"));
         images.put("SwipeCardGreen", Toolkit.getDefaultToolkit().getImage("Resources/tiles/SwipeCardGreen.jpeg"));
@@ -38,6 +40,7 @@ public class Key extends AbstractTile {
      */
     @Override
     public boolean interact(Player player) {
+        Preconditions.checkArgument(player != null, "Player must not be null");
         if(!pickedUp) {
             player.getKeys().add(this);
             pickedUp = true;

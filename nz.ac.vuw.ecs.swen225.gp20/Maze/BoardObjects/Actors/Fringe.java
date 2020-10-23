@@ -1,6 +1,7 @@
 package Maze.BoardObjects.Actors;
 
 import Maze.BoardObjects.Tiles.AbstractTile;
+import com.google.common.base.Preconditions;
 
 /**
  * A fringe used for pathfinding of the stalker enemy.
@@ -14,11 +15,11 @@ public class Fringe {
     /**
      * THe constructor of the fringe containing a current tile
      * and its previous Fringe.
-     * @param current THe tile its holding
+     * @param current The tile its holding
      * @param previous THe fringe preceding this fringe.
      */
     public Fringe(AbstractTile current, Fringe previous){
-        this.current = current;
+        this.current = Preconditions.checkNotNull(current, "Tiles must not be null");
         this.previous = previous;
     }
 

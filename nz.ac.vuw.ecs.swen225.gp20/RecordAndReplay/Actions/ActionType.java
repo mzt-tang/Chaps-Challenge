@@ -1,21 +1,29 @@
 package RecordAndReplay.Actions;
 
-import RecordAndReplay.RecordAndReplay;
-
 /**
- * Just to avoid spaghetti code.
+ * Created to avoid spaghetti code later.
  * This is the list of changes that can occur on the level.
- * A player could move, a creature could move, a map could change.
+ * A player could move or an enemy could move
  *
  * An "actiontype" is an action that can spark multiple functions (ie: checks to see if creature attacks player)
  *
  */
 public enum ActionType {
-    PLAYERACTION("playerAction"), ENEMYACTION("enemyAction"), MAPACTION("mapAction");
+    PLAYERACTION("playerAction"), ENEMYACTION("enemyAction");
 
     private String asString;
+
+    /**
+     * Basic constructor
+     * @param asString This enum as a string.
+     */
     ActionType(String asString) {
-        this.asString = asString; //to make it easier to write n stuff
+        this.asString = asString;
     }
+
+    /**
+     * Return this enum's string value.
+     * @return .
+     */
     public String getString() { return asString; }
 }
