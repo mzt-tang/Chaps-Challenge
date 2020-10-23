@@ -60,24 +60,6 @@ public class RecordAndReplay<E> {
     private ArrayList<AbstractActor> enemies;
 
     /**
-     * Constructor with level parameter
-     * @param level The level number which is associated with the RecordAndReplayer
-
-    public RecordAndReplay(int level, Set<AbstractActor> enemies, int j) {
-        recorder = new Recorder();
-        writer = new Writer();
-        replayer = new Replayer();
-        reader = new Reader();
-        recordingSwitch = false;
-        this.level = level;
-        this.enemies = new ArrayList<AbstractActor>();
-
-        for(AbstractActor e : enemies) {
-            this.enemies.add(e);
-        }
-    }*/
-
-    /**
      * Parameterless constructor.
      */
     public RecordAndReplay(ChapsChallenge application) {
@@ -133,7 +115,7 @@ public class RecordAndReplay<E> {
 
     //=====SAVING=====//  AKA WRITING
     //All functions to do with creating a save via JSON is here.
-    public void saveGameplay(int remainingTime, Player player, Set<AbstractActor> enemies, AbstractTile[][] tiles) {
+    public void saveGameplay(int remainingTime, Player player, Set<AbstractActor> enemies2, AbstractTile[][] tiles) {
         ArrayList<AbstractActor> enemyList = new ArrayList<AbstractActor>();
         for(AbstractActor e : enemies) {
             enemyList.add(e);
@@ -167,8 +149,9 @@ public class RecordAndReplay<E> {
         }
     }
 
-    //=====PLAYING=====//
-    //All functions to do with replaying, forward or backwards.
+    /**
+     *
+     */
     public void prepReplayer() {
         replayer.setRecordedChanges(reader.getRecordedChanges());
         replayer.setLevel(reader.getLevel());
@@ -209,6 +192,7 @@ public class RecordAndReplay<E> {
     public void setEnemies(Set<AbstractActor> enemies) {
         ArrayList<AbstractActor> e = new ArrayList<AbstractActor>();
         for(AbstractActor a : enemies) {
+            System.out.println("X: " + a.getPos().getX() + ": " + a.getPos().getY());
             e.add(a);
         }
         this.enemies = e;

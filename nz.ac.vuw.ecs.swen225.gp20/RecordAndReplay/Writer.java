@@ -52,6 +52,9 @@ public class Writer {
         for(AbstractActor e : enemies) {
             //if(e == null) continue;
             JsonObjectBuilder hostile = Json.createObjectBuilder();
+            System.out.println("x: " + e.getPos().getX());
+            System.out.println("y: " + e.getPos().getY());
+
             hostile.add("startX", e.getPos().getX());
             hostile.add("startY", e.getPos().getY());
 
@@ -132,7 +135,7 @@ public class Writer {
             DateFormat dtf = new SimpleDateFormat("yyyyMMddHHmmss");
             String saveFileName = dtf.format(date) + "savedReplay.JSON";
 
-            OutputStream os = new FileOutputStream("SavedReplay/" +saveFileName);
+            OutputStream os = new FileOutputStream("SavedReplay/" + saveFileName);
             JsonWriter jsonWriter = Json.createWriter(os);
             jsonWriter.writeObject(gameplayInJson.build());
             jsonWriter.close();

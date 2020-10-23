@@ -68,11 +68,12 @@ public class Recorder {
             //===Calculate directions here===//
             Game.DIRECTION direction = null;
             //FIRST find the positions
-            Position preMovePos = preMoveEnemies.get(i);//.getPos();
+            Position preMovePos = preMoveEnemies.get(i);
+
             int preMoveX = preMovePos.getX();
             int preMoveY = preMovePos.getY();
 
-            Position postMovePos = postMoveEnemies.get(i);//.getPos();
+            Position postMovePos = postMoveEnemies.get(i);
             int postMoveX = postMovePos.getX();
             int postMoveY = postMovePos.getY();
 
