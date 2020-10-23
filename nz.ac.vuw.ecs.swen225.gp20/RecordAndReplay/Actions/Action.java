@@ -1,7 +1,5 @@
 package RecordAndReplay.Actions;
 
-import RecordAndReplay.RecordAndReplay;
-
 /**
  * A Action object associates itself with a single action or change that takes place in the game.
  * The record and replaying part reads and applies an array of these at once.
@@ -9,14 +7,26 @@ import RecordAndReplay.RecordAndReplay;
  */
 public abstract class Action {
     ActionType type;
-    //Maze.Game.DIRECTION direction; NOTE TO SELF: dont worry about this yet, go to ActionType to see the full note.
 
+    /**
+     * Basic constructor.
+     * @param type The type this action is associated with.
+     */
     public Action(ActionType type) {
         this.type = type;
     }
 
+    /**
+     * Change the type this action is associated with.
+     * @param type .
+     */
     public void setType(ActionType type) {
         this.type = type;
     }
+
+    /**
+     * Get the type this action is associated with.
+     * @return .
+     */
     public ActionType getType() { return type; }
 }
