@@ -18,12 +18,15 @@ import java.util.Set;
 public class AudioPlayer {
     private final Map<String, Clip> sounds;
     private final Set<AbstractTile> usedTiles; //This assumes all tiles can only make sounds once
+    private final Game game;
 
     /**
      * Creates an audio player, loads audio files from
      * the directory /Resources/audio
+     * @param game the game.
      */
-    public AudioPlayer() {
+    public AudioPlayer(Game game) {
+        this.game = game;
         sounds = new HashMap<>();
         usedTiles = new HashSet<>();
 
@@ -42,6 +45,15 @@ public class AudioPlayer {
                 e.printStackTrace();
             }
         }
+
+        for (AbstractTile[] row : game.getBoard().getMap()){
+            for (AbstractTile tile : row){
+                if (tile == null) continue;
+                if (tile.isChanged()){
+                    usedTiles.add(tile);
+                }
+            }
+        }
     }
 
     /**
@@ -49,9 +61,8 @@ public class AudioPlayer {
      * player is standing on and play the associated sound. As long
      * as it hasn't been played already
      * @param tile Tile that the player is standing on
-     * @param game The game
      */
-    public void playTileSound(AbstractTile tile, Game game){
+    public void playTileSound(AbstractTile tile){
         if (usedTiles.contains(tile)) return;
         if (tile instanceof LockedDoor){
             playSound("SwipeGood");

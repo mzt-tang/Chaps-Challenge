@@ -1,6 +1,7 @@
 package RecordAndReplay;
 
 import Maze.BoardObjects.Actors.AbstractActor;
+import Maze.BoardObjects.Actors.PatternEnemy;
 import Maze.Game;
 import Maze.Position;
 import RecordAndReplay.Actions.Action;
@@ -43,8 +44,8 @@ public class Reader {
     private int startRecordingTimeStamp;
     private int playerStartX;
     private int playerStartY;
-    private ArrayList<AbstractActor> enemies; //ONLY USED FOR ENEMY LOCATIONS
-    private String levelLocation;
+    private ArrayList<Position> enemyStartPositions = new ArrayList<>(); //ONLY USED FOR ENEMY LOCATIONS
+    private int levelLocation;
 
     public Reader() {
         //empty constructor
@@ -64,7 +65,14 @@ public class Reader {
         JsonObject playerPos = obj.getJsonObject("playerPos");
         playerStartX = playerPos.getInt("startX");
         playerStartY = playerPos.getInt("startY");
-        //Insert something to do with enemies HERE
+
+        JsonObject enemyStartPos = obj.getJsonObject("enemies");
+        for(int i = 0; i < enemyStartPos.size(); i++) {
+            JsonObject pos = enemyStartPos.getJsonObject("" + i);
+            Position p = new Position(pos.getInt("startX"), pos.getInt("startY"));
+            System.out.println(i + ": x=" + p.getX() + "| y=" + p.getY());
+            enemyStartPositions.add(p);
+        }
 
         //CHANGE ARRAY!!!
         int noChanges = obj.getInt("noChanges");
@@ -124,7 +132,7 @@ public class Reader {
             recordedChanges.add(c);
         }
 
-        levelLocation = String.valueOf(obj.get("loadState"));
+        levelLocation = obj.getInt("loadState");
     }
 
     /** GETTERS **/
@@ -143,11 +151,8 @@ public class Reader {
     public int getPlayerStartY() {
         return playerStartY;
     }
-    public ArrayList<AbstractActor> getEnemies() {
-        return enemies;
+    public ArrayList<Position> getEnemies() {
+        return enemyStartPositions;
     }
-    public String getLevelLocation() { return levelLocation; }
-
-
-    /** HELPER METHODS **/
+    public int getLevelLocation() { return levelLocation; }
 }

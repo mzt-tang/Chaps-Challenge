@@ -29,7 +29,7 @@ public class StartMenu extends JFrame {
     private int startMode; // 0 = default, 1 = start from last level, 2 = start from saved level
 
     /**
-     * Constructs the start menu
+     * Constructs the start menu.
      */
     public StartMenu(){
         this.startMode = 0;
@@ -39,13 +39,13 @@ public class StartMenu extends JFrame {
 
     /**
      * Constructs the start menu.
-     * When the start button is pressed, the game still start from the last unfinished level
+     * When the start button is pressed, the game still start from the last unfinished level.
      *
      * @param lastLevel The last unfinished level
      */
     public StartMenu(int lastLevel){
         this.startMode = 1;
-        this.lastLevel = lastLevel;
+        StartMenu.lastLevel = lastLevel;
 
         initUI();
         setVisible(true);
@@ -53,7 +53,7 @@ public class StartMenu extends JFrame {
 
     /**
      * Constructs the start menu.
-     * When the start button is pressed, the game still start from the given saved level
+     * When the start button is pressed, the game still start from the given saved level.
      *
      * @param lastSavedLevel Last saved level
      */
@@ -65,9 +65,8 @@ public class StartMenu extends JFrame {
         setVisible(true);
     }
 
-
     /**
-     * Initializes window properties and sets the clickable areas
+     * Initializes window properties and sets the clickable areas.
      */
     public void initUI(){
         setTitle("Chap's Challenge: Among Us Edition");
@@ -82,6 +81,7 @@ public class StartMenu extends JFrame {
             e.printStackTrace();
         }
 
+        //Define the clickable areas on the screen
         this.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {

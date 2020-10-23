@@ -1,5 +1,6 @@
 package RecordAndReplay;
 
+import Application.ChapsChallenge;
 import Maze.Board;
 import Maze.BoardObjects.Actors.AbstractActor;
 import Maze.BoardObjects.Actors.Player;
@@ -14,6 +15,7 @@ import Persistence.*;
 import javax.swing.*;
 import java.io.File;
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -58,30 +60,12 @@ public class RecordAndReplay<E> {
     private ArrayList<AbstractActor> enemies;
 
     /**
-     * Constructor with level parameter
-     * @param level The level number which is associated with the RecordAndReplayer
-     */
-    public RecordAndReplay(int level, Set<AbstractActor> enemies) {
-        recorder = new Recorder();
-        writer = new Writer();
-        replayer = new Replayer();
-        reader = new Reader();
-        recordingSwitch = false;
-        this.level = level;
-        this.enemies = new ArrayList<AbstractActor>();
-
-        for(AbstractActor e : enemies) {
-            this.enemies.add(e);
-        }
-    }
-
-    /**
      * Parameterless constructor.
      */
-    public RecordAndReplay() {
+    public RecordAndReplay(ChapsChallenge application) {
         recorder = new Recorder();
         writer = new Writer();
-        replayer = new Replayer();
+        replayer = new Replayer(application);
         reader = new Reader();
         recordingSwitch = false;
     }
@@ -131,13 +115,11 @@ public class RecordAndReplay<E> {
 
     //=====SAVING=====//  AKA WRITING
     //All functions to do with creating a save via JSON is here.
-    public void saveGameplay(int remainingTime, Player player, Set<AbstractActor> enemies, AbstractTile[][] tiles) {
+    public void saveGameplay(int remainingTime, Player player, Set<AbstractActor> enemies2, AbstractTile[][] tiles) {
         ArrayList<AbstractActor> enemyList = new ArrayList<AbstractActor>();
         for(AbstractActor e : enemies) {
             enemyList.add(e);
-        }
-
-        Persistence.saveGame(remainingTime, player, enemies, level, tiles);
+        };
 
         writer.writeRecording(recorder.getRecordedChanges(), recorder.getStartingPosition(), level, startedRecording, enemyList);
     }
@@ -156,7 +138,7 @@ public class RecordAndReplay<E> {
      * @param frame The parent frame for the dialog box.
      */
     public void selectSaveFile(JFrame frame) {
-        JFileChooser jfc = new JFileChooser(System.getProperty("user.dir") + "/nz.ac.vuw.ecs.swen225.gp20/RecordAndReplay/Saves");
+        JFileChooser jfc = new JFileChooser(System.getProperty("user.dir") + "/SavedReplay");
 
         int returnValue = jfc.showOpenDialog(frame);
         if(returnValue == JFileChooser.APPROVE_OPTION) {
@@ -167,23 +149,29 @@ public class RecordAndReplay<E> {
         }
     }
 
-    //=====PLAYING=====//
-    //All functions to do with replaying, forward or backwards.
+    /**
+     *
+     */
     public void prepReplayer() {
         replayer.setRecordedChanges(reader.getRecordedChanges());
         replayer.setLevel(reader.getLevel());
-        replayer.setStartRecordingTimeStamp(reader.getStartRecordingTimeStamp());
-        replayer.setPlayerStartX(reader.getPlayerStartX());
-        replayer.setPlayerStartY(reader.getPlayerStartY());
-        replayer.setEnemies(reader.getEnemies());
         replayer.setLoadState(reader.getLevel());
+        replayer.setEnemyStartPos(reader.getEnemies());
 
         replayer.prepRecordedChanges();
         replayer.loadToStart();
     }
 
+    public void tick() {
+        replayer.tick();
+    }
+
     public void displayControlWindow() {
         replayer.controlsWindow();
+    }
+
+    public boolean getPaused() {
+        return replayer.isPaused();
     }
 
     //=====GETTERS/SETTERS=====//
@@ -192,7 +180,7 @@ public class RecordAndReplay<E> {
      * Set the name of the json file this recorded session will be associated with.
      * @param level
      */
-    public void setLevelName(int level) {
+    public void setLevelCount(int level) {
         this.level = level;
     }
 
@@ -204,6 +192,7 @@ public class RecordAndReplay<E> {
     public void setEnemies(Set<AbstractActor> enemies) {
         ArrayList<AbstractActor> e = new ArrayList<AbstractActor>();
         for(AbstractActor a : enemies) {
+            System.out.println("X: " + a.getPos().getX() + ": " + a.getPos().getY());
             e.add(a);
         }
         this.enemies = e;

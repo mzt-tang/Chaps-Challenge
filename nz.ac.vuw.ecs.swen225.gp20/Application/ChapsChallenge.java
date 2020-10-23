@@ -1,6 +1,7 @@
 package Application;
 
 import Maze.Board;
+import Maze.BoardObjects.Actors.AbstractActor;
 import Maze.Game;
 import Maze.Position;
 import Persistence.Persistence;
@@ -14,6 +15,7 @@ import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.Insets;
 import java.awt.event.*;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 import javax.swing.AbstractAction;
@@ -32,7 +34,7 @@ import javax.swing.Timer;
 import javax.swing.border.EmptyBorder;
 
 /**
- * Window of the actual game, Chap's Challenge
+ * Window of the actual game, Chap's Challenge.
  *
  * @author Iqbal
  */
@@ -42,6 +44,10 @@ public class ChapsChallenge extends JFrame {
     private JPanel gameplayPanel;
     private JPanel infoPanel;
     public static final int INFO_WIDTH = 240;
+
+    //Recording JMenuItems
+    private JMenuItem recordItem;
+    private JMenuItem replayItem;
 
     //Game
     private Game game;
@@ -53,15 +59,17 @@ public class ChapsChallenge extends JFrame {
 
     //Informating stored for info panel
     private volatile Timer timer;
+    private int timerDelay = 1000;
     private int timeRemaining;
     private InventoryView inventoryView;
 
     //Other modules
     private Renderer renderer;
     private RecordAndReplay recordAndReplayer;
+    private boolean replayModeActive = false; //sets the replay mode
 
     /**
-     * Construct a game instance from a given level count
+     * Construct a game instance from a given level count.
      *
      * @param levelToPlay The level that first appears when the game is started
      */
@@ -84,7 +92,7 @@ public class ChapsChallenge extends JFrame {
     }
 
     /**
-     * Construct a game instance from a Level object
+     * Construct a game instance from a Level object.
      *
      @param lastSavedLevel Load in from a level (optional argument, use null if not used)
      */
@@ -108,14 +116,20 @@ public class ChapsChallenge extends JFrame {
         setVisible(true);
     }
 
+    /**
+     * Initializes the Maze, Renderer, Persistence & Levels, Record & Replay modules.
+     */
     public void initModules(){
         // Persistence, Maze and Renderer module
         loadLevel(levelCount);
 
         // Record & Replay module
-        recordAndReplayer = new RecordAndReplay();
+        recordAndReplayer = new RecordAndReplay(this);
     }
 
+    /**
+     * Initializes the gameplay panel and the info panel.
+     */
     public void initPanels(){
         //GUI base panel
         JPanel basePanel = new JPanel();
@@ -146,7 +160,7 @@ public class ChapsChallenge extends JFrame {
     }
 
     /**
-     * Initializes window properties
+     * Initializes window properties.
      */
     public void initUI(){
         setTitle("Chap's Challenge: Among Us Edition");
@@ -157,7 +171,7 @@ public class ChapsChallenge extends JFrame {
 
 
     /**
-     * Menu bar with options to change the game state
+     * Menu bar with options to change the game state.
      */
     public void createMenuBar(){
         JMenuBar menuBar = new JMenuBar();
@@ -217,6 +231,21 @@ public class ChapsChallenge extends JFrame {
         menuBar.add(gameMenu);
         menuBar.add(levelMenu);
 
+        //Record & Replay Menu
+        JMenu recordAndReplay = new JMenu("Record And Replay");
+
+        //R&R menu selections
+        recordItem = new JMenuItem("Start Recording");
+        recordItem.addActionListener((e) -> recordTrigger());
+        replayItem = new JMenuItem("Replay");
+        replayItem.addActionListener((e) -> replayTrigger());
+
+        //Add selections to RecordAndReplay Menu.
+        recordAndReplay.add(recordItem);
+        recordAndReplay.add(replayItem);
+
+        menuBar.add(recordAndReplay);
+
         setJMenuBar(menuBar);
     }
 
@@ -249,9 +278,14 @@ public class ChapsChallenge extends JFrame {
                         } catch (InterruptedException e) {
                             e.printStackTrace();
                         }
-                        game.moveEnemies();
+                        if(!replayModeActive) {
+                            recordAndReplayer.captureEnemyPreMoves(game.getComputerPlayers());
+                            game.moveEnemies();
+                            recordAndReplayer.captureEnemyPostMoves(game.getComputerPlayers());
+                        }
                         repaint();
                     }
+                    if(!replayModeActive) recordAndReplayer.clearRecorderBuffer(timeRemaining);
                 }
             }
         });
@@ -261,32 +295,36 @@ public class ChapsChallenge extends JFrame {
         gamePanel.addKeyListener(new KeyAdapter() {
             @Override
             public void keyPressed(KeyEvent e) {
-                if (!isPaused) {
+                if (!isPaused && !replayModeActive) {
                     if (!e.isControlDown()) {
                         //up
                         if (e.getKeyCode() == KeyEvent.VK_W || e.getKeyCode() == KeyEvent.VK_UP) {
+                            System.out.println("Up");
                             movementRecordHelper(Game.DIRECTION.UP);
                             game.movePlayer(Game.DIRECTION.UP);
                         }
                         //left
                         else if (e.getKeyCode() == KeyEvent.VK_A || e.getKeyCode() == KeyEvent.VK_LEFT) {
+                            System.out.println("Left");
                             movementRecordHelper(Game.DIRECTION.LEFT);
                             game.movePlayer(Game.DIRECTION.LEFT);
                         }
                         //down
                         else if (e.getKeyCode() == KeyEvent.VK_S || e.getKeyCode() == KeyEvent.VK_DOWN) {
+                            System.out.println("Down");
                             movementRecordHelper(Game.DIRECTION.DOWN);
                             game.movePlayer(Game.DIRECTION.DOWN);
                         }
                         //right
                         else if (e.getKeyCode() == KeyEvent.VK_D || e.getKeyCode() == KeyEvent.VK_RIGHT) {
+                            System.out.println("Right");
                             movementRecordHelper(Game.DIRECTION.RIGHT);
                             game.movePlayer(Game.DIRECTION.RIGHT);
                         } else {
                             //dead code
                         }
                         nextLevel(); //check if the player is on the vent
-                        //recordAndReplayer.storeRecorderBuffer();
+                        recordAndReplayer.clearRecorderBuffer(timeRemaining);
                     }
                 }
             }
@@ -320,7 +358,8 @@ public class ChapsChallenge extends JFrame {
         inventoryLabel.setForeground(Color.WHITE);
         inventoryLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-        timer = new Timer(1000, new ActionListener() {
+        timerDelay = 1000;
+        timer = new Timer(timerDelay, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 //Time remaining
@@ -346,8 +385,11 @@ public class ChapsChallenge extends JFrame {
                     timer.stop();
                     outOfTime();
                 }
-                if (!isPaused) {
+                if (!isPaused && !replayModeActive) {
                     timeRemaining--;
+                }
+                else if (replayModeActive) {
+                    if(!recordAndReplayer.getPaused()) recordAndReplayer.tick();
                 }
 
             }
@@ -383,7 +425,7 @@ public class ChapsChallenge extends JFrame {
     // ===========================================
 
     /**
-     * Loads a level from a specified integer
+     * Loads a level from a specified integer.
      * @param level Level number
      */
     public void loadLevel(int level){
@@ -416,44 +458,47 @@ public class ChapsChallenge extends JFrame {
     }
 
     /**
-     * Loads a level specified by a Level object
+     * Loads a level specified by a Level object.
      * @param level Level object
      * @param levelCount The level number
      */
     public void loadLevel(Level level, int levelCount){
-        this.levelCount = levelCount;
-        isPaused = false; //make sure the game starts in an un-paused state
-        if (paintThread != null && timer != null){
-            paintThread.stop();
-            timer.stop();
+        if (level != null) {
+            this.levelCount = levelCount;
+            isPaused = false; //make sure the game starts in an un-paused state
+            killThreads();
+
+            // Persistence and Levels module
+            currentLevel = level;
+            timeRemaining = currentLevel.getTime();
+
+            // Maze module
+            game = new Game(new Board(currentLevel.getTileArray()), currentLevel.getPlayer(), currentLevel.getEnemies());
+
+            // Initialize the player inventory
+            inventoryView = new InventoryView(game.getPlayer()); //adding inventory view (Application)
+
+            // Renderer module
+            renderer = new Renderer(game);
+
+            //Reset this JFrame and reinitialize panels
+            this.getContentPane().removeAll();
+            initPanels();
+            addHotKeys();
+
+            //reset focus in case this method was called from the menu bar
+            gameplayPanel.setFocusable(true);
+            gameplayPanel.requestFocusInWindow();
+            gameplayPanel.requestFocus();
         }
-
-        // Persistence and Levels module
-        currentLevel =  level;
-        timeRemaining = currentLevel.getTime();
-
-        // Maze module
-        game = new Game(new Board(currentLevel.getTileArray()), currentLevel.getPlayer(), currentLevel.getEnemies());
-
-        // Initialize the player inventory
-        inventoryView = new InventoryView(game.getPlayer()); //adding inventory view (Application)
-
-        // Renderer module
-        renderer = new Renderer(game);
-
-        //Reset this JFrame and reinitialize panels
-        this.getContentPane().removeAll();
-        initPanels();
-        addHotKeys();
-
-        //reset focus in case this method was called from the menu bar
-        gameplayPanel.setFocusable(true);
-        gameplayPanel.requestFocusInWindow();
-        gameplayPanel.requestFocus();
+        //save file not found
+        else {
+            JOptionPane.showMessageDialog(null, "Save file for level " + levelCount + " not found. Please check your saves.", "Load Failed", JOptionPane.WARNING_MESSAGE);
+        }
     }
 
     /**
-     * Prompts an option screen that lets the user load a saved level
+     * Prompts an option screen that lets the user load a saved level.
      */
     public void loadSavedGame(){
         String[] possibleValues = { "Level 1", "Level 2", "Level 3"};
@@ -491,7 +536,7 @@ public class ChapsChallenge extends JFrame {
     }
 
     /**
-     * Save the current game state and show a message dialog when the player saves the game
+     * Save the current game state and show a message dialog when the player saves the game.
      */
     public void saveCurrentGame(){
         JOptionPane.showMessageDialog(null, "Saved current game at level " + levelCount + ".", "Game Saved!", JOptionPane.INFORMATION_MESSAGE);
@@ -499,7 +544,7 @@ public class ChapsChallenge extends JFrame {
     }
 
     /**
-     * Adds different keybindings that controls the state of the game
+     * Adds different keybindings that controls the state of the game.
      */
     public void addHotKeys() {
         //CTRL + X: exit the game, the current game state will be lost, the next time the game is started, it will resume from the last unfinished level
@@ -608,7 +653,7 @@ public class ChapsChallenge extends JFrame {
             //if the final level hasn't been reached
             if (levelCount != maxLevel) {
                 int options = JOptionPane.showConfirmDialog(null, "Continue to next level?", "Level " + levelCount + " Completed!",
-                                JOptionPane.YES_NO_OPTION);
+                        JOptionPane.YES_NO_OPTION);
                 if (options == 0) {
                     levelCount++;
                     loadLevel(levelCount);
@@ -625,7 +670,7 @@ public class ChapsChallenge extends JFrame {
     }
 
     /**
-     * Pauses/resumes the game
+     * Pauses/resumes the game.
      */
     public void pauseResume(){
         //request focus again as it may have been lost from using the menu bar
@@ -658,6 +703,163 @@ public class ChapsChallenge extends JFrame {
      */
     public Game getGame() {
         return game;
+    }
+
+    // ===========================================
+    // RecordAndReplay Helpers
+    // ===========================================
+
+    /**
+     * Helper for recording.
+     * Has an activated and deactivated state, which the menu item can switch on and off.
+     * During it's activated state, it records all movement into the recordbuffer.
+     * During it's deactivated state, it saves everything on the recordbuffer and stops recording.
+     */
+    public void recordTrigger() {
+        if(recordAndReplayer.getRecordingBoolean()) {
+            //if it's true right now. Save gameplay, and switch it to false.
+            recordAndReplayer.setRecordingBoolean(false);
+            recordAndReplayer.saveGameplay(timeRemaining, game.getPlayer(), game.getComputerPlayers(), game.getBoard().getMap());
+
+            recordItem.setText("Start Recording");
+        } else {
+            //if it's false right now. Switch it to true. gameplay should start being recorded
+            recordAndReplayer.setStartingPosition(game.getPlayer().getPos());
+            recordAndReplayer.setRecordingBoolean(true);
+            recordAndReplayer.setStartedRecording(timeRemaining);
+            recordAndReplayer.setEnemies(game.getComputerPlayers());
+            recordAndReplayer.setLevelCount(levelCount);
+
+            Persistence.saveGame(timeRemaining, game.getPlayer(), game.getComputerPlayers(), levelCount, game.getBoard().getMap());
+
+            recordItem.setText("Stop Recording");
+        }
+    }
+
+    /**
+     * Initiate replay mode
+     */
+    public void replayTrigger() {
+        if(recordAndReplayer.getRecordingBoolean()) {
+            JOptionPane.showMessageDialog(this, "ERROR: Cannot load replay while recording", "ERROR", JOptionPane.ERROR_MESSAGE);
+        } else {
+            if(!recordAndReplayer.loadConfirmation(this)) {
+                return; //for some reason doesnt exit out of this method as intended...
+            } else {
+                recordAndReplayer.selectSaveFile(this);
+                recordAndReplayer.displayControlWindow();
+                replayModeActive = true;
+            }
+        }
+    }
+
+    /**
+     * R&R needs a way to move the player in replay mode.
+     * @param direction Direction
+     */
+    public void movePlayer(Game.DIRECTION direction) {
+        game.movePlayer(direction);
+    }
+
+    /**
+     * R&R needs a way to move the enemy in replay mode.
+     * @param enemy Enemy
+     * @param direction Direction
+     */
+    public void moveEnemy(AbstractActor enemy, Game.DIRECTION direction) {
+        //FIRST: find new position
+        Position oldPos = enemy.getPos();
+        Position newPos = null;
+        switch(direction) {
+            case UP:
+                newPos = new Position(oldPos, Game.DIRECTION.UP);
+                break;
+            case DOWN:
+                newPos = new Position(oldPos, Game.DIRECTION.DOWN);
+                break;
+            case LEFT:
+                newPos = new Position(oldPos, Game.DIRECTION.LEFT);
+                break;
+            case RIGHT:
+                newPos = new Position(oldPos, Game.DIRECTION.RIGHT);
+                break;
+        }
+
+        //SECOND: set enemy in new position
+        if(game.getPlayer().getPos().equals(oldPos) || game.getPlayer().getPos().equals(newPos)) {
+            game.getPlayer().getPos().setPosition(game.getPlayer().getStartingPos());
+        }
+        enemy.setPos(newPos);
+        repaint();
+    }
+
+    /**
+     * R&R needs a way to modify the time remaining when stepping through replays
+     * @param timeRemaining
+     */
+    public void setTimeRemaining(int timeRemaining) {
+        this.timeRemaining = timeRemaining;
+    }
+
+    /**
+     * R&R: speeds up the replay
+     * @param t true/false for increased speed
+     */
+    public void setDoubleSpeed(boolean t) {
+        if(t) {
+            timerDelay = 200;
+        } else {
+            timerDelay = 1000;
+        }
+    }
+
+    /**
+     * Setter for replay mode
+     * @param b true/false
+     */
+    public void setReplayMoveActive(boolean b) {
+        replayModeActive = b;
+    }
+
+    /**
+     * Getter for level count
+     * @return Current level count
+     */
+    public int getCurrentLevelCount() {
+        return levelCount;
+    }
+
+    /**
+     * Finds the enemy position on the board if one exists
+     * @param pos Position of the enemy
+     * @return Enemy actor
+     */
+    public AbstractActor findEnemyAtPos(Position pos) {
+        for(AbstractActor a : game.getComputerPlayers()) {
+            if(a.getPos().equals(pos)) {
+                return a;
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Teleports the enemies to their recorded position
+     *
+     * @param pos List of enemy starting positions
+     */
+    public void teleportEnemies(ArrayList<Position> pos) {
+        //Get all enemies
+        ArrayList<AbstractActor> enemies = new ArrayList<>();
+        for(AbstractActor a : game.getComputerPlayers()) {
+            enemies.add(a);
+        }
+
+        //teleport enemies to their starting positions
+        for(int i = 0; i < pos.size(); i++) {
+            System.out.println("teleporting: " + pos.get(i).getX() + ", " + pos.get(i).getY());
+            enemies.get(i).setPos(pos.get(i));
+        }
     }
 
     /**

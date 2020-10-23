@@ -11,19 +11,27 @@ import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 
+/**
+ * Help screen that shows the player brief rules and the in-game keybindings.
+ *
+ * @author Iqbal
+ */
 public class HelpScreen extends JFrame {
 
     //window dimensions
     private final int WINDOW_WIDTH = 600;
     private final int WINDOW_HEIGHT = 620;
 
+    /**
+     * Constructs the help screen.
+     */
     public HelpScreen(){
         initUI();
         setVisible(true);
     }
 
     /**
-     * Initializes window properties and sets the clickable areas
+     * Initializes window properties and sets the clickable areas.
      */
     public void initUI(){
         setTitle("Chap's Challenge Rules");
@@ -42,7 +50,5 @@ public class HelpScreen extends JFrame {
         setLocationRelativeTo(null);
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
     }
-
-
 
 }

@@ -111,6 +111,12 @@ public class Game {
             player.getPos().move(direction);    //Move the player
         }
 
+        for(AbstractActor c : computerPlayers){
+            if(c.getPos().equals(player.getPos())){
+                c.interact(player);
+            }
+        }
+
         if(moveToTile instanceof ExitPortal) {
             levelCompleted = true;
         }
