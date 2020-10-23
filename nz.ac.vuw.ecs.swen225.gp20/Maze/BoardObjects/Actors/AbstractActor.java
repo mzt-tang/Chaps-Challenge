@@ -2,6 +2,7 @@ package Maze.BoardObjects.Actors;
 
 import Maze.Board;
 import Maze.Position;
+import com.google.common.base.Preconditions;
 
 import java.awt.*;
 import java.util.HashMap;
@@ -25,8 +26,9 @@ public abstract class AbstractActor {
      * @param tickRate The tick rate of the actors.
      */
     public AbstractActor(Position position, int tickRate) {
-        this.position = position;
+        this.position = Preconditions.checkNotNull(position, "Position must not be null");
         startingPos = position.getPositionCopy();
+        Preconditions.checkArgument(tickRate >= 0, "Tick rate must be non-negative");
         this.tickRate = tickRate;
     }
 

@@ -1,6 +1,7 @@
 package Maze;
 
 import Maze.BoardObjects.Tiles.AbstractTile;
+import com.google.common.base.Preconditions;
 
 /**
  * The Board class containing the map array of tiles.
@@ -15,7 +16,7 @@ public class Board {
      * @param tileMap The array map of a level.
      */
     public Board(AbstractTile[][] tileMap) {
-        this.map = tileMap;
+        this.map = Preconditions.checkNotNull(tileMap, "Tilemap must not be null");
     }
 
     /**
@@ -34,6 +35,7 @@ public class Board {
      * @return Returns a position containing the x,y position of the tile in the array.
      */
     public Position findPosInBoard(AbstractTile tile){
+        Preconditions.checkNotNull(tile, "Tile should not be null");
         for (int i = 0; i < map.length; i++){
             for (int j = 0; j < map[i].length; j++){
                 if(tile == map[i][j]){

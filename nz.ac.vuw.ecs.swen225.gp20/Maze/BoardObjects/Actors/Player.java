@@ -5,6 +5,7 @@ import Maze.BoardObjects.Tiles.AbstractTile;
 import Maze.BoardObjects.Tiles.Key;
 import Maze.BoardObjects.Tiles.Treasure;
 import Maze.Position;
+import com.google.common.base.Preconditions;
 
 import java.awt.*;
 import java.util.*;
@@ -40,6 +41,9 @@ public class Player extends AbstractActor{
      * @return Returns true if the player has a key of the colour. False if not.
      */
     public boolean hasKey(String key) {
+        Preconditions.checkArgument(key == "Red" ||
+                key == "Green" ||
+                key == "Blue", "Key colour must be Red, Green or Blue");
         for (AbstractTile k : collectibles.get("keySet")) {
             assert (k instanceof Key) : "Tiles in keySet isn't of the Key type";
             if(key.equals(((Key) k).getColour())) return true;
@@ -55,6 +59,9 @@ public class Player extends AbstractActor{
      *         has picked up.
      */
     public Key getKey(String colour) {
+        Preconditions.checkArgument(colour == "Red" ||
+                colour == "Green" ||
+                colour == "Blue", "Key colour must be Red, Green or Blue");
         for (AbstractTile k : collectibles.get("keySet")) {
             assert (k instanceof Key) : "Tiles in keySet isn't of the Key type";
             if(colour.equals(((Key) k).getColour())) return (Key) k;
@@ -67,7 +74,7 @@ public class Player extends AbstractActor{
      * @param key The key to be picked up
      */
     public void pickupKey(Key key){
-        key.interact(this); //Makes sure the player interacts with that tile.
+        Preconditions.checkNotNull(key, "Key must not be null").interact(this); //Makes sure the player interacts with that tile.
         getKeys().add(key); //Adds the key to the player.
     }
 
@@ -102,7 +109,7 @@ public class Player extends AbstractActor{
      * @param treasure The treasure to be picked up.
      */
     public void pickupTreasure(Treasure treasure){
-        treasure.interact(this); //Makes sure the player interacts with that tile
+        Preconditions.checkNotNull(treasure, "Treasure must not be null").interact(this); //Makes sure the player interacts with that tile
         getTreasures().add(treasure); //Adds the treasure to the player
     }
 
@@ -113,7 +120,7 @@ public class Player extends AbstractActor{
      */
     @Override
     public void move(Player player, Board board) {
-
+        assert false : "Player move should never be called upon";
     }
 
     /**
@@ -121,6 +128,7 @@ public class Player extends AbstractActor{
      * @param player .
      */
     public void interact(Player player) {
+        assert false : "Player interact should never be called upon";
     }
 
     /**
