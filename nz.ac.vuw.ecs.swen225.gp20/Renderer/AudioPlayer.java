@@ -48,6 +48,7 @@ public class AudioPlayer {
 
         for (AbstractTile[] row : game.getBoard().getMap()){
             for (AbstractTile tile : row){
+                if (tile == null) continue;
                 if (tile.isChanged()){
                     usedTiles.add(tile);
                 }

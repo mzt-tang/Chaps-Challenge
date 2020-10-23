@@ -72,7 +72,7 @@ public class Renderer extends JComponent {
 
         //Add a star
         if (tick % 5 == 0) {
-            Random random = new Random(); //Spotbugs told me this was more efficient that Math.random() then converting to int
+            Random random = new Random(); //Spotbugs told me this was more efficient than Math.random() then converting to int
             stars.add(new Star(0, random.nextInt(CANVAS_SIZE), random.nextInt(5) + 5, random.nextInt(5) + 5));
         }
 

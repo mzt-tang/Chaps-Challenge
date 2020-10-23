@@ -5,376 +5,341 @@
             {
                 "objects": [
                     {
+                        "column": 0,
+                        "row": 0,
+                        "Tile Type": "Wall",
+                        "Rotation": "Horizontal"
+                    },
+                    {
+                        "column": 1,
+                        "row": 0,
+                        "Tile Type": "Wall",
+                        "Rotation": "Horizontal"
+                    },
+                    {
+                        "column": 2,
+                        "row": 0,
+                        "Tile Type": "Wall",
+                        "Rotation": "Horizontal"
+                    },
+                    {
+                        "column": 3,
+                        "row": 0,
+                        "Tile Type": "Wall",
+                        "Rotation": "Horizontal"
+                    },
+                    {
+                        "column": 4,
+                        "row": 0,
+                        "Tile Type": "Wall",
+                        "Rotation": "Horizontal"
+                    },
+                    {
+                        "column": 5,
+                        "row": 0,
+                        "Tile Type": "Wall",
+                        "Rotation": "Horizontal"
+                    },
+                    {
+                        "column": 6,
+                        "row": 0,
+                        "Tile Type": "Wall",
+                        "Rotation": "Horizontal"
+                    },
+                    {
+                        "column": 7,
+                        "row": 0,
+                        "Tile Type": "Wall",
+                        "Rotation": "Horizontal"
+                    },
+                    {
+                        "column": 8,
+                        "row": 0,
+                        "Tile Type": "Wall",
+                        "Rotation": "Horizontal"
+                    },
+                    {
+                        "column": 9,
+                        "row": 0,
+                        "Tile Type": "Wall",
+                        "Rotation": "Horizontal"
+                    },
+                    {
+                        "column": 10,
+                        "row": 0,
+                        "Tile Type": "Wall",
+                        "Rotation": "Horizontal"
+                    },
+                    {
+                        "column": 11,
+                        "row": 0,
+                        "Tile Type": "Wall",
+                        "Rotation": "Horizontal"
+                    },
+                    {
+                        "column": 12,
+                        "row": 0,
+                        "Tile Type": "Wall",
+                        "Rotation": "Horizontal"
+                    },
+                    {
+                        "column": 13,
+                        "row": 0,
+                        "Tile Type": "Wall",
+                        "Rotation": "Horizontal"
+                    },
+                    {
+                        "column": 14,
+                        "row": 0,
+                        "Tile Type": "Wall",
+                        "Rotation": "Horizontal"
+                    },
+                    {
+                        "column": 15,
+                        "row": 0,
+                        "Tile Type": "Wall",
+                        "Rotation": "Horizontal"
+                    },
+                    {
+                        "column": 16,
+                        "row": 0,
+                        "Tile Type": "Wall",
+                        "Rotation": "Horizontal"
+                    }
+                ]
+            },
+            {
+                "objects": [
+                    {
+                        "column": 0,
+                        "row": 1,
+                        "Tile Type": "Wall",
+                        "Rotation": "Horizontal"
+                    },
+                    {
+                        "column": 1,
+                        "row": 1,
+                        "Tile Type": "FreeTile",
+                        "Rotation": "Horizontal"
+                    },
+                    {
+                        "column": 2,
+                        "row": 1,
+                        "Tile Type": "FreeTile",
+                        "Rotation": "Horizontal"
+                    },
+                    {
+                        "column": 3,
+                        "row": 1,
+                        "Tile Type": "FreeTile",
+                        "Rotation": "Horizontal"
+                    },
+                    {
+                        "column": 4,
+                        "row": 1,
+                        "Tile Type": "FreeTile",
+                        "Rotation": "Horizontal"
+                    },
+                    {
+                        "column": 5,
+                        "row": 1,
+                        "Tile Type": "FreeTile",
+                        "Rotation": "Horizontal"
+                    },
+                    {
+                        "column": 6,
+                        "row": 1,
+                        "Tile Type": "FreeTile",
+                        "Rotation": "Horizontal"
+                    },
+                    {
+                        "column": 7,
+                        "row": 1,
+                        "Tile Type": "FreeTile",
+                        "Rotation": "Horizontal"
+                    },
+                    {
+                        "column": 8,
+                        "row": 1,
+                        "Tile Type": "FreeTile",
+                        "Rotation": "Horizontal"
+                    },
+                    {
+                        "column": 9,
+                        "row": 1,
+                        "Tile Type": "FreeTile",
+                        "Rotation": "Horizontal"
+                    },
+                    {
+                        "column": 10,
+                        "row": 1,
+                        "Tile Type": "FreeTile",
+                        "Rotation": "Horizontal"
+                    },
+                    {
+                        "column": 11,
+                        "row": 1,
+                        "Tile Type": "FreeTile",
+                        "Rotation": "Horizontal"
+                    },
+                    {
+                        "column": 12,
+                        "row": 1,
+                        "Tile Type": "FreeTile",
+                        "Rotation": "Horizontal"
+                    },
+                    {
+                        "column": 13,
+                        "row": 1,
+                        "Tile Type": "FreeTile",
+                        "Rotation": "Horizontal"
+                    },
+                    {
+                        "column": 14,
+                        "row": 1,
+                        "Tile Type": "FreeTile",
+                        "Rotation": "Horizontal"
+                    },
+                    {
+                        "column": 15,
+                        "row": 1,
+                        "Tile Type": "FreeTile",
+                        "Rotation": "Horizontal"
+                    },
+                    {
+                        "column": 16,
+                        "row": 1,
+                        "Tile Type": "Wall",
+                        "Rotation": "Horizontal"
+                    }
+                ]
+            },
+            {
+                "objects": [
+                    {
+                        "column": 0,
+                        "row": 2,
+                        "Tile Type": "Wall",
+                        "Rotation": "Horizontal"
+                    },
+                    {
+                        "column": 1,
+                        "row": 2,
+                        "Tile Type": "FreeTile",
+                        "Rotation": "Horizontal"
+                    },
+                    {
+                        "column": 2,
+                        "row": 2,
+                        "Tile Type": "FreeTile",
+                        "Rotation": "Horizontal"
+                    },
+                    {
+                        "column": 3,
+                        "row": 2,
+                        "Tile Type": "FreeTile",
+                        "Rotation": "Horizontal"
+                    },
+                    {
+                        "column": 4,
+                        "row": 2,
+                        "Tile Type": "Wall",
+                        "Rotation": "Horizontal"
+                    },
+                    {
+                        "column": 5,
+                        "row": 2,
+                        "Tile Type": "Wall",
+                        "Rotation": "Horizontal"
+                    },
+                    {
+                        "column": 6,
+                        "row": 2,
+                        "Tile Type": "Wall",
+                        "Rotation": "Horizontal"
+                    },
+                    {
+                        "column": 7,
+                        "row": 2,
+                        "Tile Type": "Wall",
+                        "Rotation": "Horizontal"
+                    },
+                    {
+                        "column": 8,
+                        "row": 2,
+                        "Tile Type": "FreeTile",
+                        "Rotation": "Horizontal"
+                    },
+                    {
+                        "column": 9,
+                        "row": 2,
+                        "Tile Type": "Wall",
+                        "Rotation": "Horizontal"
+                    },
+                    {
+                        "column": 10,
+                        "row": 2,
+                        "Tile Type": "Wall",
+                        "Rotation": "Horizontal"
+                    },
+                    {
+                        "column": 11,
+                        "row": 2,
+                        "Tile Type": "Wall",
+                        "Rotation": "Horizontal"
+                    },
+                    {
+                        "column": 12,
+                        "row": 2,
+                        "Tile Type": "Wall",
+                        "Rotation": "Horizontal"
+                    },
+                    {
+                        "column": 13,
+                        "row": 2,
+                        "Tile Type": "FreeTile",
+                        "Rotation": "Horizontal"
+                    },
+                    {
+                        "column": 14,
+                        "row": 2,
+                        "Tile Type": "FreeTile",
+                        "Rotation": "Horizontal"
+                    },
+                    {
+                        "column": 15,
+                        "row": 2,
+                        "Tile Type": "FreeTile",
+                        "Rotation": "Horizontal"
+                    },
+                    {
+                        "column": 16,
+                        "row": 2,
+                        "Tile Type": "Wall",
+                        "Rotation": "Horizontal"
+                    }
+                ]
+            },
+            {
+                "objects": [
+                    {
+                        "column": 0,
+                        "row": 3,
+                        "Tile Type": "Wall",
+                        "Rotation": "Horizontal"
+                    },
+                    {
+                        "column": 1,
+                        "row": 3,
+                        "Tile Type": "FreeTile",
+                        "Rotation": "Horizontal"
+                    },
+                    {
+                        "column": 2,
+                        "row": 3,
+                        "Tile Type": "InfoField",
                         "Rotation": "Horizontal",
-                        "column": 0,
-                        "row": 0,
-                        "Tile Type": "Wall"
-                    },
-                    {
-                        "column": 1,
-                        "row": 0,
-                        "Tile Type": "Wall",
-                        "Rotation": "Horizontal"
-                    },
-                    {
-                        "column": 2,
-                        "row": 0,
-                        "Tile Type": "Wall",
-                        "Rotation": "Horizontal"
-                    },
-                    {
-                        "column": 3,
-                        "row": 0,
-                        "Tile Type": "Wall",
-                        "Rotation": "Horizontal"
-                    },
-                    {
-                        "column": 4,
-                        "row": 0,
-                        "Tile Type": "Wall",
-                        "Rotation": "Horizontal"
-                    },
-                    {
-                        "column": 5,
-                        "row": 0,
-                        "Tile Type": "Wall",
-                        "Rotation": "Horizontal"
-                    },
-                    {
-                        "column": 6,
-                        "row": 0,
-                        "Tile Type": "Wall",
-                        "Rotation": "Horizontal"
-                    },
-                    {
-                        "column": 7,
-                        "row": 0,
-                        "Tile Type": "Wall",
-                        "Rotation": "Horizontal"
-                    },
-                    {
-                        "column": 8,
-                        "row": 0,
-                        "Tile Type": "Wall",
-                        "Rotation": "Horizontal"
-                    },
-                    {
-                        "column": 9,
-                        "row": 0,
-                        "Tile Type": "Wall",
-                        "Rotation": "Horizontal"
-                    },
-                    {
-                        "column": 10,
-                        "row": 0,
-                        "Tile Type": "Wall",
-                        "Rotation": "Horizontal"
-                    },
-                    {
-                        "column": 11,
-                        "row": 0,
-                        "Tile Type": "Wall",
-                        "Rotation": "Horizontal"
-                    },
-                    {
-                        "column": 12,
-                        "row": 0,
-                        "Tile Type": "Wall",
-                        "Rotation": "Horizontal"
-                    },
-                    {
-                        "column": 13,
-                        "row": 0,
-                        "Tile Type": "Wall",
-                        "Rotation": "Horizontal"
-                    },
-                    {
-                        "column": 14,
-                        "row": 0,
-                        "Tile Type": "Wall",
-                        "Rotation": "Horizontal"
-                    },
-                    {
-                        "column": 15,
-                        "row": 0,
-                        "Tile Type": "Wall",
-                        "Rotation": "Horizontal"
-                    },
-                    {
-                        "column": 16,
-                        "row": 0,
-                        "Tile Type": "Wall",
-                        "Rotation": "Horizontal"
-                    },
-                    {
-                        "column": 17,
-                        "row": 0,
-                        "Tile Type": "Wall",
-                        "Rotation": "Horizontal"
-                    },
-                    {
-                        "column": 18,
-                        "row": 0,
-                        "Tile Type": "Wall",
-                        "Rotation": "Horizontal"
-                    }
-                ]
-            },
-            {
-                "objects": [
-                    {
-                        "column": 0,
-                        "row": 1,
-                        "Tile Type": "Wall",
-                        "Rotation": "Horizontal"
-                    },
-                    {
-                        "column": 1,
-                        "row": 1,
-                        "Tile Type": "FreeTile",
-                        "Rotation": "Horizontal"
-                    },
-                    {
-                        "column": 2,
-                        "row": 1,
-                        "Tile Type": "FreeTile",
-                        "Rotation": "Horizontal"
-                    },
-                    {
-                        "column": 3,
-                        "row": 1,
-                        "Tile Type": "FreeTile",
-                        "Rotation": "Horizontal"
-                    },
-                    {
-                        "column": 4,
-                        "row": 1,
-                        "Tile Type": "FreeTile",
-                        "Rotation": "Horizontal"
-                    },
-                    {
-                        "column": 5,
-                        "row": 1,
-                        "Tile Type": "FreeTile",
-                        "Rotation": "Horizontal"
-                    },
-                    {
-                        "column": 6,
-                        "row": 1,
-                        "Tile Type": "FreeTile",
-                        "Rotation": "Horizontal"
-                    },
-                    {
-                        "column": 7,
-                        "row": 1,
-                        "Tile Type": "FreeTile",
-                        "Rotation": "Horizontal"
-                    },
-                    {
-                        "column": 8,
-                        "row": 1,
-                        "Tile Type": "FreeTile",
-                        "Rotation": "Horizontal"
-                    },
-                    {
-                        "column": 9,
-                        "row": 1,
-                        "Tile Type": "FreeTile",
-                        "Rotation": "Horizontal"
-                    },
-                    {
-                        "column": 10,
-                        "row": 1,
-                        "Tile Type": "FreeTile",
-                        "Rotation": "Horizontal"
-                    },
-                    {
-                        "column": 11,
-                        "row": 1,
-                        "Tile Type": "FreeTile",
-                        "Rotation": "Horizontal"
-                    },
-                    {
-                        "column": 12,
-                        "row": 1,
-                        "Tile Type": "FreeTile",
-                        "Rotation": "Horizontal"
-                    },
-                    {
-                        "column": 13,
-                        "row": 1,
-                        "Tile Type": "FreeTile",
-                        "Rotation": "Horizontal"
-                    },
-                    {
-                        "column": 14,
-                        "row": 1,
-                        "Tile Type": "FreeTile",
-                        "Rotation": "Horizontal"
-                    },
-                    {
-                        "column": 15,
-                        "row": 1,
-                        "Tile Type": "FreeTile",
-                        "Rotation": "Horizontal"
-                    },
-                    {
-                        "column": 16,
-                        "row": 1,
-                        "Tile Type": "Wall",
-                        "Rotation": "Horizontal"
-                    },
-                    {
-                        "column": 17,
-                        "row": 1,
-                        "Tile Type": "Wall",
-                        "Rotation": "Horizontal"
-                    },
-                    {
-                        "column": 18,
-                        "row": 1,
-                        "Tile Type": "Wall",
-                        "Rotation": "Horizontal"
-                    }
-                ]
-            },
-            {
-                "objects": [
-                    {
-                        "column": 0,
-                        "row": 2,
-                        "Tile Type": "Wall",
-                        "Rotation": "Horizontal"
-                    },
-                    {
-                        "column": 1,
-                        "row": 2,
-                        "Tile Type": "FreeTile",
-                        "Rotation": "Horizontal"
-                    },
-                    {
-                        "column": 2,
-                        "row": 2,
-                        "Tile Type": "FreeTile",
-                        "Rotation": "Horizontal"
-                    },
-                    {
-                        "column": 3,
-                        "row": 2,
-                        "Tile Type": "FreeTile",
-                        "Rotation": "Horizontal"
-                    },
-                    {
-                        "column": 4,
-                        "row": 2,
-                        "Tile Type": "Wall",
-                        "Rotation": "Horizontal"
-                    },
-                    {
-                        "column": 5,
-                        "row": 2,
-                        "Tile Type": "Wall",
-                        "Rotation": "Horizontal"
-                    },
-                    {
-                        "column": 6,
-                        "row": 2,
-                        "Tile Type": "Wall",
-                        "Rotation": "Horizontal"
-                    },
-                    {
-                        "column": 7,
-                        "row": 2,
-                        "Tile Type": "Wall",
-                        "Rotation": "Horizontal"
-                    },
-                    {
-                        "column": 8,
-                        "row": 2,
-                        "Tile Type": "FreeTile",
-                        "Rotation": "Horizontal"
-                    },
-                    {
-                        "column": 9,
-                        "row": 2,
-                        "Tile Type": "Wall",
-                        "Rotation": "Horizontal"
-                    },
-                    {
-                        "column": 10,
-                        "row": 2,
-                        "Tile Type": "Wall",
-                        "Rotation": "Horizontal"
-                    },
-                    {
-                        "column": 11,
-                        "row": 2,
-                        "Tile Type": "Wall",
-                        "Rotation": "Horizontal"
-                    },
-                    {
-                        "column": 12,
-                        "row": 2,
-                        "Tile Type": "Wall",
-                        "Rotation": "Horizontal"
-                    },
-                    {
-                        "column": 13,
-                        "row": 2,
-                        "Tile Type": "FreeTile",
-                        "Rotation": "Horizontal"
-                    },
-                    {
-                        "column": 14,
-                        "row": 2,
-                        "Tile Type": "FreeTile",
-                        "Rotation": "Horizontal"
-                    },
-                    {
-                        "column": 15,
-                        "row": 2,
-                        "Tile Type": "FreeTile",
-                        "Rotation": "Horizontal"
-                    },
-                    {
-                        "column": 16,
-                        "row": 2,
-                        "Tile Type": "Wall",
-                        "Rotation": "Horizontal"
-                    },
-                    {
-                        "column": 17,
-                        "row": 2,
-                        "Tile Type": "Wall",
-                        "Rotation": "Horizontal"
-                    },
-                    {
-                        "column": 18,
-                        "row": 2,
-                        "Tile Type": "Wall",
-                        "Rotation": "Horizontal"
-                    }
-                ]
-            },
-            {
-                "objects": [
-                    {
-                        "column": 0,
-                        "row": 3,
-                        "Tile Type": "Wall",
-                        "Rotation": "Horizontal"
-                    },
-                    {
-                        "column": 1,
-                        "row": 3,
-                        "Tile Type": "FreeTile",
-                        "Rotation": "Horizontal"
-                    },
-                    {
-                        "column": 2,
-                        "row": 3,
-                        "Tile Type": "FreeTile",
-                        "Rotation": "Horizontal"
+                        "InfoText": "THESE ENEMIES FOLLOW A PATTERN. IF THEY TOUCH YOU, YOU WILL RESPAWN"
                     },
                     {
                         "column": 3,
@@ -458,18 +423,6 @@
                     },
                     {
                         "column": 16,
-                        "row": 3,
-                        "Tile Type": "Wall",
-                        "Rotation": "Horizontal"
-                    },
-                    {
-                        "column": 17,
-                        "row": 3,
-                        "Tile Type": "Wall",
-                        "Rotation": "Horizontal"
-                    },
-                    {
-                        "column": 18,
                         "row": 3,
                         "Tile Type": "Wall",
                         "Rotation": "Horizontal"
@@ -578,18 +531,6 @@
                     },
                     {
                         "column": 16,
-                        "row": 4,
-                        "Tile Type": "Wall",
-                        "Rotation": "Horizontal"
-                    },
-                    {
-                        "column": 17,
-                        "row": 4,
-                        "Tile Type": "Wall",
-                        "Rotation": "Horizontal"
-                    },
-                    {
-                        "column": 18,
                         "row": 4,
                         "Tile Type": "Wall",
                         "Rotation": "Horizontal"
@@ -1055,18 +996,6 @@
                         "row": 8,
                         "Tile Type": "Wall",
                         "Rotation": "Horizontal"
-                    },
-                    {
-                        "column": 17,
-                        "row": 8,
-                        "Tile Type": "Wall",
-                        "Rotation": "Horizontal"
-                    },
-                    {
-                        "column": 18,
-                        "row": 8,
-                        "Tile Type": "Wall",
-                        "Rotation": "Horizontal"
                     }
                 ]
             },
@@ -1174,18 +1103,6 @@
                         "row": 9,
                         "Tile Type": "Wall",
                         "Rotation": "Horizontal"
-                    },
-                    {
-                        "column": 17,
-                        "row": 9,
-                        "Tile Type": "Wall",
-                        "Rotation": "Horizontal"
-                    },
-                    {
-                        "column": 18,
-                        "row": 9,
-                        "Tile Type": "Wall",
-                        "Rotation": "Horizontal"
                     }
                 ]
             },
@@ -1206,8 +1123,9 @@
                     {
                         "column": 2,
                         "row": 10,
-                        "Tile Type": "FreeTile",
-                        "Rotation": "Horizontal"
+                        "Tile Type": "InfoField",
+                        "Rotation": "Horizontal",
+                        "InfoText": "THIS IS A DEATH TILE. IF YOU TOUCH IT, YOU WILL RESPAWN"
                     },
                     {
                         "column": 3,
@@ -1289,18 +1207,6 @@
                     },
                     {
                         "column": 16,
-                        "row": 10,
-                        "Tile Type": "Wall",
-                        "Rotation": "Horizontal"
-                    },
-                    {
-                        "column": 17,
-                        "row": 10,
-                        "Tile Type": "Wall",
-                        "Rotation": "Horizontal"
-                    },
-                    {
-                        "column": 18,
                         "row": 10,
                         "Tile Type": "Wall",
                         "Rotation": "Horizontal"
@@ -1325,7 +1231,7 @@
                     {
                         "column": 2,
                         "row": 11,
-                        "Tile Type": "FreeTile",
+                        "Tile Type": "DeathTile",
                         "Rotation": "Horizontal"
                     },
                     {
@@ -1408,18 +1314,6 @@
                     },
                     {
                         "column": 16,
-                        "row": 11,
-                        "Tile Type": "Wall",
-                        "Rotation": "Horizontal"
-                    },
-                    {
-                        "column": 17,
-                        "row": 11,
-                        "Tile Type": "Wall",
-                        "Rotation": "Horizontal"
-                    },
-                    {
-                        "column": 18,
                         "row": 11,
                         "Tile Type": "Wall",
                         "Rotation": "Horizontal"
@@ -1526,18 +1420,6 @@
                     },
                     {
                         "column": 16,
-                        "row": 12,
-                        "Tile Type": "Wall",
-                        "Rotation": "Horizontal"
-                    },
-                    {
-                        "column": 17,
-                        "row": 12,
-                        "Tile Type": "Wall",
-                        "Rotation": "Horizontal"
-                    },
-                    {
-                        "column": 18,
                         "row": 12,
                         "Tile Type": "Wall",
                         "Rotation": "Horizontal"
