@@ -46,6 +46,7 @@ public class AudioPlayer {
             }
         }
 
+        //Adds all 'changed' tiles to usedTiles (only for when loading saves)
         for (AbstractTile[] row : game.getBoard().getMap()){
             for (AbstractTile tile : row){
                 if (tile == null) continue;
