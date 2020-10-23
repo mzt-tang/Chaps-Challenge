@@ -61,11 +61,7 @@ public class Persistence {
     Level levelUnchanged = getLevel(levelNumber);
     Level levelLoaded = SaveJsonReader.readJson(saveString, levelUnchanged);
     // Can return as null
-    if (levelLoaded != null) {
-      return levelLoaded;
-    } else {
-      return levelUnchanged;
-    }
+    return levelLoaded;
   }
 
   /**
@@ -84,6 +80,7 @@ public class Persistence {
         return false;
       }
     } catch (Exception e) {
+      System.out.println(e);
       return false;
     }
   }
