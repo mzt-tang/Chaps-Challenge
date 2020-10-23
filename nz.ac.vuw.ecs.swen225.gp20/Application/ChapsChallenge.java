@@ -421,35 +421,38 @@ public class ChapsChallenge extends JFrame {
      * @param levelCount The level number
      */
     public void loadLevel(Level level, int levelCount){
-        this.levelCount = levelCount;
-        isPaused = false; //make sure the game starts in an un-paused state
-        if (paintThread != null && timer != null){
-            paintThread.stop();
-            timer.stop();
+        if (level != null) {
+            this.levelCount = levelCount;
+            isPaused = false; //make sure the game starts in an un-paused state
+            killThreads();
+
+            // Persistence and Levels module
+            currentLevel = level;
+            timeRemaining = currentLevel.getTime();
+
+            // Maze module
+            game = new Game(new Board(currentLevel.getTileArray()), currentLevel.getPlayer(), currentLevel.getEnemies());
+
+            // Initialize the player inventory
+            inventoryView = new InventoryView(game.getPlayer()); //adding inventory view (Application)
+
+            // Renderer module
+            renderer = new Renderer(game);
+
+            //Reset this JFrame and reinitialize panels
+            this.getContentPane().removeAll();
+            initPanels();
+            addHotKeys();
+
+            //reset focus in case this method was called from the menu bar
+            gameplayPanel.setFocusable(true);
+            gameplayPanel.requestFocusInWindow();
+            gameplayPanel.requestFocus();
         }
-
-        // Persistence and Levels module
-        currentLevel =  level;
-        timeRemaining = currentLevel.getTime();
-
-        // Maze module
-        game = new Game(new Board(currentLevel.getTileArray()), currentLevel.getPlayer(), currentLevel.getEnemies());
-
-        // Initialize the player inventory
-        inventoryView = new InventoryView(game.getPlayer()); //adding inventory view (Application)
-
-        // Renderer module
-        renderer = new Renderer(game);
-
-        //Reset this JFrame and reinitialize panels
-        this.getContentPane().removeAll();
-        initPanels();
-        addHotKeys();
-
-        //reset focus in case this method was called from the menu bar
-        gameplayPanel.setFocusable(true);
-        gameplayPanel.requestFocusInWindow();
-        gameplayPanel.requestFocus();
+        //save file not found
+        else {
+            JOptionPane.showMessageDialog(null, "Save file for level " + levelCount + " not found. Please check your saves.", "Load Failed", JOptionPane.WARNING_MESSAGE);
+        }
     }
 
     /**
@@ -608,7 +611,7 @@ public class ChapsChallenge extends JFrame {
             //if the final level hasn't been reached
             if (levelCount != maxLevel) {
                 int options = JOptionPane.showConfirmDialog(null, "Continue to next level?", "Level " + levelCount + " Completed!",
-                                JOptionPane.YES_NO_OPTION);
+                        JOptionPane.YES_NO_OPTION);
                 if (options == 0) {
                     levelCount++;
                     loadLevel(levelCount);
