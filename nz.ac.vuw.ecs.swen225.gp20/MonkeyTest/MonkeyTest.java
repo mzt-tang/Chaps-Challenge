@@ -28,7 +28,7 @@ public class MonkeyTest {
 		level = Persistence.getLevel(1);
 		board = new Board(level.getTileArray());
 		i = 1000000;
-		test = new TestSuite(board);
+		test = new TestSuite(board, level);
 	}
 
 
