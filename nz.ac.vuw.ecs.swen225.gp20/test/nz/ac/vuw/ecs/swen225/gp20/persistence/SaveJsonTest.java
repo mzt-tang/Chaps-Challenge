@@ -15,7 +15,7 @@ import Persistence.Persistence;
  * @author Admin
  *
  */
-public class SaveJsonReaderTest {
+public class SaveJsonTest {
 
   /**
    * Try to read Level 1's save. Creates the save first with treasure.
