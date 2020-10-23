@@ -2,15 +2,22 @@ package RecordAndReplay.Actions;
 
 import Maze.BoardObjects.Tiles.*;
 
+/**
+ * The action type of the player interacting with a tile.
+ * NOTE: DEPRECIATED.
+ */
 public class PlayerTileInteraction extends Action {
     private AbstractTile tile;
     private String tileName;
 
+    /**
+     * Basic constructor.
+     * @param tile The tile which the player is interacting with.
+     */
     public PlayerTileInteraction(AbstractTile tile) {
         super(ActionType.PLAYERACTION);
         this.tile = tile;
 
-        //horrid spaghetti code for now
         if(tile instanceof ExitLock) {
             tileName = "ExitLock";
         } else if(tile instanceof ExitPortal) {
@@ -30,5 +37,9 @@ public class PlayerTileInteraction extends Action {
         }
     }
 
+    /**
+     * Get this tile's name.
+     * @return .
+     */
     public String getTileName() { return tileName; }
 }

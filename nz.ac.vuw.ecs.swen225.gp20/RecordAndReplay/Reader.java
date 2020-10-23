@@ -11,8 +11,8 @@ import java.io.*;
 import java.util.ArrayList;
 
 /**
- * Should be able to read a json file.
- * Once it's done loading json, it can be used as an object for other components to retrieve data from.
+ * Reads a json file and pulls all the variables nessercary for
+ * the Replayer to run off of.
  */
 public class Reader {
     private ArrayList<Recorder.Change> recordedChanges = new ArrayList<Recorder.Change>();
@@ -20,17 +20,18 @@ public class Reader {
     private int startRecordingTimeStamp;
     private int playerStartX;
     private int playerStartY;
-    private ArrayList<Position> enemyStartPositions = new ArrayList<>();
+    private ArrayList<Position> enemyStartPositions = new ArrayList<>(); //ONLY USED FOR ENEMY LOCATIONS
     private int levelLocation;
 
     /**
-     * Empty constructor
+     * Empty Constructor.
      */
     public Reader() {}
 
     /**
-     * Read a json file and prepare all variables.
-     * @param file
+     * Reads the Json file and pulls all the variables out of it.
+     * Prepares this class for use in Replayer.
+     * @param file .
      */
     public void readJson(File file) {
         InputStream inputStream = null;
@@ -47,15 +48,15 @@ public class Reader {
         playerStartX = playerPos.getInt("startX");
         playerStartY = playerPos.getInt("startY");
 
-        //Get enemy starting positions
         JsonObject enemyStartPos = obj.getJsonObject("enemies");
         for(int i = 0; i < enemyStartPos.size(); i++) {
             JsonObject pos = enemyStartPos.getJsonObject("" + i);
             Position p = new Position(pos.getInt("startX"), pos.getInt("startY"));
+            System.out.println(i + ": x=" + p.getX() + "| y=" + p.getY());
             enemyStartPositions.add(p);
         }
 
-        //Get the array of changes.
+        //CHANGE ARRAY!!!
         int noChanges = obj.getInt("noChanges");
         for(int i = 0; i < noChanges; i++) {
             int actual = i + 1;
@@ -116,24 +117,54 @@ public class Reader {
         levelLocation = obj.getInt("loadState");
     }
 
-    /** GETTERS **/
+    // GETTERS:
+
+    /**
+     * @return .
+     */
     public ArrayList<Recorder.Change> getRecordedChanges() {
         return recordedChanges;
     }
+
+    /**
+     * @return .
+     */
     public int getLevel() {
         return level;
     }
+
+    /**
+     * @return .
+     */
     public int getStartRecordingTimeStamp() {
         return startRecordingTimeStamp;
     }
+
+    /**
+     * @return .
+     */
     public int getPlayerStartX() {
         return playerStartX;
     }
+
+    /**
+     * @return .
+     */
     public int getPlayerStartY() {
         return playerStartY;
     }
+
+    /**
+     * @return .
+     */
     public ArrayList<Position> getEnemies() {
         return enemyStartPositions;
     }
-    public int getLevelLocation() { return levelLocation; }
+
+    /**
+     * @return .
+     */
+    public int getLevelLocation() {
+        return levelLocation;
+    }
 }

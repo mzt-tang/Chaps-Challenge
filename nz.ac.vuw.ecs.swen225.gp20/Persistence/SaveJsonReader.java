@@ -7,6 +7,7 @@ import Maze.BoardObjects.Tiles.Treasure;
 import Maze.Position;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -77,8 +78,8 @@ public class SaveJsonReader {
       JsonObject currentEnemyJson = (JsonObject) enemiesIterator.next();
       int startingX = currentEnemyJson.getInt("startingX");
       int startingY = currentEnemyJson.getInt("startingY");
-      int newX = currentEnemyJson.getInt("startingX");
-      int newY = currentEnemyJson.getInt("startingX");
+      int newX = currentEnemyJson.getInt("currentX");
+      int newY = currentEnemyJson.getInt("currentY");
 
       Position newPos = new Position(newX, newY);
       Position startingPos = new Position(startingX, startingY);
@@ -134,6 +135,16 @@ public class SaveJsonReader {
         tileArray,
         loadedLevel.getEnemies()
     );
+    
+    //Close readers/streams.
+    try {
+      levelInputStream.close();
+    } catch (IOException e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
+    }
+    saveReader.close();
+    
     return returnLevel;
 
   }

@@ -40,7 +40,7 @@ public class Renderer extends JComponent {
      */
     public Renderer(Game game){
         stars = new HashSet<>();
-        audioPlayer = new AudioPlayer();
+        audioPlayer = new AudioPlayer(game);
         this.game = game;
         playerPrevPos = game.getPlayer().getPos();
         setPreferredSize(new Dimension(CANVAS_SIZE, CANVAS_SIZE));
@@ -72,7 +72,7 @@ public class Renderer extends JComponent {
 
         //Add a star
         if (tick % 5 == 0) {
-            Random random = new Random(); //Spotbugs told me this was more efficient that Math.random() then converting to int
+            Random random = new Random(); //Spotbugs told me this was more efficient than Math.random() then converting to int
             stars.add(new Star(0, random.nextInt(CANVAS_SIZE), random.nextInt(5) + 5, random.nextInt(5) + 5));
         }
 
@@ -80,7 +80,7 @@ public class Renderer extends JComponent {
         if (orientation != DIRECTION.NULL){
             audioPlayer.playSound("Step" + (int)(Math.random()*2 + 1));
         }
-        audioPlayer.playTileSound(board[playerX][playerY], game);
+        audioPlayer.playTileSound(board[playerX][playerY]);
 
         //Draw stuff
         drawStars(g2, orientation);

@@ -21,11 +21,6 @@ import java.util.Map;
  * This class is JUST like Reader, Recorder, and Writer. A list of simple helper methods for RecordAndReplay.
  * The Replayer's job is mostly to detect when the player moves forwards "or backwards" and replicate
  * the moves accordingly.
- *
- * This class handles all replaying methods of the game. It heavily relies on ChapsChallenge in the application module
- * to display changes that occur in the replay. Therefore, ChapsChallenge contains many helper methods
- * just for this component to call.
- *
  */
 public class Replayer {
     private ArrayList<Recorder.Change> recordedChanges = new ArrayList<Recorder.Change>();
@@ -51,6 +46,7 @@ public class Replayer {
     /**
      * Used by Record and Replay.
      * The complicated json file reading stuff should be done in Reader.
+     * @param application .
      */
     public Replayer(ChapsChallenge application) {
         this.application = application;
@@ -123,7 +119,11 @@ public class Replayer {
         controlWindow.setVisible(true);
     }
 
-    //Button functions
+    //ALL BUTTON METHODS:
+
+    /**
+     * This happens when the "previous" button is pressed.
+     */
     public void prevButton() {
         if(location > 0) {
             int timeStamp = prepedChanges.get(location).timestamp;
@@ -162,8 +162,6 @@ public class Replayer {
                             enemy = application.findEnemyAtPos(new Position(x, y));
                             application.moveEnemy(enemy, Game.DIRECTION.LEFT);
                         }
-
-
                     }
 
                 }
@@ -176,6 +174,9 @@ public class Replayer {
         }
     }
 
+    /**
+     * This happens when the "Play/Pause" button is pressed.
+     */
     public void pausePlayButton(JButton button, Icon playIcon, Icon pauseIcon) {
         pause = !pause;
         if(pause) {
@@ -193,6 +194,9 @@ public class Replayer {
         }
     }
 
+    /**
+     * This happens when the "Next" button is pressed.
+     */
     public void nextButton() {
         if(location < prepedChanges.size()-1) {
             location++;
@@ -220,6 +224,9 @@ public class Replayer {
         }
     }
 
+    /**
+     * This happens when the "DoubleSpeed" button is pressed.
+     */
     public void doubleSpeedButton(JButton button, Icon dSpeedIcon, Icon dSpeedActiveIcon) {
         doubleSpeed = !doubleSpeed;
         application.setDoubleSpeed(doubleSpeed);
@@ -230,7 +237,9 @@ public class Replayer {
         }
     }
 
-    //apply an action every time a tick happens
+    /**
+     * Apply the effects of the "next" button without the user pressing it.
+     */
     public void tick() {
         if(location < prepedChanges.size()-1) {
             nextButton();
@@ -240,13 +249,14 @@ public class Replayer {
         }
     }
 
+    /**
+     * This happens when the "previous" button is pressed.
+     */
     public void loadToStart() {
         application.loadLevel(Persistence.loadGame(loadStateLocation), level);
         application.teleportEnemies(enemyStartPos);
     }
 
-
-    /** PREPS **/
     /**
      * Distributes same ticks across a 1000 milisecond tick evenly.
      * Adds additional "null" changes for ticks with nothing in 'em.
@@ -284,24 +294,46 @@ public class Replayer {
         }
     }
 
-    /** SETTERS **/
+    // SETTERS:
+
+    /**
+     * Load the list of recorded changes into the replayer's memory.
+     * @param recordedChanges .
+     */
     public void setRecordedChanges(ArrayList<Recorder.Change> recordedChanges) {
         this.recordedChanges = recordedChanges;
     }
 
+    /**
+     * Set the current level number.
+     * @param level .
+     */
     public void setLevel(int level) {
         this.level = level;
     }
 
+    /**
+     * Set the location of "loadstate" file.
+     * @param loadStateLocation .
+     */
     public void setLoadState(int loadStateLocation) {
         this.loadStateLocation = loadStateLocation;
     }
 
+    /**
+     * Set the enemies starting positions at the time of recording.
+     * @param enemyStartPos ArrayList of the enemies starting Positions.
+     */
     public void setEnemyStartPos(ArrayList<Position> enemyStartPos) {
         this.enemyStartPos = enemyStartPos;
     }
 
-    /** GETTERS **/
+    // GETTERS
+
+    /**
+     * Check if replayer is currently paused.
+     * @return .
+     */
     public boolean isPaused() {
         return pause;
     }

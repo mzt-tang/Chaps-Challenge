@@ -1,53 +1,18 @@
 package RecordAndReplay;
 
 import Application.ChapsChallenge;
-import Maze.Board;
 import Maze.BoardObjects.Actors.AbstractActor;
 import Maze.BoardObjects.Actors.Player;
 import Maze.BoardObjects.Tiles.AbstractTile;
-import Maze.BoardObjects.Tiles.Key;
-import Maze.BoardObjects.Tiles.Treasure;
-import Maze.Game;
 import Maze.Game.DIRECTION;
 import Maze.Position;
-import Persistence.*;
 
 import javax.swing.*;
 import java.io.File;
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
- * Records gameplay.
- * + Stores recorded games in a JSON format file.
- *   - Chap's movement
- *   - Any and every other actors
- * + Can also load a recorded game and replay it.
- * + User should have controls for replay:
- *   - Step-by-step,      -(ASSUMPTION)iterate through every action
- *                        -(ASSUMPTION)iterate through every tick
- *                        -(ASSUMPTION)Player can move forward and backward through the recording.
- *   - auto-reply,        -(ASSUMPTION)Play through normal tick speed
- *   - set replay speed.  -(ASSUMPTION)Set tick speed depending on seconds.
- * + (ASSUMPTION) Player CANNOT undo or redo.
- *
- * ////////////////////////////////////////////////////////////////
- * On a completely separate tick cycle, enemies will move on their own.
- * Every move, it checks if they have interacted with player.
- *
- * Multiple moves (aka changes) can happen at once.
- * Every change should be an array of changes.
- * The recording should be an array, of the array of changes.
- * ////////////////////////////////////////////////////////////////
- *
- * INDEX:
- * > RECORDING
- * > SAVING
- * > LOADING
- * > PLAYING
- * > GETTERS/SETTERS
+ * Houses all the methods that will be called by Application to Record and Replay gameplay.
  */
 public class RecordAndReplay<E> {
     private int level; //the Level the game is associated with. It's a string because that's how persistence works.
@@ -60,24 +25,6 @@ public class RecordAndReplay<E> {
     private ArrayList<AbstractActor> enemies;
 
     /**
-     * Constructor with level parameter
-     * @param level The level number which is associated with the RecordAndReplayer
-
-    public RecordAndReplay(int level, Set<AbstractActor> enemies, int j) {
-        recorder = new Recorder();
-        writer = new Writer();
-        replayer = new Replayer();
-        reader = new Reader();
-        recordingSwitch = false;
-        this.level = level;
-        this.enemies = new ArrayList<AbstractActor>();
-
-        for(AbstractActor e : enemies) {
-            this.enemies.add(e);
-        }
-    }*/
-
-    /**
      * Parameterless constructor.
      */
     public RecordAndReplay(ChapsChallenge application) {
@@ -88,52 +35,96 @@ public class RecordAndReplay<E> {
         recordingSwitch = false;
     }
 
-    //=====RECORDER=====//
-    //Returns the current state of the switch, and also flips it.
+    //ALL RECORDING METHODS:
+
+    /**
+     * Return's true if the game is recording. False otherwise
+     * @return .
+     */
     public boolean getRecordingBoolean() {
         return recordingSwitch;
     }
+
+    /**
+     * Toggle the state of RecordingSwtich.
+     * @param s True if the game is recording, false otherwise.
+     */
     public void setRecordingBoolean(Boolean s) {
         recordingSwitch = s;
     }
 
-    //Set the starting position. I COULD have put it in the above method, but I dont wanna seem like a sociopath.
+    /**
+     * Set the starting position of the player.
+     * @param pos Starting posistion of the player.
+     */
     public void setStartingPosition(Position pos) {
         recorder.setStartingPosition(pos);
     }
 
-    //Effectively relays all the recorder's functions here. Doing this to save me from headache.
+    /**
+     * Capture the Player's movement in a specific direction.
+     * @param direction .
+     */
     public void capturePlayerMove(DIRECTION direction) {
         recorder.capturePlayerMove(direction);
     }
+
+    /**
+     * Capture the player's interaction with tiles.
+     * DEPRECIATED.
+     * @param tile .
+     */
     public void captureTileInteraction(AbstractTile tile) {
         recorder.captureTileInteraction(tile);
     }
 
-    //Finds ALL the enemies current positions.
+    /**
+     * Capture enemy's positions before a movement.
+     * Do this right before their position is updated.
+     * @param enemies Set of all enemies on the map.
+     */
     public void captureEnemyPreMoves(Set<AbstractActor> enemies) {
         recorder.captureEnemyPreMoves(enemies);
     }
 
+    /**
+     * Capture enemy's positions after a movement.
+     * Do this right after their positions are updated.
+     * @param enemies Set of all enemies on the map.
+     */
     public void captureEnemyPostMoves(Set<AbstractActor> enemies) {
         recorder.captureEnemyPostMoves(enemies);
     }
 
-    //Note when recording started
+    /**
+     * Mark down the time where recording has started.
+     * @param timestamp The game's time remaining.
+     */
     public void setStartedRecording(int timestamp) {
         startedRecording = timestamp;
     }
 
-    //DO THIS AT THE END OF ALL CAPTURES
+    /**
+     * Clear Recording buffer.
+     * Call this after an action (or multiple simultaneous actions)
+     * have been taken.
+     * @param timestamp The game's time remaining.
+     */
     public void clearRecorderBuffer(int timestamp) {
         //deletes the recording buffer if it shouldnt be recording.
         if(recordingSwitch) recorder.storeBuffer(timestamp);
         else recorder.deleteBuffer();
     }
 
-    //=====SAVING=====//  AKA WRITING
-    //All functions to do with creating a save via JSON is here.
-    public void saveGameplay(int remainingTime, Player player, Set<AbstractActor> enemies, AbstractTile[][] tiles) {
+    //ALL SAVING AND WRITING METHODS:
+
+    /**
+     * Write the recorded gameplay so far into a Json file.
+     * @param remainingTime The game's time remaining at the end of a recording session.
+     * @param player .
+     * @param tiles The map.
+     */
+    public void saveGameplay(int remainingTime, Player player, AbstractTile[][] tiles) {
         ArrayList<AbstractActor> enemyList = new ArrayList<AbstractActor>();
         for(AbstractActor e : enemies) {
             enemyList.add(e);
@@ -142,8 +133,13 @@ public class RecordAndReplay<E> {
         writer.writeRecording(recorder.getRecordedChanges(), recorder.getStartingPosition(), level, startedRecording, enemyList);
     }
 
-    //=====LOADING=====//
-    //All functions to do with loading the game
+    //ALL LOADING METHODS:
+
+    /**
+     * Display a confirmation frame for loading the game.
+     * @param frame Application's main frame.
+     * @return .
+     */
     public boolean loadConfirmation(JFrame frame) {
         int selection = JOptionPane.showConfirmDialog(frame, "WARNING: Loading a replay will quit out of your current game.\n" +
                 "Proceed?", "Load Replay Confirmation", JOptionPane.YES_NO_OPTION);
@@ -167,8 +163,11 @@ public class RecordAndReplay<E> {
         }
     }
 
-    //=====PLAYING=====//
-    //All functions to do with replaying, forward or backwards.
+    //ALL REPLAYING METHODS:
+
+    /**
+     * Prepare the Replayer object with variables set from the reader.
+     */
     public void prepReplayer() {
         replayer.setRecordedChanges(reader.getRecordedChanges());
         replayer.setLevel(reader.getLevel());
@@ -179,23 +178,33 @@ public class RecordAndReplay<E> {
         replayer.loadToStart();
     }
 
+    /**
+     * Presses Replayer's "next button" automatically.
+     */
     public void tick() {
         replayer.tick();
     }
 
+    /**
+     * Display the Replayer's control window.
+     */
     public void displayControlWindow() {
         replayer.controlsWindow();
     }
 
+    /**
+     * Check if the replayer is currently paused.
+     * @return .
+     */
     public boolean getPaused() {
         return replayer.isPaused();
     }
 
-    //=====GETTERS/SETTERS=====//
+    //SETTERS:
 
     /**
      * Set the name of the json file this recorded session will be associated with.
-     * @param level
+     * @param level .
      */
     public void setLevelCount(int level) {
         this.level = level;
@@ -209,6 +218,7 @@ public class RecordAndReplay<E> {
     public void setEnemies(Set<AbstractActor> enemies) {
         ArrayList<AbstractActor> e = new ArrayList<AbstractActor>();
         for(AbstractActor a : enemies) {
+            System.out.println("X: " + a.getPos().getX() + ": " + a.getPos().getY());
             e.add(a);
         }
         this.enemies = e;
