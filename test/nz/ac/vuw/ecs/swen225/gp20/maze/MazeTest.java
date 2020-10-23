@@ -1,5 +1,8 @@
-package Maze;
+package nz.ac.vuw.ecs.swen225.gp20.maze;
 
+import Maze.Board;
+import Maze.Game;
+import Maze.Position;
 import Maze.BoardObjects.Actors.AbstractActor;
 import Maze.BoardObjects.Actors.PatternEnemy;
 import Maze.BoardObjects.Actors.Player;
