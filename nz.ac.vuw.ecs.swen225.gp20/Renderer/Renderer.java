@@ -40,7 +40,7 @@ public class Renderer extends JComponent {
      */
     public Renderer(Game game){
         stars = new HashSet<>();
-        audioPlayer = new AudioPlayer();
+        audioPlayer = new AudioPlayer(game);
         this.game = game;
         playerPrevPos = game.getPlayer().getPos();
         setPreferredSize(new Dimension(CANVAS_SIZE, CANVAS_SIZE));
@@ -80,7 +80,7 @@ public class Renderer extends JComponent {
         if (orientation != DIRECTION.NULL){
             audioPlayer.playSound("Step" + (int)(Math.random()*2 + 1));
         }
-        audioPlayer.playTileSound(board[playerX][playerY], game);
+        audioPlayer.playTileSound(board[playerX][playerY]);
 
         //Draw stuff
         drawStars(g2, orientation);
