@@ -169,8 +169,6 @@ public class Replayer {
             //Change the time remaining
             application.setTimeRemaining(timeStamp);
             location--;
-        } else {
-            System.out.println("min");
         }
     }
 
@@ -184,13 +182,11 @@ public class Replayer {
             prev.setEnabled(true);
             next.setEnabled(true);
             button.setIcon(playIcon);
-            System.out.println("paused");
         } else {
             //JUST unpaused
             prev.setEnabled(false);
             next.setEnabled(false);
             button.setIcon(pauseIcon);
-            System.out.println("play");
         }
     }
 
@@ -219,8 +215,6 @@ public class Replayer {
             }
             //Change the time remaining
             application.setTimeRemaining(timeStamp);
-        } else {
-            System.out.println("max");
         }
     }
 
@@ -245,7 +239,6 @@ public class Replayer {
             nextButton();
         } else {
             pause = true;
-            System.out.println("END OF TAPE");
         }
     }
 

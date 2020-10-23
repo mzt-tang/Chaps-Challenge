@@ -52,7 +52,6 @@ public class Reader {
         for(int i = 0; i < enemyStartPos.size(); i++) {
             JsonObject pos = enemyStartPos.getJsonObject("" + i);
             Position p = new Position(pos.getInt("startX"), pos.getInt("startY"));
-            System.out.println(i + ": x=" + p.getX() + "| y=" + p.getY());
             enemyStartPositions.add(p);
         }
 
