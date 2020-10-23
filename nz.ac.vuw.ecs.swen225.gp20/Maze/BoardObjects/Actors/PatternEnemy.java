@@ -104,4 +104,11 @@ public class PatternEnemy extends AbstractActor{
         else routePos++;
     }
 
+    public int getRoutePos() {
+        return routePos;
+    }
+
+    public void setRoutePos(int routePos) {
+        this.routePos = routePos;
+    }
 }
