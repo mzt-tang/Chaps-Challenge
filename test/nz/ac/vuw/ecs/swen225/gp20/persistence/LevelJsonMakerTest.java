@@ -1,4 +1,4 @@
-package test.nz.ac.vuw.ecs.swen225.gp20.persistence;
+package nz.ac.vuw.ecs.swen225.gp20.persistence;
 
 import static org.junit.Assert.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -197,8 +197,8 @@ public class LevelJsonMakerTest {
    */
   public Level makeJsonUtility(String[][] testArray) throws Exception {
     ArrayList<ArrayList<String>> testArrayList = arrayToList(testArray);
-    String testFileString = "nz.ac.vuw.ecs.swen225.gp20/"
-        + "test/nz/ac/vuw/ecs/swen225/gp20/persistence/"
+    String testFileString = 
+        "test/nz/ac/vuw/ecs/swen225/gp20/persistence/"
         + "MakeJsonTest.JSON";
     LevelJsonMaker.makeJson(testArrayList, testFileString);
     Level testLevel = LevelJsonReader.readJson(testFileString);

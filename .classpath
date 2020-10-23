@@ -8,6 +8,7 @@
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/5"/>
 	<classpathentry excluding="MonkeyTest/" kind="src" path="nz.ac.vuw.ecs.swen225.gp20"/>
 	<classpathentry kind="src" path="nz.ac.vuw.ecs.swen225.gp20/MonkeyTest"/>
+	<classpathentry kind="src" path="test"/>
 	<classpathentry kind="lib" path="lib/guava-23.0.jar"/>
 	<classpathentry kind="lib" path="lib/javax.json-1.1.jar"/>
 	<classpathentry kind="lib" path="lib/javax.json-api-1.1.4.jar"/>

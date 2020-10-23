@@ -1,4 +1,4 @@
-package test.nz.ac.vuw.ecs.swen225.gp20.persistence;
+package nz.ac.vuw.ecs.swen225.gp20.persistence;
 
 import static org.junit.Assert.*;
 
