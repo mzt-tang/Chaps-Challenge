@@ -1,16 +1,48 @@
 
 {
     "Changed Tiles": [
+        {
+            "xPos": 1,
+            "yPos": 11
+        },
+        {
+            "xPos": 4,
+            "yPos": 3
+        }
     ],
     "Gameplay variables": {
-        "playerX": 1,
-        "playerY": 1,
+        "playerX": 4,
+        "playerY": 3,
         "Keys on hand": [
         ],
         "Treasure on hand": [
         ],
-        "time remaining": 91,
+        "time remaining": 92,
         "Enemy locations": [
+            {
+                "startingX": 8,
+                "startingY": 1,
+                "currentX": 13,
+                "currentY": 5
+            },
+            {
+                "startingX": 8,
+                "startingY": 6,
+                "currentX": 13,
+                "currentY": 10
+            },
+            {
+                "startingX": 3,
+                "startingY": 1,
+                "currentX": 8,
+                "currentY": 5
+            },
+            {
+                "startingX": 3,
+                "startingY": 6,
+                "currentX": 8,
+                "currentY": 10
+            }
         ]
     }
 }
