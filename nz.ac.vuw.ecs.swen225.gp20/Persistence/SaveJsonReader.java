@@ -77,8 +77,8 @@ public class SaveJsonReader {
       JsonObject currentEnemyJson = (JsonObject) enemiesIterator.next();
       int startingX = currentEnemyJson.getInt("startingX");
       int startingY = currentEnemyJson.getInt("startingY");
-      int newX = currentEnemyJson.getInt("startingX");
-      int newY = currentEnemyJson.getInt("startingX");
+      int newX = currentEnemyJson.getInt("currentX");
+      int newY = currentEnemyJson.getInt("currentY");
 
       Position newPos = new Position(newX, newY);
       Position startingPos = new Position(startingX, startingY);
