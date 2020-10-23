@@ -218,7 +218,6 @@ public class RecordAndReplay<E> {
     public void setEnemies(Set<AbstractActor> enemies) {
         ArrayList<AbstractActor> e = new ArrayList<AbstractActor>();
         for(AbstractActor a : enemies) {
-            System.out.println("X: " + a.getPos().getX() + ": " + a.getPos().getY());
             e.add(a);
         }
         this.enemies = e;

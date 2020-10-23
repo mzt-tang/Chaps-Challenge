@@ -47,8 +47,6 @@ public class Writer {
         for(AbstractActor e : enemies) {
             //if(e == null) continue;
             JsonObjectBuilder hostile = Json.createObjectBuilder();
-            System.out.println("x: " + e.getPos().getX());
-            System.out.println("y: " + e.getPos().getY());
 
             hostile.add("startX", e.getPos().getX());
             hostile.add("startY", e.getPos().getY());
