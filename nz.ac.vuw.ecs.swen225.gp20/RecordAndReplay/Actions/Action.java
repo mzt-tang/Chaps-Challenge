@@ -8,12 +8,25 @@ package RecordAndReplay.Actions;
 public abstract class Action {
     ActionType type;
 
+    /**
+     * Basic constructor.
+     * @param type The type this action is associated with.
+     */
     public Action(ActionType type) {
         this.type = type;
     }
 
+    /**
+     * Change the type this action is associated with.
+     * @param type .
+     */
     public void setType(ActionType type) {
         this.type = type;
     }
+
+    /**
+     * Get the type this action is associated with.
+     * @return .
+     */
     public ActionType getType() { return type; }
 }

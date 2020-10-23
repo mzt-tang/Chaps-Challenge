@@ -24,7 +24,7 @@ public class Reader {
     private int levelLocation;
 
     /**
-     * Empty Constructor
+     * Empty Constructor.
      */
     public Reader() {}
 

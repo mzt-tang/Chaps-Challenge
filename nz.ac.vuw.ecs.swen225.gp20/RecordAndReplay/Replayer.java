@@ -21,9 +21,6 @@ import java.util.Map;
  * This class is JUST like Reader, Recorder, and Writer. A list of simple helper methods for RecordAndReplay.
  * The Replayer's job is mostly to detect when the player moves forwards "or backwards" and replicate
  * the moves accordingly.
- *
- * REMINDER TO SELF: this is why map updates must be recorded too, so they can be reversed!!!
- *
  */
 public class Replayer {
     private ArrayList<Recorder.Change> recordedChanges = new ArrayList<Recorder.Change>();

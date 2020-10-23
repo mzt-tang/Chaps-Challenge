@@ -18,7 +18,7 @@ import java.util.List;
 import javax.json.*;
 
 /**
- * ONLY ACCESSED THROUGH RecordAndReplay.java
+ * The writer object is responsible for writing all recorded data into a JSON file.
  */
 public class Writer {
     public Writer() {}
