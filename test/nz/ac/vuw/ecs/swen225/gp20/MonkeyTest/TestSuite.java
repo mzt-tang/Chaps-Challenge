@@ -1,4 +1,4 @@
-package MonkeyTest;
+package nz.ac.vuw.ecs.swen225.gp20.MonkeyTest;
 
 import java.util.Random;
 import org.junit.*;

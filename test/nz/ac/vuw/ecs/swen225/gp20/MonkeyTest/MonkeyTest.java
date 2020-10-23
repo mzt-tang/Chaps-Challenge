@@ -1,4 +1,4 @@
-package MonkeyTest;
+package nz.ac.vuw.ecs.swen225.gp20.MonkeyTest;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.BeforeEach;
