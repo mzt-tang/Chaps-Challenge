@@ -302,37 +302,43 @@ public class ChapsChallenge extends JFrame {
     public JPanel createInfoPanel(){
         JPanel infoPanel = new JPanel();
         infoPanel.setLayout(new BoxLayout(infoPanel, BoxLayout.Y_AXIS));
-        infoPanel.setBackground(Color.WHITE);
+        infoPanel.setBackground(Color.DARK_GRAY);
 
-        int fontSize = 16;
+        int fontSize = 18;
 
         //Current level label
         JLabel levelLabel = new JLabel("LEVEL " + levelCount);
-        levelLabel.setFont(new Font(levelLabel.getName(), Font.PLAIN, fontSize));
-        levelLabel.setForeground(Color.RED);
+        levelLabel.setFont(new Font("VCR OSD Mono", Font.BOLD, fontSize));
+        levelLabel.setForeground(Color.WHITE);
         levelLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         //Timer thread
         JLabel timeLabel = new JLabel();
         JLabel chipsLabel = new JLabel();
         JLabel inventoryLabel = new JLabel("INVENTORY");
-        inventoryLabel.setFont(new Font(timeLabel.getName(), Font.PLAIN, fontSize));
-        inventoryLabel.setForeground(Color.RED);
+        inventoryLabel.setFont(new Font("VCR OSD Mono", Font.BOLD, fontSize));
+        inventoryLabel.setForeground(Color.WHITE);
         inventoryLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         timer = new Timer(1000, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 //Time remaining
-                timeLabel.setFont(new Font(timeLabel.getName(), Font.PLAIN, fontSize));
+                timeLabel.setFont(new Font("VCR OSD Mono", Font.BOLD, fontSize));
                 timeLabel.setText("TIME REMAINING: \n" + timeRemaining);
-                timeLabel.setForeground(Color.RED);
+                //set it to red when it's half-time
+                if (timeRemaining <= currentLevel.getTime()/2) {
+                    timeLabel.setForeground(Color.RED);
+                }
+                else {
+                    timeLabel.setForeground(Color.WHITE);
+                }
                 timeLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
                 //Chips Remaining
-                chipsLabel.setFont(new Font(chipsLabel.getName(), Font.PLAIN, fontSize));
+                chipsLabel.setFont(new Font("VCR OSD Mono", Font.BOLD, fontSize));
                 chipsLabel.setText("CHIPS REMAINING: " + game.treasuresLeft());
-                chipsLabel.setForeground(Color.RED);
+                chipsLabel.setForeground(Color.WHITE);
                 chipsLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
                 //Stopping the timer once it runs out of time

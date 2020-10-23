@@ -43,7 +43,7 @@ public class InventoryView extends JPanel {
     public InventoryView(Player player){
         this.player = player;
         this.setPreferredSize(new Dimension(imageSize * inventoryWidth, imageSize * inventoryHeight));
-        this.setBackground(Color.WHITE);
+        this.setBackground(Color.DARK_GRAY);
     }
 
     @Override
