@@ -4,6 +4,8 @@ import Maze.Game;
 
 /**
  * The action type of an enemy moving.
+ *
+ * @author Jeremiah Choi 300474835
  */
 public class EnemyMove extends Action{
     private int x, y; //the x and y which the move from

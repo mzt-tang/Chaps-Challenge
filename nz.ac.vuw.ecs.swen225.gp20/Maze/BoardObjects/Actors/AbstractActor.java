@@ -2,7 +2,6 @@ package Maze.BoardObjects.Actors;
 
 import Maze.Board;
 import Maze.Position;
-import com.google.common.base.Preconditions;
 
 import java.awt.*;
 import java.util.HashMap;

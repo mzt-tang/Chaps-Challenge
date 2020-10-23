@@ -3,7 +3,9 @@ package RecordAndReplay.Actions;
 /**
  * A Action object associates itself with a single action or change that takes place in the game.
  * The record and replaying part reads and applies an array of these at once.
- * Because multiple changes can take place at one time. (IE: multiple hostiles moving in sync)
+ * Because multiple changes can take place at one time. (IE: multiple hostiles moving in sync).
+ *
+ * @author Jeremiah Choi 300474835
  */
 public abstract class Action {
     ActionType type;

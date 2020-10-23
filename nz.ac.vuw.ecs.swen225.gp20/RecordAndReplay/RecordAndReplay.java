@@ -13,6 +13,8 @@ import java.util.*;
 
 /**
  * Houses all the methods that will be called by Application to Record and Replay gameplay.
+ *
+ * @author Jeremiah Choi 300474835
  */
 public class RecordAndReplay<E> {
     private int level; //the Level the game is associated with. It's a string because that's how persistence works.

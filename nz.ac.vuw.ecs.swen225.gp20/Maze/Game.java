@@ -1,6 +1,5 @@
 package Maze;
 
-import com.google.common.base.Preconditions;
 import Maze.BoardObjects.Actors.AbstractActor;
 import Maze.BoardObjects.Actors.Player;
 import Maze.BoardObjects.Tiles.*;

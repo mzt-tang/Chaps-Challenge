@@ -13,6 +13,8 @@ import java.util.ArrayList;
 /**
  * Reads a json file and pulls all the variables nessercary for
  * the Replayer to run off of.
+ *
+ * @author Jeremiah Choi 300474835
  */
 public class Reader {
     private ArrayList<Recorder.Change> recordedChanges = new ArrayList<Recorder.Change>();

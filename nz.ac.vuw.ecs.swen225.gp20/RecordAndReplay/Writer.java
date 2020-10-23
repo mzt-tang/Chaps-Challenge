@@ -19,6 +19,8 @@ import javax.json.*;
 
 /**
  * The writer object is responsible for writing all recorded data into a JSON file.
+ *
+ * @author Jeremiah Choi 300474835
  */
 public class Writer {
     public Writer() {}

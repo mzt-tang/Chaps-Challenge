@@ -7,6 +7,7 @@ package RecordAndReplay.Actions;
  *
  * An "actiontype" is an action that can spark multiple functions (ie: checks to see if creature attacks player)
  *
+ * @author Jeremiah Choi 300474835
  */
 public enum ActionType {
     PLAYERACTION("playerAction"), ENEMYACTION("enemyAction");
