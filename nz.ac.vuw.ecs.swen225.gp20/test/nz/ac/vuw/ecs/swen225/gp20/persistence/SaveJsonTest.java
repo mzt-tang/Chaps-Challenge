@@ -141,7 +141,7 @@ public class SaveJsonTest {
     );
     
     //Erase the save, now that it has been overwritten/created.
-    System.out.println(Persistence.eraseSave(1));
+    Persistence.eraseSave(1);
     
     //try to load the save
     Level testResult = Persistence.loadGame(1);

@@ -1,6 +1,7 @@
 package Persistence;
 
 import Maze.BoardObjects.Actors.AbstractActor;
+import Maze.BoardObjects.Actors.PatternEnemy;
 import Maze.BoardObjects.Tiles.AbstractTile;
 import Maze.BoardObjects.Tiles.Key;
 import Maze.BoardObjects.Tiles.Treasure;
@@ -85,11 +86,15 @@ public class SaveJsonReader {
       Position startingPos = new Position(startingX, startingY);
 
       AbstractActor currentEnemy = findEnemy(startingPos, loadedLevel.getEnemies());
-
       if (currentEnemy == null) {
         System.out.println("ORIGINAL ENEMY NOT FOUND");
       } else {
         currentEnemy.setPos(newPos);
+        if(currentEnemy instanceof PatternEnemy) {
+          int routePos = currentEnemyJson.getInt("routeLastPosition");
+      	  PatternEnemy currentPatternEnemy = (PatternEnemy) currentEnemy;
+      	  currentPatternEnemy.setRoutePos(routePos);
+        }
       }
     }
    
