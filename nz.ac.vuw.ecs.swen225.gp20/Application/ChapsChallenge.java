@@ -719,7 +719,7 @@ public class ChapsChallenge extends JFrame {
         if(recordAndReplayer.getRecordingBoolean()) {
             //if it's true right now. Save gameplay, and switch it to false.
             recordAndReplayer.setRecordingBoolean(false);
-            recordAndReplayer.saveGameplay(timeRemaining, game.getPlayer(), game.getComputerPlayers(), game.getBoard().getMap());
+            recordAndReplayer.saveGameplay(timeRemaining, game.getPlayer(), game.getBoard().getMap());
 
             recordItem.setText("Start Recording");
         } else {
