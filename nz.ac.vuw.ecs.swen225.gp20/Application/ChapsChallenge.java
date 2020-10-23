@@ -32,7 +32,7 @@ import javax.swing.Timer;
 import javax.swing.border.EmptyBorder;
 
 /**
- * Window of the actual game, Chap's Challenge
+ * Window of the actual game, Chap's Challenge.
  *
  * @author Iqbal
  */
@@ -61,7 +61,7 @@ public class ChapsChallenge extends JFrame {
     private RecordAndReplay recordAndReplayer;
 
     /**
-     * Construct a game instance from a given level count
+     * Construct a game instance from a given level count.
      *
      * @param levelToPlay The level that first appears when the game is started
      */
@@ -84,7 +84,7 @@ public class ChapsChallenge extends JFrame {
     }
 
     /**
-     * Construct a game instance from a Level object
+     * Construct a game instance from a Level object.
      *
      @param lastSavedLevel Load in from a level (optional argument, use null if not used)
      */
@@ -108,6 +108,9 @@ public class ChapsChallenge extends JFrame {
         setVisible(true);
     }
 
+    /**
+     * Initializes the Maze, Renderer, Persistence & Levels, Record & Replay modules.
+     */
     public void initModules(){
         // Persistence, Maze and Renderer module
         loadLevel(levelCount);
@@ -116,6 +119,9 @@ public class ChapsChallenge extends JFrame {
         recordAndReplayer = new RecordAndReplay();
     }
 
+    /**
+     * Initializes the gameplay panel and the info panel.
+     */
     public void initPanels(){
         //GUI base panel
         JPanel basePanel = new JPanel();
@@ -146,7 +152,7 @@ public class ChapsChallenge extends JFrame {
     }
 
     /**
-     * Initializes window properties
+     * Initializes window properties.
      */
     public void initUI(){
         setTitle("Chap's Challenge: Among Us Edition");
@@ -157,7 +163,7 @@ public class ChapsChallenge extends JFrame {
 
 
     /**
-     * Menu bar with options to change the game state
+     * Menu bar with options to change the game state.
      */
     public void createMenuBar(){
         JMenuBar menuBar = new JMenuBar();
@@ -383,7 +389,7 @@ public class ChapsChallenge extends JFrame {
     // ===========================================
 
     /**
-     * Loads a level from a specified integer
+     * Loads a level from a specified integer.
      * @param level Level number
      */
     public void loadLevel(int level){
@@ -416,7 +422,7 @@ public class ChapsChallenge extends JFrame {
     }
 
     /**
-     * Loads a level specified by a Level object
+     * Loads a level specified by a Level object.
      * @param level Level object
      * @param levelCount The level number
      */
@@ -456,7 +462,7 @@ public class ChapsChallenge extends JFrame {
     }
 
     /**
-     * Prompts an option screen that lets the user load a saved level
+     * Prompts an option screen that lets the user load a saved level.
      */
     public void loadSavedGame(){
         String[] possibleValues = { "Level 1", "Level 2", "Level 3"};
@@ -494,7 +500,7 @@ public class ChapsChallenge extends JFrame {
     }
 
     /**
-     * Save the current game state and show a message dialog when the player saves the game
+     * Save the current game state and show a message dialog when the player saves the game.
      */
     public void saveCurrentGame(){
         JOptionPane.showMessageDialog(null, "Saved current game at level " + levelCount + ".", "Game Saved!", JOptionPane.INFORMATION_MESSAGE);
@@ -502,7 +508,7 @@ public class ChapsChallenge extends JFrame {
     }
 
     /**
-     * Adds different keybindings that controls the state of the game
+     * Adds different keybindings that controls the state of the game.
      */
     public void addHotKeys() {
         //CTRL + X: exit the game, the current game state will be lost, the next time the game is started, it will resume from the last unfinished level
@@ -628,7 +634,7 @@ public class ChapsChallenge extends JFrame {
     }
 
     /**
-     * Pauses/resumes the game
+     * Pauses/resumes the game.
      */
     public void pauseResume(){
         //request focus again as it may have been lost from using the menu bar
