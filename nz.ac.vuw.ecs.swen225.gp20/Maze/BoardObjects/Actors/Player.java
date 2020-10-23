@@ -41,9 +41,6 @@ public class Player extends AbstractActor{
      * @return Returns true if the player has a key of the colour. False if not.
      */
     public boolean hasKey(String key) {
-        Preconditions.checkArgument(key == "Red" ||
-                key == "Green" ||
-                key == "Blue", "Key colour must be Red, Green or Blue");
         for (AbstractTile k : collectibles.get("keySet")) {
             assert (k instanceof Key) : "Tiles in keySet isn't of the Key type";
             if(key.equals(((Key) k).getColour())) return true;
@@ -59,9 +56,6 @@ public class Player extends AbstractActor{
      *         has picked up.
      */
     public Key getKey(String colour) {
-        Preconditions.checkArgument(colour == "Red" ||
-                colour == "Green" ||
-                colour == "Blue", "Key colour must be Red, Green or Blue");
         for (AbstractTile k : collectibles.get("keySet")) {
             assert (k instanceof Key) : "Tiles in keySet isn't of the Key type";
             if(colour.equals(((Key) k).getColour())) return (Key) k;

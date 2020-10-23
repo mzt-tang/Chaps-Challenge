@@ -23,7 +23,6 @@ public class LockedDoor extends AbstractTile {
      */
     public LockedDoor(boolean setVertical, String colour) {
         super(setVertical);
-        Preconditions.checkArgument(colour == "Red" || colour == "Green" || colour == "Blue", "Colour must be Red, Green or Blue");
         this.colour = colour;
         images.put("DoorHorizontalBlue", Toolkit.getDefaultToolkit().getImage("Resources/tiles/DoorHorizontalBlue.jpeg"));
         images.put("DoorHorizontalGreen", Toolkit.getDefaultToolkit().getImage("Resources/tiles/DoorHorizontalGreen.jpeg"));

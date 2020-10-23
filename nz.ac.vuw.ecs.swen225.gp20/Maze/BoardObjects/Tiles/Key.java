@@ -22,7 +22,6 @@ public class Key extends AbstractTile {
      */
     public Key(String colour) {
         super(false);
-        Preconditions.checkArgument(colour == "Red" || colour == "Green" || colour == "Blue", "Colour must be Red, Green or Blue");
         this.colour = colour;
         images.put("SwipeCardBlue", Toolkit.getDefaultToolkit().getImage("Resources/tiles/SwipeCardBlue.jpeg"));
         images.put("SwipeCardGreen", Toolkit.getDefaultToolkit().getImage("Resources/tiles/SwipeCardGreen.jpeg"));
