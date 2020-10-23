@@ -22,9 +22,7 @@ import java.util.Map;
  * The Replayer's job is mostly to detect when the player moves forwards "or backwards" and replicate
  * the moves accordingly.
  *
- * This class handles all replaying methods of the game. It heavily relies on ChapsChallenge in the application module
- * to display changes that occur in the replay. Therefore, ChapsChallenge contains many helper methods
- * just for this component to call.
+ * REMINDER TO SELF: this is why map updates must be recorded too, so they can be reversed!!!
  *
  */
 public class Replayer {
@@ -162,8 +160,6 @@ public class Replayer {
                             enemy = application.findEnemyAtPos(new Position(x, y));
                             application.moveEnemy(enemy, Game.DIRECTION.LEFT);
                         }
-
-
                     }
 
                 }
@@ -304,6 +300,9 @@ public class Replayer {
     /** GETTERS **/
     public boolean isPaused() {
         return pause;
+    }
+    public boolean isDoubleSpeed() {
+        return doubleSpeed;
     }
 
     /** NESTED CLASSES **/
